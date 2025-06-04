@@ -2,85 +2,84 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Kontrak CPO</h1>
+<h1 class="h3 mb-2 text-gray-800">Kontrak Kernel</h1>
 <hr>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
             <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right">
                 <i class="fa fa-plus"></i> Tambah
             </button>
-            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadCCPO" align="right">
+            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadCPK" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>
     </div>
-    <hr>
     <!-- Area chart example-->
     <div class="card mb-2">
       <div class="card-header">Price/Kg CPO</div>
         <div class="card-body">
-            <div class="chart-area"><canvas id="CCPOChart" width="100%" height="20"></canvas></div>
+            <div class="chart-area"><canvas id="CPKChart" width="100%" height="20"></canvas></div>
         </div>
         <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable-kcpo" width="100%" cellsapcing="0">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>GGU SC</th>
-                            <th>GUM SC</th>
-                            <th>Tanggal Loading</th>
-                            <th>Harga</th>
-                            <th>Kuantiti Kontrak</th>
-                            <th>Armada</th>
-                            <th>Pembeli</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $no = 1; ?>
-                        @foreach ($ccpo as $row)
-                            <tr>
-                                <td>{{ $no }}</td>
-                                <td>{{ $row->ggu_sc }}</td>
-                                <td>{{ $row->gum_sc }}</td>
-                                <td>{{ \Carbon\Carbon::parse($row->real_loading_tk)->format('d-m-Y') }}</td>
-                                <td>{{ $row->real_price }}</td>
-                                <td>{{ $row->kontrak_qty_ton }}</td>
-                                <td>{{ $row->kapal_tongkang }}</td>
-                                <td>{{ $row->buyer }}</td>
-                                <td>{{ $row->status }}</td>
-                                <td>
-                                    <a href="{{route('contractcpo.edit' ,[$row->id])}}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" title="Ubah Data">
-                                        <i class="fas fa-edit fa-sm text-white-50"></i>
-                                    </a>
-                                    <a href="/contractcpo/hapus/{{ $row->id }}" onclick="return confirm('Yakin Ingin menghapus data?')" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" title="Hapus Data">
-                                        <i class="fas fa-trash-alt fa-sm text-white-50"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php $no++; ?>
-                        @endforeach
-                    </tbody>
+            <table class="table table-bordered" id="dataTable-cpk" width="100%" cellsapcing="0">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>LTC</th>
+                        <th>No SC</th>
+                        <th>Tanggal Pricing</th>
+                        <th>Tanggal Kirim</th>
+                        <th>Tanggal Selesai Kirim</th>
+                        <th>Kuantiti Kontrak</th>
+                        <th>Pembeli</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $no = 1; ?>
+                    @foreach ($cpk as $row)
+                    <tr>
+                        <td>{{ $no }}</td>
+                        <td>{{ $row->ltc }}</td>
+                        <td>{{ $row->nomor_sc }}</td>
+                        <td>{{ \Carbon\Carbon::parse($row->date_pricing)->format('d-m-Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($row->actual_awal_kirim)->format('d-m-Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($row->actual_closed_kirim)->format('d-m-Y') }}</td>
+                        <td>{{ $row->qty_kontrak_kg }}</td>
+                        <td>{{ $row->buyer }}</td>
+                        <td>{{ $row->status }}</td>
+                        <td>
+                            <a href="{{route('contractpk.edit' ,[$row->id])}}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" title="Ubah Data">
+                                <i class="fas fa-edit fa-sm text-white-50"></i>
+                            </a>
+                            <a href="/contractpk/hapus/{{ $row->id }}" onclick="return confirm('Yakin Ingin menghapus data?')" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" title="Hapus Data">
+                                <i class="fas fa-trash-alt fa-sm text-white-50"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php $no++; ?>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </div>
 </div>
 
 <!-- Modal File Upload -->
-<div class="modal fade" id="modal-UploadCCPO" tabindex="-1" role="dialog" aria-labelledby="modal-UploadCCPOLabel" aria-hidden="true">
+<div class="modal fade" id="modal-UploadCPK" tabindex="-1" role="dialog" aria-labelledby="modal-UploadCPKLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-UploadCCPOLabel">Unggah Kontrak CPO</h5>
+        <h5 class="modal-title" id="modal-UploadCPKLabel">Unggah Kontrak CPO</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('contractcpo.import') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('contractpk.import') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="file">Pilih File Excel</label>
@@ -106,15 +105,14 @@
 
 @push('scripts')
 <script>
-    const ctx = document.getElementById('CCPOChart').getContext('2d');
-
-    const CCPOChart = new Chart(ctx, {
+    const ctx = document.getElementById('CPKChart').getContext('2d');
+    const CPKChart = new Chart(ctx, {
         data: {
             labels: @json($labels1), // label1 dan label2 sama
             datasets: [
                 {
                     type: 'bar',
-                    label: 'Qty CPO (Kg)',
+                    label: 'Qty Kernel (Kg)',
                     data: @json($values2),
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -134,7 +132,7 @@
                 },
                 {
                     type: 'line',
-                    label: 'Price/Kg CPO',
+                    label: 'Price/Kg Kernel',
                     data: @json($values1),
                     borderColor: 'rgba(255, 99, 132, 1)',
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -215,72 +213,5 @@
         }
     });
 </script>
-<!--<script>
-    const ctx = document.getElementById('CCPOChart').getContext('2d');
-    const CCPOChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: @json($labels1),
-            datasets: [{
-                label: 'Price/Kg CPO',
-                data: @json($values1),
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                pointRadius: 3,
-                pointHoverRadius: 6,
-                fill: false,
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                datalabels: {
-                    align: 'bottom',
-                    anchor: 'end',
-                    formatter: function(value) {
-                        const angkaBulat = Math.round(value); // Atau Math.floor(value) kalau mau dibulatkan ke bawah
-                        return 'Rp ' + angkaBulat.toLocaleString('id-ID');
-                    },
-                    font: {
-                        weight: 'bold'
-                    },
-                    color: '#000',
-                    clamp: true
-                },
-                legend: {
-                    display: true
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const angkaBulat = Math.round(context.parsed.y);
-                            return 'Rp ' + angkaBulat.toLocaleString('id-ID');
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Rupiah (Rp)'
-                    },
-                    ticks: {
-                        callback: function(value) {
-                            return 'Rp ' + Math.round(value).toLocaleString('id-ID');
-                        }
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Tanggal'
-                    }
-                }
-            }
-        },
-        plugins: [ChartDataLabels]
-    });
-</script>-->
+    
 @endpush

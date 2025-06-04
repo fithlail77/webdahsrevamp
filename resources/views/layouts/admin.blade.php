@@ -243,5 +243,17 @@
     }); // aktifkan semua fitur default
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#dataTable-cpk').DataTable({
+                scrollX: true,
+                autoWidth: false,
+                columnDefs: [
+                    { targets: '_all', className: 'dt-nowrap' }
+        ]
+    }); // aktifkan semua fitur default
+        });
+    </script>
 </body>
 </html>

@@ -6,6 +6,8 @@ use App\Imports\ContractpkImport;
 use App\Models\Contractpk;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ContractpkController extends Controller
 {
@@ -14,9 +16,33 @@ class ContractpkController extends Controller
      */
     public function index()
     {
-         $cpk = Contractpk::orderBy('id', 'desc')->get();
+        $cpk = Contractpk::orderBy('id', 'desc')->get();
 
-        return view('cpk.index', compact('cpk'));
+        $chart1 = DB::table('contract_kernel')
+                    ->select('date_pricing', 'real_price')
+                    ->whereBetween('date_pricing', [
+                            DB::raw("DATE_TRUNC('month', CURRENT_DATE - INTERVAL '6 month')"),
+                            DB::raw("DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 day'")
+                        ])
+                    ->orderBy('date_pricing')
+                    ->get();
+        
+        $labels1 = $chart1->pluck('date_pricing')->map(fn($date) => Carbon::parse($date)->format('d M Y'))->toArray(); // contoh: "01"
+        $values1 = $chart1->pluck('real_price')->toArray();
+        
+        $chart2 = DB::table('contract_kernel')
+                    ->select('date_pricing', 'real_qty_kg')
+                    ->whereBetween('date_pricing', [
+                            DB::raw("DATE_TRUNC('month', CURRENT_DATE - INTERVAL '6 month')"),
+                            DB::raw("DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 day'")
+                        ])
+                    ->orderBy('date_pricing')
+                    ->get();
+        
+        $labels2 = $chart2->pluck('date_pricing')->map(fn($date) => Carbon::parse($date)->format('d M Y'))->toArray(); // contoh: "01"
+        $values2 = $chart2->pluck('real_qty_kg')->toArray();
+
+        return view('cpk.index', compact('cpk','labels1','values1','labels2','values2'));
     }
 
     /**
