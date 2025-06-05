@@ -27,12 +27,12 @@
             <table class="table table-bordered" id="dataTable-sungai1" width="100%" cellsapcing="0">
                 <thead>
                     <tr>
-                        <td>No</td>
-                        <td>Tanggal</td>
-                        <td>Tinggi Air Pagi</td>
-                        <td>Tinggi Air Sore</td>
-                        <td>Rata-rata</td>
-                        <td>Aksi</td>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Tinggi Air Pagi</th>
+                        <th>Tinggi Air Sore</th>
+                        <th>Rata-rata</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -150,9 +150,9 @@
                 data: values1,
                 fill: false,
                 borderColor: 'rgba(54, 162, 235, 1)',
-                tension: 0.4,
+                tension: 0.3,
                 pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                pointRadius: 1,
+                pointRadius: 3,
                 },
                 {
                 label: 'Batas Atas',

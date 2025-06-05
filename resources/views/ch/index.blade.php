@@ -18,13 +18,13 @@
             <table class="table table-bordered" id="dataTable-curahhujan" width="100%" cellsapcing="0">
                 <thead>
                     <tr>
-                        <td>No</td>
-                        <td>Perusahaan</td>
-                        <td>Estate</td>
-                        <td>Divisi</td>
-                        <td>Curah Hujan</td>
-                        <td>Tanggal</td>
-                        <td>Aksi</td>
+                        <th>No</th>
+                        <th>Perusahaan</th>
+                        <th>Estate</th>
+                        <th>Divisi</th>
+                        <th>Curah Hujan</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>

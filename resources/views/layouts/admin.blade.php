@@ -255,5 +255,38 @@
     }); // aktifkan semua fitur default
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable-pupuk').DataTable({
+                scrollX: true,
+                autoWidth: false,
+                columnDefs: [
+                    { targets: '_all', className: 'dt-nowrap' }
+        ]
+    }); // aktifkan semua fitur default
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable-rawat').DataTable({
+                scrollX: true,
+                autoWidth: false,
+                columnDefs: [
+                    { targets: '_all', className: 'dt-nowrap' }
+        ]
+    }); // aktifkan semua fitur default
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable-payroll').DataTable({
+                scrollX: true,
+                autoWidth: false,
+                columnDefs: [
+                    { targets: '_all', className: 'dt-nowrap' }
+        ]
+    }); // aktifkan semua fitur default
+        });
+    </script>
 </body>
 </html>

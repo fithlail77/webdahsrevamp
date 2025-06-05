@@ -18,20 +18,20 @@
             <table class="table table-bordered" id="dataTable-aresta1" width="100%" cellsapcing="0">
                 <thead>
                     <tr>
-                        <td>No</td>
-                        <td>Tanggal</td>
-                        <td>Estate</td>
-                        <td>Divisi</td>
-                        <td>Blok</td>
-                        <td>TT</td>
-                        <td>Status Tanam</td>
-                        <td>Status Lahan</td>
-                        <td>Bibit</td>
-                        <td>Topografi</td>
-                        <td>Jenis Tanah</td>
-                        <td>Jumlah Pokok</td>
-                        <td>Luasan</td>
-                        <td>Aksi</td>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Estate</th>
+                        <th>Divisi</th>
+                        <th>Blok</th>
+                        <th>TT</th>
+                        <th>Status Tanam</th>
+                        <th>Status Lahan</th>
+                        <th>Bibit</th>
+                        <th>Topografi</th>
+                        <th>Jenis Tanah</th>
+                        <th>Jumlah Pokok</th>
+                        <th>Luasan</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,17 +99,17 @@
             <table class="table table-bordered" id="dataTable-aresta2" width="100%" cellsapcing="0">
                 <thead>
                     <tr>
-                        <td>Estate</td>
-                        <td>Divisi</td>
-                        <td>Blok</td>
-                        <td>Status Lahan</td>
-                        <td>Status Tanaman</td>
-                        <td>Tahun Tanam</td>
-                        <td>Topografi</td>
-                        <td>Jenis Tanah</td>
-                        <td>Luas</td>
-                        <td>Pokok</td>
-                        <td>SPH</td>
+                        <th>Estate</th>
+                        <th>Divisi</th>
+                        <th>Blok</th>
+                        <th>Status Lahan</th>
+                        <th>Status Tanaman</th>
+                        <th>Tahun Tanam</th>
+                        <th>Topografi</th>
+                        <th>Jenis Tanah</th>
+                        <th>Luas</th>
+                        <th>Pokok</th>
+                        <th>SPH</th>
                     </tr>
                 </thead>
                 <tbody>
