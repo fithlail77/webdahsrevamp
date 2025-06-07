@@ -17,7 +17,7 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Beranda</span></a>
             </li>
-
+           
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -30,6 +30,7 @@
             @php
                 $isPengaturanActive = request()->routeIs('user.index') || request()->routeIs('comp.index');
             @endphp
+             @role('admin')
             <li class="nav-item">
                 <a class="nav-link {{ $isPengaturanActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="{{ $isPengaturanActive ? 'true' : 'false' }}" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
@@ -43,7 +44,7 @@
                     </div>
                 </div>
             </li>
-
+            @endrole
             <!-- Nav Item - Utilities Collapse Menu -->
             @php
                 $isTransaksiActive = request()->routeIs('areal.index') || request()->routeIs('curah.index') || request()->routeIs('airsungai.index') || request()->routeIs('ffbinternal.index') || request()->routeIs('ffbeksternal.index') || request()->routeIs('produksicpo.index') || request()->routeIs('contractcpo.index') || request()->routeIs('contractpk.index')
@@ -54,10 +55,14 @@
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Transaksi</span>
                 </a>
+            
                 <div id="collapseUtilities" class="collapse {{ $isTransaksiActive ? 'show' : '' }}" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Sub Menu:</h6>
+            @if(auth()->user()->hasAnyRole(['manager','admin']))
                         <a class="collapse-item {{ request()->routeIs('areal.index') ? 'active' : '' }}" href="{{ route('areal.index') }}">{{ __('Areal Statement') }}</a>
+            @endif
+            @if(auth()->user()->hasAnyRole(['manager','admin','user']))
                         <a class="collapse-item {{ request()->routeIs('curah.index') ? 'active' : '' }}" href="{{ route('curah.index') }}">{{ __('Curah Hujan') }}</a>
                         <a class="collapse-item {{ request()->routeIs('airsungai.index') ? 'active' : '' }}" href="{{ route('airsungai.index') }}">{{ __('Air Sungai') }}</a>
                         <a class="collapse-item {{ request()->routeIs('ffbinternal.index') ? 'active' : '' }}" href="{{ route('ffbinternal.index') }}">{{ __('FFB Internal') }}</a>
@@ -73,7 +78,9 @@
                     </div>
                 </div>
             </li>
+            @endif
 
+            @if(auth()->user()->hasAnyRole(['manager','admin']))
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -151,7 +158,7 @@
                     <span>{{ __('Pembibitan') }}</span>
                 </a>
             </li>
-
+            @endif
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
