@@ -128,10 +128,10 @@
         const FfbIntChart = new Chart(ctx1, {
             type: 'bar',
             data: {
-                labels: @json($labels1),
+                labels: @json($labels),
                 datasets: [{
                     label: 'FFB Internal',
-                    data: @json($values1),
+                    data: @json($data),
                     backgroundColor: 'rgba(54, 162, 235, 0.6)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
@@ -141,7 +141,7 @@
                 plugins: {
                     datalabels: {
                         anchor: 'end',
-                        align: 'bottom',
+                        align: 'top',
                         formatter: function(value) {
                             return value.toLocaleString('en-US');
                         },
