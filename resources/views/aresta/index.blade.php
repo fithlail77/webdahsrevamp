@@ -289,8 +289,8 @@
                 datasets: [{
                     label: 'Total Pokok',
                     data: @json($values1),
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(60,130,142, 1)',
+                    borderColor: 'rgba(60,130,142, 1)',
                     borderWidth: 1
                 }]
             },
@@ -298,7 +298,7 @@
                 plugins: {
                     datalabels: {
                         anchor: 'end',
-                        align: 'bottom',
+                        align: 'top',
                         formatter: function(value) {
                             return value.toLocaleString();
                         },
@@ -335,8 +335,8 @@
                 datasets: [{
                     label: 'Total Luas',
                     data: @json($values2),
-                    backgroundColor: 'rgba(235, 127, 54, 0.6)',
-                    borderColor: 'rgba(235, 127, 54, 1)',
+                    backgroundColor: 'rgba(174, 108, 82, 1)',
+                    borderColor: 'rgba(174, 108, 82, 1)',
                     borderWidth: 1
                 }]
             },
@@ -344,7 +344,7 @@
                 plugins: {
                     datalabels: {
                         anchor: 'end',
-                        align: 'bottom',
+                        align: 'top',
                         formatter: function(value) {
                             return value.toLocaleString('en-US', {
                                 minimumFractionDigits: 2,

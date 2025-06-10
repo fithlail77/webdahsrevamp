@@ -22,22 +22,37 @@ class ChInputController extends Controller
             ->orderBy('dates', 'desc')
             ->get();
 
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
+
+        $tanggalLengkap = [];
+        $current = $start->copy();
+        while ($current <= $end) {
+            $tanggalLengkap[$current->format('d')] = 0; // default value 0
+            $current->addDay();
+        }
+
         $chart1 = DB::table('curah_hujan')
-            ->select('dates', DB::raw('ROUND(AVG(ch), 2) AS avg_ch'))
+            ->selectRaw('DATE(dates) as tanggal , ROUND(AVG(ch), 2) AS avg_ch')
             ->where('pt', 'GUM')
-            ->whereBetween('dates', [
-                Carbon::now()->startOfMonth()->toDateString(),
-                Carbon::now()->endOfMonth()->toDateString()
-            ])
-            ->groupBy('dates')
-            ->orderBy('dates')
-            ->get();
+            ->whereBetween('dates', [$start, $end])
+            ->groupByRaw('DATE(dates)')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [Carbon::parse($item->tanggal)->format('d') => round($item->avg_ch, 2)];
+                    })
+            ->toArray();
+        
+        $result = [];
+            foreach ($tanggalLengkap as $tgl => $value) {
+                $result[] = $chart1[$tgl] ?? 0;
+        }
 
-        $labels1 = $chart1->pluck('dates')->map(fn($date) => Carbon::parse($date)->format('d M'))->toArray(); // contoh: "01 Jun"
-        $values1 = $chart1->pluck('avg_ch')->toArray();
+        $labels1 = array_keys($tanggalLengkap);
+        $chart1 = $result;
 
 
-        return view('ch.index', compact('ChInput', 'labels1', 'values1'));
+        return view('ch.index', compact('ChInput', 'labels1', 'chart1'));
     }
 
     /**

@@ -132,8 +132,8 @@
                 datasets: [{
                     label: 'FFB Internal',
                     data: @json($data),
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(154, 200, 243, 1)',
+                    borderColor: 'rgba(154, 200, 243, 1)',
                     borderWidth: 1
                 }]
             },

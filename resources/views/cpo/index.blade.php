@@ -161,8 +161,8 @@
                 datasets: [{
                     label: 'Produksi CPO Bulan Ini',
                     data: @json($chart1),
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(254, 114, 67, 1)',
+                    borderColor: 'rgba(254, 114, 67, 1)',
                     borderWidth: 1
                 }]
             },
@@ -210,8 +210,8 @@
                 datasets: [{
                     label: 'Produksi CPO Bulan Ini',
                     data: @json($chart2),
-                    backgroundColor: 'rgba(235, 127, 54, 0.6)',
-                    borderColor: 'rgba(235, 127, 54, 1)',
+                    backgroundColor: 'rgba(0, 0, 0, 1)',
+                    borderColor: 'rgba(0, 0, 0, 1)',
                     borderWidth: 1
                 }]
             },

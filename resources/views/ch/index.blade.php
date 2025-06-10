@@ -229,9 +229,9 @@
                 labels: @json($labels1),
                 datasets: [{
                     label: 'Avg Curah Hujan (mm)',
-                    data: @json($values1),
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    data: @json($chart1),
+                    backgroundColor: 'rgba(5, 44, 117, 1)',
+                    borderColor: 'rgba(5, 44, 117, 1)',
                     borderWidth: 1
                 }]
             },
@@ -240,6 +240,22 @@
                     title: {
                         display: true,
                         text: 'Rata-Rata Curah Hujan Harian PT GUM'
+                    },
+                    tooltip: {
+                        callbacks: {
+                        label: function(context) {
+                            let value = context.raw;
+                            return 'Avg: ' + value.toFixed(2) + ' mm';
+                            }
+                        }
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: function(value) {
+                            return value.toFixed(2);
+                        },
+                        color: '#000'
                     }
                 },
                 scales: {
