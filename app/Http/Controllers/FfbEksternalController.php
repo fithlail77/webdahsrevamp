@@ -20,20 +20,35 @@ class FfbEksternalController extends Controller
             ->orderBy('tanggal', 'desc')
             ->get();
 
-        $chart1 = DB::table('ffb_eksternal')
-            ->select('tanggal', DB::raw('SUM(ton_bruto) AS netto_awal'))
-            ->whereBetween('tanggal', [
-                Carbon::now()->startOfMonth()->toDateString(),
-                Carbon::now()->endOfMonth()->toDateString()
-            ])
-            ->groupBy('tanggal')
-            ->orderBy('tanggal')
-            ->get();
-        
-        $labels1 = $chart1->pluck('tanggal')->map(fn($date) => Carbon::parse($date)->format('d'))->toArray(); // contoh: "01 Jun"
-        $values1 = $chart1->pluck('netto_awal')->toArray();
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
 
-        return view('ffbeks.index', compact('ffbeks','labels1','values1'));
+        $tanggalLengkap = [];
+        $current = $start->copy();
+        while ($current <= $end) {
+            $tanggalLengkap[$current->format('d')] = 0; // default value 0
+            $current->addDay();
+        }
+
+        $data = DB::table('ffb_eksternal')
+            ->selectRaw('DATE(tanggal) as tanggal, SUM(ton_bruto) AS netto_awal')
+            ->whereBetween('tanggal', [$start, $end])
+            ->groupByRaw('DATE(tanggal)')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [Carbon::parse($item->tanggal)->format('d') => (int) $item->netto_awal];
+                    })
+            ->toArray();
+        
+        $result = [];
+            foreach ($tanggalLengkap as $tgl => $value) {
+                $result[] = $data[$tgl] ?? 0;
+        }
+        
+        $labels1 = array_keys($tanggalLengkap);
+        $data = $result;
+
+        return view('ffbeks.index', compact('ffbeks','labels1','data'));
     }
 
     /**

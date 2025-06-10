@@ -20,31 +20,52 @@ class ProduksicpoController extends Controller
         ->orderBy('tanggal', 'desc')
         ->get();
 
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
+
+        $tanggalLengkap = [];
+        $current = $start->copy();
+        while ($current <= $end) {
+            $tanggalLengkap[$current->format('d')] = 0; // default value 0
+            $current->addDay();
+        }
+
         $chart1 = DB::table('produksi_cpo')
-            ->select('tanggal', 'cpo_produksi_today')
-            ->whereBetween('tanggal', [
-                DB::raw("DATE_TRUNC('month', CURRENT_DATE)"),
-                DB::raw("DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day'")
-            ])
-            ->orderBy('tanggal')
-            ->get();
+            ->selectRaw('DATE(tanggal) as tanggal, cpo_produksi_today')
+            ->whereBetween('tanggal', [$start, $end])
+            ->orderByRaw('DATE(tanggal)')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [Carbon::parse($item->tanggal)->format('d') => (int) $item->cpo_produksi_today];
+                    })
+            ->toArray();
         
-        $labels1 = $chart1->pluck('tanggal')->map(fn($date) => Carbon::parse($date)->format('d'))->toArray(); // contoh: "01"
-        $values1 = $chart1->pluck('cpo_produksi_today')->toArray();
+        $result = [];
+            foreach ($tanggalLengkap as $tgl => $value) {
+                $result[] = $chart1[$tgl] ?? 0;
+        }
+        
+        $labels1 = array_keys($tanggalLengkap);
+        $chart1 = $result;
 
         $chart2 = DB::table('produksi_cpo')
-            ->select('tanggal', 'kernel_produksi')
-            ->whereBetween('tanggal', [
-                DB::raw("DATE_TRUNC('month', CURRENT_DATE)"),
-                DB::raw("DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day'")
-            ])
-            ->orderBy('tanggal')
-            ->get();
+            ->selectRaw('DATE(tanggal) as tanggal, kernel_produksi')
+            ->whereBetween('tanggal', [$start, $end])
+            ->orderByRaw('DATE(tanggal)')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [Carbon::parse($item->tanggal)->format('d') => (int) $item->kernel_produksi];
+                    })
+            ->toArray();
         
-        $labels2 = $chart2->pluck('tanggal')->map(fn($date) => Carbon::parse($date)->format('d'))->toArray(); // contoh: "01"
-        $values2 = $chart2->pluck('kernel_produksi')->toArray();
+        $result2 = [];
+            foreach ($tanggalLengkap as $tgl => $value) {
+                $result2[] = $chart2[$tgl] ?? 0;
+        }
+        
+        $chart2 = $result2;
 
-        return view('cpo.index', compact('cpo','labels1','values1','labels2','values2'));
+        return view('cpo.index', compact('cpo','labels1','chart1','chart2'));
     }
 
     /**

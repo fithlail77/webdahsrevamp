@@ -129,7 +129,7 @@
                 labels: @json($labels1),
                 datasets: [{
                     label: 'FFB Eksternal',
-                    data: @json($values1),
+                    data: @json($data),
                     backgroundColor: 'rgba(54, 162, 235, 0.6)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
@@ -139,7 +139,7 @@
                 plugins: {
                     datalabels: {
                         anchor: 'end',
-                        align: 'bottom',
+                        align: 'top',
                         formatter: function(value) {
                             return value.toLocaleString('en-US');
                         },
@@ -162,7 +162,9 @@
                             text: 'Ton Bruto'
                         }
                     }
-                }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
             },
             plugins: [ChartDataLabels]
         });

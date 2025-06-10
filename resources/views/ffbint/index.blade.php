@@ -164,7 +164,9 @@
                             text: 'Ton Bruto'
                         }
                     }
-                }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
             },
             plugins: [ChartDataLabels]
         });

@@ -160,7 +160,7 @@
                 labels: @json($labels1),
                 datasets: [{
                     label: 'Produksi CPO Bulan Ini',
-                    data: @json($values1),
+                    data: @json($chart1),
                     backgroundColor: 'rgba(54, 162, 235, 0.6)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
@@ -170,7 +170,7 @@
                 plugins: {
                     datalabels: {
                         anchor: 'end',
-                        align: 'bottom',
+                        align: 'top',
                         formatter: function(value) {
                             return value != null ? value.toLocaleString() : '';
                         },
@@ -193,7 +193,9 @@
                             text: 'Ton'
                         }
                     }
-                }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
             },
             plugins: [ChartDataLabels]
         });
@@ -204,10 +206,10 @@
         const PKChart = new Chart(ctx2, {
             type: 'bar',
             data: {
-                labels: @json($labels2),
+                labels: @json($labels1),
                 datasets: [{
                     label: 'Produksi CPO Bulan Ini',
-                    data: @json($values2),
+                    data: @json($chart2),
                     backgroundColor: 'rgba(235, 127, 54, 0.6)',
                     borderColor: 'rgba(235, 127, 54, 1)',
                     borderWidth: 1
@@ -217,7 +219,7 @@
                 plugins: {
                     datalabels: {
                         anchor: 'end',
-                        align: 'bottom',
+                        align: 'top',
                         formatter: function(value) {
                             return value != null ? value.toLocaleString() : '';
                         },
@@ -240,7 +242,9 @@
                             text: 'Ton'
                         }
                     }
-                }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
             },
             plugins: [ChartDataLabels]
         });

@@ -84,7 +84,7 @@
             <div class="card mb-5">
             <div class="card-header">Total Luas Per Estate</div>
                 <div class="card-body">
-                    <div class="chart-bar"><canvas id="arestaChart2" width="100%" height="50"></canvas></div>
+                    <div class="chart-bar"><canvas id="arestaChart2" width="100%" height="30"></canvas></div>
                 </div>
                 <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
             </div>
@@ -318,7 +318,9 @@
                             text: 'Pokok'
                         }
                     }
-                }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
             },
             plugins: [ChartDataLabels]
         });
@@ -365,7 +367,9 @@
                             text: 'Ha'
                         }
                     }
-                }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
             },
             plugins: [ChartDataLabels]
         });

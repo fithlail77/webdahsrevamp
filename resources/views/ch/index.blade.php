@@ -250,7 +250,9 @@
                             text: 'mm'
                         }
                     }
-                }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
             }
         });
     </script>
