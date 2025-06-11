@@ -269,7 +269,8 @@
                 },
                 responsive: true,
                 maintainAspectRatio: false,
-            }
+            },
+            plugins: [ChartDataLabels]
         });
     </script>
 @endpush
