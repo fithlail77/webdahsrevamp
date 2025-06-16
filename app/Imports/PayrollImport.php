@@ -44,6 +44,13 @@ class PayrollImport implements ToModel, WithHeadingRow
             }
         }
 
+        // Bersihkan string kosong sebelum disimpan ke model
+        foreach ($row as $key => $value) {
+            if (is_string($value) && trim($value) === '') {
+                $row[$key] = null;
+            }
+        }
+
         return new Payroll([
             'estate' => $row['estate'],
             'tanggal' => $tanggal,
