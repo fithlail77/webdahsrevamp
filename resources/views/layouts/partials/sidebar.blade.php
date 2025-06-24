@@ -48,7 +48,7 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             @php
                 $isTransaksiActive = request()->routeIs('areal.index') || request()->routeIs('curah.index') || request()->routeIs('airsungai.index') || request()->routeIs('ffbinternal.index') || request()->routeIs('ffbeksternal.index') || request()->routeIs('produksicpo.index') || request()->routeIs('contractcpo.index') || request()->routeIs('contractpk.index')
-                || request()->routeIs('tbsinternal.index') || request()->routeIs('penen.index') || request()->routeIs('pupuk.index') || request()->routeIs('perawatan.index') || request()->routeIs('payroll.index');
+                || request()->routeIs('tbsinternal.index') || request()->routeIs('penen.index') || request()->routeIs('pupuk.index') || request()->routeIs('perawatan.index') || request()->routeIs('payroll.index') || request()->routeIs('lho.index') || request()->routeIs('depre.index');
             @endphp
             <li class="nav-item">
                 <a class="nav-link {{ $isTransaksiActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="{{ $isPengaturanActive ? 'true' : 'false' }}" aria-controls="collapseUtilities">
@@ -70,11 +70,11 @@
                         <a class="collapse-item {{ request()->routeIs('produksicpo.index') ? 'active' : '' }}" href="{{ route('produksicpo.index') }}">{{ __('Produksi CPO') }}</a>
                         <a class="collapse-item {{ request()->routeIs('contractcpo.index') ? 'active' : '' }}" href="{{ route('contractcpo.index') }}">{{ __('Kontrak CPO') }}</a>
                         <a class="collapse-item {{ request()->routeIs('contractpk.index') ? 'active' : '' }}" href="{{ route('contractpk.index') }}">{{ __('Kontrak Kernel') }}</a>
-                        <a class="collapse-item {{ request()->routeIs('tbsinternal.index') ? 'active' : '' }}" href="{{ route('tbsinternal.index') }}">{{ __('SPTBS') }}</a>
-                        <a class="collapse-item {{ request()->routeIs('panen.index') ? 'active' : '' }}" href="{{ route('panen.index') }}">{{ __('Realisasi Panen') }}</a>
                         <a class="collapse-item {{ request()->routeIs('pupuk.index') ? 'active' : '' }}" href="{{ route('pupuk.index') }}">{{ __('Pemupukan') }}</a>
                         <a class="collapse-item {{ request()->routeIs('perawatan.index') ? 'active' : '' }}" href="{{ route('perawatan.index') }}">{{ __('Perawatan') }}</a>
                         <a class="collapse-item {{ request()->routeIs('payroll.index') ? 'active' : '' }}" href="{{ route('payroll.index') }}">{{ __('Payroll') }}</a>
+                        <a class="collapse-item {{ request()->routeIs('lho.index') ? 'active' : '' }}" href="{{ route('lho.index') }}">{{ __('LHO BBM') }}</a>
+                        <a class="collapse-item {{ request()->routeIs('depre.index') ? 'active' : '' }}" href="{{ route('depre.index') }}">{{ __('Depresiasi Alat') }}</a>
                     </div>
                 </div>
             </li>

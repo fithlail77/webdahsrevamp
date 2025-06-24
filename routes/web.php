@@ -25,6 +25,7 @@ use App\Http\Controllers\FfbInternalController;
 use App\Http\Controllers\ProduksicpoController;
 use App\Http\Controllers\TbsInternalController;
 use App\Http\Controllers\FfbEksternalController;
+use App\Http\Controllers\LhoController;
 use App\Http\Controllers\PupukrawatinputController;
 use App\Http\Controllers\PanenController;
 
@@ -86,6 +87,8 @@ Route::resource('/perawatan', PerawatanController::class);
 Route::post('/perawatan', [PerawatanController::class, 'import'])->name('perawatan.import');
 Route::resource('/payroll', PayrollController::class);
 Route::post('/payroll', [PayrollController::class, 'import'])->name('payroll.import');
+Route::resource('/lho', LhoController::class);
+Route::post('/lho', [LhoController::class, 'import'])->name('lhobbm.import');
 Route::resource('/curahhujan', CurahHujanController::class);
 Route::resource('/produksi', ProduksiController::class);
 Route::resource('/pr', PupukRawatController::class);

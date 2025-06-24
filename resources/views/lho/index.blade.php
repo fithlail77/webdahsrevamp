@@ -1,0 +1,45 @@
+@extends('layouts.admin')
+
+@section('content')
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">LHO BBM Input</h1>
+<hr>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddLhoBBM" align="right">
+                <i class="fa fa-plus"></i> Tambah
+            </button>
+            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadLhoBBM" align="right">
+                <i class="fa fa-upload"></i> Upload
+            </button>
+    </div>
+</div>
+
+<!-- Modal File Upload -->
+<div class="modal fade" id="modal-UploadLhoBBM" tabindex="-1" role="dialog" aria-labelledby="modal-UploadLhoBBMLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-UploadLhoBBMLabel">Unggah Data Curah Hujan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('lhobbm.import') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="file">Pilih File Excel</label>
+                <input type="file" class="form-control" name="file" id="file" accept=".xlsx, .csv, .xls" required>
+                <small class="form-text text-muted">Format file yang didukung: .xlsx, .csv, .xls</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection
