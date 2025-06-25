@@ -89,6 +89,7 @@ Route::resource('/payroll', PayrollController::class);
 Route::post('/payroll', [PayrollController::class, 'import'])->name('payroll.import');
 Route::resource('/lho', LhoController::class);
 Route::post('/lho', [LhoController::class, 'import'])->name('lhobbm.import');
+Route::resource('/depre', LhodepreController::class);
 Route::resource('/curahhujan', CurahHujanController::class);
 Route::resource('/produksi', ProduksiController::class);
 Route::resource('/pr', PupukRawatController::class);
