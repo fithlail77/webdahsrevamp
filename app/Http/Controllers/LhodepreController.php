@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LhoDepre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LhodepreController extends Controller
 {
@@ -11,7 +14,23 @@ class LhodepreController extends Controller
      */
     public function index()
     {
-        //
+        $lhodepre = LhoDepre::select(
+            'no_unit',
+            'nama_unit',
+            'cap_on',
+            'aset_desc',
+            'acq_val',
+            'depre',
+            DB::raw('(acq_val + depre) AS penyusutan')
+        )
+        ->whereRaw("bulan >= date_trunc('month', CURRENT_DATE - INTERVAL '1 month')")
+        ->whereRaw("bulan < date_trunc('month', CURRENT_DATE)")
+        ->where('no_unit', '!=', '0')
+        ->where('nama_unit', '!=', '0')
+        ->orderBy('bulan', 'desc')
+        ->get();
+        
+        return view('depre.index', compact('lhodepre'));
     }
 
     /**

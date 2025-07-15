@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\LhobbmImport;
+use App\Models\LhoBbm;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -13,7 +14,12 @@ class LhoController extends Controller
      */
     public function index()
     {
-        return view('lho.index');
+        $lhobbm = LhoBbm::whereRaw("i_date >= date_trunc('month', CURRENT_DATE - INTERVAL '1 month')")
+                    ->whereRaw("i_date < date_trunc('month', CURRENT_DATE)")
+                    ->orderBy('i_date', 'desc')
+                    ->get();
+
+        return view('lho.index', compact('lhobbm'));
     }
 
     /**

@@ -28,6 +28,7 @@ use App\Http\Controllers\FfbEksternalController;
 use App\Http\Controllers\LhoController;
 use App\Http\Controllers\PupukrawatinputController;
 use App\Http\Controllers\PanenController;
+use App\Http\Controllers\LhodepreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,7 @@ Route::post('/payroll', [PayrollController::class, 'import'])->name('payroll.imp
 Route::resource('/lho', LhoController::class);
 Route::post('/lho', [LhoController::class, 'import'])->name('lhobbm.import');
 Route::resource('/depre', LhodepreController::class);
+Route::post('/depre', [LhodepreController::class, 'import'])->name('lhodepre.import');
 Route::resource('/curahhujan', CurahHujanController::class);
 Route::resource('/produksi', ProduksiController::class);
 Route::resource('/pr', PupukRawatController::class);

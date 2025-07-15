@@ -13,7 +13,47 @@
                 <i class="fa fa-upload"></i> Upload
             </button>
     </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable-lho" width="100%" cellsapcing="0">
+          <thead>
+              <tr>
+                <th>No</th>
+                <th>No Unit</th>
+                <th>Kelompok Unit</th>
+                <th>Quantity</th>
+                <th>Liter</th>
+                <th>Biaya</th>
+                <th>Aksi</th>
+              </tr>
+          </thead>
+          <tbody>
+            <?php $no = 1; ?>
+            @foreach($lhobbm as $row)
+              <tr>
+                <td>{{ $no }}</td>
+                <td>{{ $row->no_unit }}</td>
+                <td>{{ $row->kelompok_unit }}</td>
+                <td>{{ $row->i_qty }}</td>
+                <td>{{ $row->unit }}</td>
+                <td>{{ $row->nama_mandor }}</td>
+                <td>
+                  <a href="{{route('payroll.edit' ,[$row->id])}}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" title="Ubah Data">
+                    <i class="fas fa-edit fa-sm text-white-50"></i>
+                  </a>
+                  <a href="/payroll/hapus/{{ $row->id }}" onclick="return confirm('Yakin Ingin menghapus data?')" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" title="Hapus Data">
+                    <i class="fas fa-trash-alt fa-sm text-white-50"></i>
+                  </a>
+                </td>
+              </tr>
+            <?php $no++; ?>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
 </div>
+
 
 <!-- Modal File Upload -->
 <div class="modal fade" id="modal-UploadLhoBBM" tabindex="-1" role="dialog" aria-labelledby="modal-UploadLhoBBMLabel" aria-hidden="true">
@@ -42,4 +82,10 @@
     </div>
   </div>
 </div>
+
+<style>
+    .dt-nowrap {
+        white-space: nowrap;
+    }
+</style>
 @endsection
