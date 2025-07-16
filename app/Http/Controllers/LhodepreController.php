@@ -6,6 +6,7 @@ use App\Models\LhoDepre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\LhodepreImport;
 
 class LhodepreController extends Controller
 {
@@ -79,5 +80,16 @@ class LhodepreController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function import(request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv',
+        ]);
+
+        Excel::import(new LhodepreImport, $request->file('file'));
+
+        return redirect()->route('depre.index')->with('success', 'Data berhasil diupload.');
     }
 }
