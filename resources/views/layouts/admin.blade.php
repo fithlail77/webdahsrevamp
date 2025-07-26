@@ -310,5 +310,16 @@
             }); // aktifkan semua fitur default
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable-spartlho').DataTable({
+                scrollX: true,
+                autoWidth: false,
+                columnDefs: [
+                    { targets: '_all', className: 'dt-nowrap' }
+                ]
+            }); // aktifkan semua fitur default
+        });
+    </script>
 </body>
 </html>

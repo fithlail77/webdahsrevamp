@@ -36,7 +36,7 @@
                 <td>{{ $row->kelompok_unit }}</td>
                 <td>{{ $row->i_qty }}</td>
                 <td>{{ $row->unit }}</td>
-                <td>{{ $row->nama_mandor }}</td>
+                <td>Rp {{ number_format($row->biaya_bbm, 2, ',', '.') }}</td>
                 <td>
                   <a href="{{route('payroll.edit' ,[$row->id])}}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" title="Ubah Data">
                     <i class="fas fa-edit fa-sm text-white-50"></i>
