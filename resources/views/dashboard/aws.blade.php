@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Dashboard Wheater Station Davis GMO</h1>
+<h1 class="h3 mb-2 text-gray-800">Dashboard AWS Report PT GUM</h1>
 
 <div class="card-body">
     <div style="padding-bottom:56.25%; position:relative; display:block; width: 100%">
