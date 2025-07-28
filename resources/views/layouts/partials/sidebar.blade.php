@@ -103,6 +103,12 @@
                     <i class="fas fa-fw fa-cloud-rain"></i>
                     <span>{{ __('Curah Hujan') }}</span></a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('aws.index') }}">
+                    <i class="fas fa-fw fa-cloud-rain"></i>
+                    <span>{{ __('AWS') }}</span></a>
+            </li>
             
             <li class="nav-item ">
                 <a class="nav-link" href="{{ route('produksi.index') }}">
