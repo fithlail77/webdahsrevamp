@@ -20,36 +20,78 @@ class FfbInternalController extends Controller
         ->orderBy('tanggal', 'desc')
         ->get();
 
-        $start = Carbon::now()->startOfMonth();
-        $end = Carbon::now()->endOfMonth();
+        //$start = Carbon::now()->startOfMonth();
+        //$end = Carbon::now()->endOfMonth();
 
         // Generate semua tanggal dalam bulan
+        //$tanggalLengkap = [];
+        //$current = $start->copy();
+        //while ($current <= $end) {
+        //    $tanggalLengkap[$current->format('d')] = 0; // default value 0
+        //    $current->addDay();
+        //}
+
+        //$data = DB::table('ffb_internal')
+        //    ->selectRaw('DATE(tanggal) as tanggal, SUM(ton_bruto) AS netto_awal')
+        //    ->whereBetween('tanggal', [$start, $end])
+        //    ->groupByRaw('DATE(tanggal)')
+        //    ->get()
+        //    ->mapWithKeys(function ($item) {
+        //        return [Carbon::parse($item->tanggal)->format('d') => (int) $item->netto_awal];
+        //            })
+        //    ->toArray();
+        
+        //$result = [];
+        //    foreach ($tanggalLengkap as $tgl => $value) {
+        //        $result[] = $data[$tgl] ?? 0;
+        //}
+        
+        //$labels = array_keys($tanggalLengkap);
+        //$data = $result;
+
+        //return view('ffbint.index', compact('ffbint','labels', 'data'));
+
+        $start = Carbon::now()->startOfMonth();
+        $end = Carbon::now()->endOfMonth();
+        $target = 445000;
+
         $tanggalLengkap = [];
         $current = $start->copy();
         while ($current <= $end) {
-            $tanggalLengkap[$current->format('d')] = 0; // default value 0
+            $tanggalLengkap[$current->format('d')] = 0;
             $current->addDay();
         }
 
-        $data = DB::table('ffb_internal')
-            ->selectRaw('DATE(tanggal) as tanggal, SUM(ton_bruto) AS netto_awal')
+        $dataTonBruto = DB::table('ffb_internal')
+            ->selectRaw('DATE(tanggal) as tanggal, SUM(ton_bruto) as bruto, SUM(netto) as netto, SUM(grading) as grading')
             ->whereBetween('tanggal', [$start, $end])
             ->groupByRaw('DATE(tanggal)')
             ->get()
             ->mapWithKeys(function ($item) {
-                return [Carbon::parse($item->tanggal)->format('d') => (int) $item->netto_awal];
-                    })
-            ->toArray();
-        
-        $result = [];
-            foreach ($tanggalLengkap as $tgl => $value) {
-                $result[] = $data[$tgl] ?? 0;
-        }
-        
-        $labels = array_keys($tanggalLengkap);
-        $data = $result;
+                return [
+                    Carbon::parse($item->tanggal)->format('d') => [
+                        'bruto' => (int) $item->bruto,
+                        'netto' => (int) $item->netto,
+                        'grading' => (int) $item->grading
+                    ]
+                ];
+            })->toArray();
 
-        return view('ffbint.index', compact('ffbint','labels', 'data'));
+        $labels = array_keys($tanggalLengkap);
+        $bruto = [];
+        $netto = [];
+        $grading = [];
+
+        foreach ($labels as $tgl) {
+            $brutoVal = $dataTonBruto[$tgl]['bruto'] ?? 0;
+            $nettoVal = $dataTonBruto[$tgl]['netto'] ?? 0;
+            $gradingVal = $dataTonBruto[$tgl]['grading'] ?? 0;
+            $bruto[] = $brutoVal;
+            $netto[] = $nettoVal;
+            $grading[] = ($brutoVal > 0) ? round(($gradingVal / $brutoVal) * 100, 2) : 0;
+        }
+
+        return view('ffbint.index', compact('ffbint','labels', 'bruto', 'netto', 'grading', 'target'));
     }
 
     /**

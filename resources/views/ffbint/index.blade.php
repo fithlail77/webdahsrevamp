@@ -17,7 +17,7 @@
     <div class="card mb-2">
       <div class="card-header">Grafik TBS Internal GUM -  Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</div>
         <div class="card-body">
-            <div class="chart-area"><canvas id="FfbIntChart" width="100%" height="25"></canvas></div>
+            <div class="chart-area"><canvas id="FfbIntChart" width="100%" height="50"></canvas></div>
         </div>
         <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
     </div>
@@ -123,16 +123,16 @@
 @endsection
 
 @push('scripts')
-<script>
+<!--<script>
         const ctx1 = document.getElementById('FfbIntChart').getContext('2d');
         const FfbIntChart = new Chart(ctx1, {
             type: 'bar',
             data: {
                 labels: @json($labels),
                 datasets: [{
-                    label: 'FFB Internal',
-                    data: @json($data),
-                    backgroundColor: 'rgba(154, 200, 243, 1)',
+                    label: 'Ton Bruto',
+                    data:,
+                     backgroundColor: 'rgba(154, 200, 243, 1)',
                     borderColor: 'rgba(154, 200, 243, 1)',
                     borderWidth: 1
                 }]
@@ -170,5 +170,102 @@
             },
             plugins: [ChartDataLabels]
         });
-    </script>
+</script>-->
+<script>
+const ctx1 = document.getElementById('FfbIntChart').getContext('2d');
+const grading = @json($grading);
+
+const FfbIntChart = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+        labels: @json($labels),
+        datasets: [
+            {
+                label: 'Ton Bruto',
+                data: @json($bruto),
+                backgroundColor: @json(array_map(fn($val) => $val >= $target ? '#B0E6B2' : '#F38383', $bruto)),
+                borderColor: 'rgba(0,0,0,0.2)',
+                borderWidth: 1,
+                barThickness: 25, // Menambah lebar batang
+                datalabels: {
+                    align: 'start',
+                    anchor: 'end',
+                    offset: 2,
+                    padding: {
+                        top: 2
+                    },
+                    formatter: (value, context) => {
+                        const idx = context.dataIndex;
+                        const percent = grading[idx] ?? 0;
+                        return value > 0 ? `${value.toLocaleString()}\n(${percent}%)` : '';
+                    },
+                    color: '#880E4F',
+                    font: { weight: 'bold', size: 9 }
+                }
+            },
+            {
+                label: 'Ton Netto (Grading %)',
+                data: @json($grading),
+                type: 'bar',
+                backgroundColor: 'rgba(0,0,0,0)',
+                barThickness: 20,
+                datalabels: {
+                    display: false // disembunyikan karena sudah ditampilkan di batang Ton Bruto
+                }
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            datalabels: {
+                clip: true
+            },
+            legend: {
+                position: 'bottom'
+            },
+            title: {
+                display: true,
+                text: 'Ton Bruto Bulan Ini'
+            },
+            annotation: {
+                annotations: {
+                    line1: {
+                        type: 'line',
+                        yMin: {{ $target }},
+                        yMax: {{ $target }},
+                        borderColor: 'rgba(0, 180, 216, 0.8)',
+                        borderWidth: 2,
+                        borderDash: [6, 6],
+                        label: {
+                            content: 'Target/Hari: {{ $target }}',
+                            enabled: true,
+                            position: 'end',
+                            color: '#008CBA',
+                            font: { weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: value => value.toLocaleString(undefined, {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                        })
+                    },
+                title: {
+                    display: true,
+                    text: 'Ton Bruto'
+                }
+            }
+        }
+    },
+    plugins: [ChartDataLabels]
+});
+</script>
 @endpush

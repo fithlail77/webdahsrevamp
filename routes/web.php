@@ -30,6 +30,7 @@ use App\Http\Controllers\LhoController;
 use App\Http\Controllers\PupukrawatinputController;
 use App\Http\Controllers\PanenController;
 use App\Http\Controllers\LhodepreController;
+use App\Http\Controllers\LhoinputController;
 use App\Http\Controllers\LhospartController;
 
 /*
@@ -96,6 +97,8 @@ Route::resource('/depre', LhodepreController::class);
 Route::post('/depre', [LhodepreController::class, 'import'])->name('lhodepre.import');
 Route::resource('/spartlho', LhospartController::class);
 Route::post('/spartlho', [LhospartController::class, 'import'])->name('spartlho.import');
+Route::resource('/lhounit', LhoinputController::class);
+Route::post('/lhounit', [LhoinputController::class, 'import'])->name('lhounit.import');
 Route::resource('/curahhujan', CurahHujanController::class);
 Route::resource('/produksi', ProduksiController::class);
 Route::resource('/pr', PupukRawatController::class);
