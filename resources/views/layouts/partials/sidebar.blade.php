@@ -48,7 +48,8 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             @php
                 $isTransaksiActive = request()->routeIs('areal.index') || request()->routeIs('curah.index') || request()->routeIs('airsungai.index') || request()->routeIs('ffbinternal.index') || request()->routeIs('ffbeksternal.index') || request()->routeIs('produksicpo.index') || request()->routeIs('contractcpo.index') || request()->routeIs('contractpk.index')
-                || request()->routeIs('tbsinternal.index') || request()->routeIs('penen.index') || request()->routeIs('pupuk.index') || request()->routeIs('perawatan.index') || request()->routeIs('payroll.index') || request()->routeIs('lho.index') || request()->routeIs('depre.index') || request()->routeIs('spartlho.index') || request()->routeIs('lhounit.index');
+                || request()->routeIs('tbsinternal.index') || request()->routeIs('penen.index') || request()->routeIs('pupuk.index') || request()->routeIs('perawatan.index') || request()->routeIs('payroll.index') || request()->routeIs('lho.index') || request()->routeIs('depre.index') || request()->routeIs('spartlho.index') || request()->routeIs('lhounit.index')
+                || request()->routeIs('awsinput.index');
             @endphp
             <li class="nav-item">
                 <a class="nav-link {{ $isTransaksiActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="{{ $isPengaturanActive ? 'true' : 'false' }}" aria-controls="collapseUtilities">
@@ -77,6 +78,7 @@
                         <a class="collapse-item {{ request()->routeIs('depre.index') ? 'active' : '' }}" href="{{ route('depre.index') }}">{{ __('Depresiasi Alat') }}</a>
                         <a class="collapse-item {{ request()->routeIs('spartlho.index') ? 'active' : '' }}" href="{{ route('spartlho.index') }}">{{ __('Sparepart LHO') }}</a>
                         <a class="collapse-item {{ request()->routeIS('lhounit.index') ? 'active' : '' }}" href="{{ route('lhounit.index') }} ">{{ __('LHO Unit') }}</a>
+                        <a class="collapse-item {{ request()->routeIS('awsinput.index') ? 'active' : '' }}" href="{{ route('awsinput.index') }} ">{{ __('AWS') }}</a>
                     </div>
                 </div>
             </li>
