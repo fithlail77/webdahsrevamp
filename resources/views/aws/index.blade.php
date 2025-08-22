@@ -40,7 +40,7 @@
                     @foreach ($awsinput as $row)
                     <tr>
                         <td>{{ $no }}</td>
-                        <td>{{ \Carbon\Carbon::parse($row->tanggal)->format('d-m-Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($row->date)->format('d-m-Y') }}</td>
                         <td>{{ number_format($row->temp, 2) }}</td>
                         <td>{{ number_format($row->hum, 2) }}</td>
                         <td>{{ number_format($row->solrad, 2) }}</td>
