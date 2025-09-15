@@ -6,13 +6,15 @@
 <hr>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAresta" align="right">
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAresta" align="right" disabled>
                 <i class="fa fa-plus"></i> Tambah
             </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadAreal" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>
     </div>
+</div>
+<div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable-aresta1" width="100%" cellsapcing="0">
@@ -67,7 +69,7 @@
         </div>
     </div>
 </div>
-<hr>
+<div class="card shadow mb-4">
     <div class="row">
         <div class="col-lg-6">
         <!-- Bar chart example-->
@@ -90,8 +92,7 @@
             </div>
             </div>
     </div>
-
-<hr>
+</div>
 <div class="card shadow mb-4">
     <div class="card-header">Data SPH</div>
     <div class="card-body">

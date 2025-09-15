@@ -6,13 +6,15 @@
 <hr>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddCH" align="right">
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddCH" align="right" disabled>
                 <i class="fa fa-plus"></i> Tambah
             </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadCH" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>
     </div>
+</div>
+<div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable-curahhujan" width="100%" cellsapcing="0">
@@ -53,7 +55,7 @@
         </div>
     </div>
 </div>
-<hr>
+<div class="card shadow mb-4">
 <!-- Area chart example-->
 <div class="card mb-2">
     <div class="card-header">Rata rata Curah Hujan - Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</div>
@@ -62,7 +64,7 @@
         </div>
         <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
     </div>
-
+</div>
 <!-- Modal File Upload -->
 <div class="modal fade" id="modal-UploadCH" tabindex="-1" role="dialog" aria-labelledby="modal-UploadCHLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

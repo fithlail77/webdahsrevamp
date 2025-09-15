@@ -2,17 +2,19 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Ketinggian Air Sungai Kapuas</h1>
+<h1 class="h4 mb-2 text-gray-800">Ketinggian Air Sungai Kapuas</h1>
 <hr>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right">
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right" disabled>
                 <i class="fa fa-plus"></i> Tambah
             </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadAirSungai" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>
     </div>
+</div>
+<div class="card shadow mb-4">
 <!-- Area chart example-->
 <div class="card mb-2">
     <div class="card-header">Grafik Air Sungai Kapuas</div>
@@ -21,7 +23,8 @@
         </div>
         <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
     </div>
-
+</div>
+<div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable-sungai1" width="100%" cellsapcing="0">

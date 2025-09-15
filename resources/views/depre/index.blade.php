@@ -13,6 +13,8 @@
                 <i class="fa fa-upload"></i> Upload
             </button>
     </div>
+</div>
+<div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable-depre" width="100%" cellsapcing="0">

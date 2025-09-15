@@ -6,13 +6,15 @@
 <hr>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right">
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right" disabled>
                 <i class="fa fa-plus"></i> Tambah
             </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadPupuk" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>
     </div>
+</div>
+<div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable-pupuk" width="100%" cellsapcing="0">
