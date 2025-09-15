@@ -103,12 +103,14 @@
                     || request()->routeIs('depre.index') 
                     || request()->routeIs('spartlho.index') 
                     || request()->routeIs('lhounit.index')
-                    || request()->routeIs('awsinput.index');
+                    || request()->routeIs('awsinput.index')
+                    || request()->routeIs('realisasipanen.index');;
 
                 $isCurahActive = request()->routeIs('curah.index') || request()->routeIs('airsungai.index');
                 $isPKSActive = request()->routeIs('ffbinternal.index') || request()->routeIs('ffbeksternal.index') || request()->routeIs('produksicpo.index') || request()->routeIs('contractcpo.index') || request()->routeIs('contractpk.index');
                 $isUpkeepActive = request()->routeIs('pupuk.index') || request()->routeIs('perawatan.index') || request()->routeIs('payroll.index');
                 $isUnitActive = request()->routeIs('lho.index') || request()->routeIs('depre.index') || request()->routeIs('spartlho.index') || request()->routeIs('lhounit.index');
+                $isKebunActive = request()->routeIs('realisasipanen.index');
             @endphp
 
             <li class="nav-item">
@@ -141,6 +143,16 @@
                                     <a class="collapse-item {{ request()->routeIs('airsungai.index') ? 'active' : '' }}" href="{{ route('airsungai.index') }}">
                                         {{ __('Input Air Sungai') }}
                                     </a>
+                                </div>
+                            </div>
+
+                            {{-- MENU DATA KEBUN dengan SUBMENU --}}
+                            <a class="collapse-item {{ $isKebunActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseKebun" aria-expanded="{{ $isKebunActive ? 'true' : 'false' }}" aria-controls="collapseKebun">
+                                {{ __('Kebun') }}
+                            </a>
+                            <div id="collapseKebun" class="collapse {{ $isKebunActive ? 'show' : '' }}" data-parent="#collapseTransaksi">
+                                <div class="bg-light py-2 collapse-inner rounded ml-3">
+                                    <a class="collapse-item {{ request()->routeIs('realisasipanen.index') ? 'active' : '' }}" href="{{ route('realisasipanen.index') }}">{{ __('Input Realisasi Panen') }}</a>
                                 </div>
                             </div>
 

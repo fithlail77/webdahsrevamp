@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\LhoDepre;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -26,7 +27,7 @@ class LhodepreImport implements ToModel, WithHeadingRow
                     $cap_on = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['cap_on']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['cap_on']));
+                Log::error("Format tanggal error: " . json_encode($row['cap_on']));
             }
         }
 
@@ -41,7 +42,7 @@ class LhodepreImport implements ToModel, WithHeadingRow
                     $bulan = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['bulan']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['bulan']));
+                Log::error("Format tanggal error: " . json_encode($row['bulan']));
             }
         }
 

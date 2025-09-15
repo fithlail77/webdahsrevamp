@@ -5,6 +5,7 @@ namespace App\Imports;
 use Carbon\Carbon;
 use App\Models\Perawatan;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -27,7 +28,7 @@ class PerawatanImport implements ToModel, WithHeadingRow
                     $tanggal = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['tanggal']));
+                Log::error("Format tanggal error: " . json_encode($row['tanggal']));
             }
         }
 
@@ -40,7 +41,7 @@ class PerawatanImport implements ToModel, WithHeadingRow
                     $bulan = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['bulan']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['bulan']));
+                Log::error("Format tanggal error: " . json_encode($row['bulan']));
             }
         }
 

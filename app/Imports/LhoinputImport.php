@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Lhoinput;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -30,7 +31,7 @@ class LhoinputImport implements ToModel, WithHeadingRow
             $carbon = Carbon::createFromFormat('H:i:s', $value);
             return $carbon->format('H:i:s');
         } catch (\Exception $e) {
-            \Log::warning("Format jam tidak valid: " . json_encode($value));
+            Log::warning("Format jam tidak valid: " . json_encode($value));
             return '00:00:00';
         }
     }
@@ -48,7 +49,7 @@ class LhoinputImport implements ToModel, WithHeadingRow
                     $tgl = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tgl']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['tgl']));
+                Log::error("Format tanggal error: " . json_encode($row['tgl']));
             }
         }
 
@@ -63,7 +64,7 @@ class LhoinputImport implements ToModel, WithHeadingRow
                     $bulan = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['bulan']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['bulan']));
+                Log::error("Format tanggal error: " . json_encode($row['bulan']));
             }
         }
 

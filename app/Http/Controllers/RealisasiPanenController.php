@@ -1,0 +1,148 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Models\RealisasiPanen;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\RealisasipanenImport;
+use Yajra\DataTables\Facades\DataTables;
+
+class RealisasiPanenController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return view('rpanen.index');
+    }
+
+    public function data(Request $request)
+    {
+        $query = RealisasiPanen::select([
+            'id',
+            'tanggal',
+            'jenis_kerja',
+            'blok',
+            'tt',
+            'divisi',
+            'estate',
+            'hasil',
+            'satuan',
+            'tk',
+            'ha_panen',
+        ]);
+
+        if ($request->minDate && $request->maxDate) {
+            $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
+        } elseif ($request->minDate) {
+            $query->whereDate('tanggal', '>=', $request->minDate);
+        } elseif ($request->maxDate) {
+            $query->whereDate('tanggal', '<=', $request->maxDate);
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tanggal_formatted', function ($row) {
+                return \Carbon\Carbon::parse($row['tanggal'])->format('d-m-Y');
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditRealisasiPanen"><i class="fa fa-edit"></i></a>
+                    <a href="/realisasipanen/hapus/' . $row['id'] . '" onclick="return confirm(\'Yakin Ingin menghapus data?\')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        try {
+            $realisasiPanen = RealisasiPanen::findOrFail($id);
+            return response()->json($realisasiPanen);
+        } catch (\Exception $e) {
+            Log::error('Error in edit method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'tanggal' => 'required|date',
+            'jenis_kerja' => 'required|string|max:255',
+            'blok' => 'required|string|max:255',
+            'tt' => 'required|integer',
+            'divisi' => 'required|string|max:255',
+            'estate' => 'required|string|max:255',
+            'hasil' => 'required|numeric',
+            'satuan' => 'required|string|max:255',
+            'tk' => 'required|integer',
+            'ha_panen' => 'required|numeric',
+        ]);
+
+        $realisasiPanen = RealisasiPanen::findOrFail($id);
+        $realisasiPanen->update($request->all());
+
+        return response()->json(['success' => 'Data berhasil diperbarui.']);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $realisasiPanen = RealisasiPanen::findOrFail($id);
+            $realisasiPanen->delete();
+
+            return redirect()->route('realisasipanen.index')->with('success', 'Data berhasil dihapus.');
+        } catch (\Exception $e) {
+            dd('Error: ' . $e->getMessage() . ' ID: ' . $id);
+        }
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv',
+        ]);
+
+        Excel::import(new RealisasipanenImport, $request->file('file'));
+
+        return redirect()->route('realisasipanen.index')->with('success', 'Data berhasil diupload.');
+    }
+}

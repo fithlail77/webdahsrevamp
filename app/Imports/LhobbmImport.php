@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\LhoBbm;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -26,7 +27,7 @@ class LhobbmImport implements ToModel, WithHeadingRow
                     $i_date = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['i_date']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['i_date']));
+                Log::error("Format tanggal error: " . json_encode($row['i_date']));
             }
         }
 
@@ -41,7 +42,7 @@ class LhobbmImport implements ToModel, WithHeadingRow
                     $post_date = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['post_date']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['post_date']));
+                Log::error("Format tanggal error: " . json_encode($row['post_date']));
             }
         }
 
@@ -56,7 +57,7 @@ class LhobbmImport implements ToModel, WithHeadingRow
                     $bulan = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['bulan']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['bulan']));
+                Log::error("Format tanggal error: " . json_encode($row['bulan']));
             }
         }
 

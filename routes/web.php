@@ -33,6 +33,7 @@ use App\Http\Controllers\PanenController;
 use App\Http\Controllers\LhodepreController;
 use App\Http\Controllers\LhoinputController;
 use App\Http\Controllers\LhospartController;
+use App\Http\Controllers\RealisasiPanenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -112,3 +113,7 @@ Route::resource('/lsu', LsuController::class);
 Route::resource('/blok', BlokController::class);
 Route::resource('/bibit', NurseryController::class);
 Route::resource('/aws', AwsController::class);
+Route::get('/realisasipanen/data', [RealisasiPanenController::class, 'data'])->name('realisasipanen.data');
+Route::post('/realisasipanen/import', [RealisasiPanenController::class, 'import'])->name('realisasipanen.import');
+Route::get('/realisasipanen/hapus/{id}', [RealisasiPanenController::class, 'destroy']);
+Route::resource('/realisasipanen', RealisasiPanenController::class);

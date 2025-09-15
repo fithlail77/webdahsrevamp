@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Aws;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -26,7 +27,7 @@ class AwsImport implements ToModel, WithHeadingRow
                     $date = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['date']))->format('Y-m-d');
                 }
             } catch (\Exception $e) {
-                \Log::error("Format tanggal error: " . json_encode($row['date']));
+                Log::error("Format tanggal error: " . json_encode($row['date']));
             }
         }
 
