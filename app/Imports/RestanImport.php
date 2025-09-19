@@ -2,22 +2,22 @@
 
 namespace App\Imports;
 
-use App\Models\RealisasiPanen;
+use App\Models\Restan;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class RealisasipanenImport implements ToModel, WithHeadingRow
+class RestanImport implements ToModel, WithHeadingRow
 {
     /**
     * @param Collection $collection
     */
-    public function model(array $row)
+    public function model(Array $row)
     {
         $tanggal = null;
-        if (!empty($row['date'])) {
+        if (!empty($row['tanggal'])) {
             try {
                 // Jika format string seperti "2025-04-01"
                 if (is_string($row['tanggal'])) {
@@ -31,17 +31,13 @@ class RealisasipanenImport implements ToModel, WithHeadingRow
             }
         }
 
-        return new RealisasiPanen([
+        return new Restan([
             'tanggal' => $tanggal,
-            'jenis_kerja' => $row['jenis_kerja'],
-            'blok' => $row['blok'],
-            'tt' => $row['tt'],
-            'divisi' => $row['divisi'],
-            'estate' => $row['estate'],
-            'hasil' => $row['hasil'],
-            'satuan' => $row['satuan'],
-            'tk' => $row['tk'],
-            'ha_panen' => $row['ha_panen'],
+            'estate' => $row['estate'] ?? null,
+            'divisi' => $row['divisi'] ?? null,
+            'blok' => $row['blok'] ?? null,
+            'tonase' => $row['tonase'] ?? null,
+            'keterangan' => $row['keterangan'] ?? null,
         ]);
     }
 }

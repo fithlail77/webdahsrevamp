@@ -2,42 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LapRestanExport;
+use App\Exports\LapRestanPdfExport;
+use App\Models\Restan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\RealisasiPanen;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\RealisasipanenImport;
-use App\Exports\RealisasiPanenExport;
-use App\Exports\RealisasiPanenPdfExport;
 use Yajra\DataTables\Facades\DataTables;
 
-class RealisasiPanenController extends Controller
+class RestanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('rpanen.index');
+        return view('laprestan.index');
     }
 
     public function data(Request $request)
     {
-        $query = RealisasiPanen::select([
+        $query = Restan::select([
             'id',
             'tanggal',
-            'jenis_kerja',
-            'blok',
-            'tt',
-            'divisi',
             'estate',
-            'hasil',
-            'satuan',
-            'tk',
-            'ha_panen',
+            'divisi',
+            'blok',
+            'tonase',
+            'keterangan',
         ]);
 
-        if ($request->minDate && $request->maxDate) {
+        if($request->minDate && $request->maxDate) {
             $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
         } elseif ($request->minDate) {
             $query->whereDate('tanggal', '>=', $request->minDate);
@@ -52,13 +47,13 @@ class RealisasiPanenController extends Controller
             })
             ->addColumn('aksi', function ($row) {
                 return '
-                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditRealisasiPanen"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditRestan"><i class="fa fa-edit"></i></a>
                 ';
             })
             ->rawColumns(['aksi'])
             ->make(true);
+       
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -89,10 +84,10 @@ class RealisasiPanenController extends Controller
     public function edit(string $id)
     {
         try {
-            $realisasiPanen = RealisasiPanen::findOrFail($id);
-            return response()->json($realisasiPanen);
+            $lapRestan = Restan::findOrFail($id);
+            return response()->json($lapRestan);
         } catch (\Exception $e) {
-            Log::error('Error in edit method: ' . $e->getMessage() . ' ID: ' . $id);
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
             return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
         }
     }
@@ -104,19 +99,15 @@ class RealisasiPanenController extends Controller
     {
         $request->validate([
             'tanggal' => 'required|date',
-            'jenis_kerja' => 'required|string|max:255',
-            'blok' => 'required|string|max:255',
-            'tt' => 'required|integer',
-            'divisi' => 'required|string|max:255',
             'estate' => 'required|string|max:255',
-            'hasil' => 'required|numeric',
-            'satuan' => 'required|string|max:255',
-            'tk' => 'required|integer',
-            'ha_panen' => 'required|numeric',
+            'divisi' => 'required|string|max:5',
+            'blok' => 'required|string|max:5',
+            'tonase' => 'required|numeric',
+            'keterangan' => 'required|string|max:255',
         ]);
 
-        $realisasiPanen = RealisasiPanen::findOrFail($id);
-        $realisasiPanen->update($request->all());
+        $lapRestan = Restan::findOrFail($id);
+        $lapRestan->update($request->all());
 
         return response()->json(['success' => 'Data berhasil diperbarui.']);
     }
@@ -126,14 +117,7 @@ class RealisasiPanenController extends Controller
      */
     public function destroy(string $id)
     {
-        try {
-            $realisasiPanen = RealisasiPanen::findOrFail($id);
-            $realisasiPanen->delete();
-
-            return redirect()->route('realisasipanen.index')->with('success', 'Data berhasil dihapus.');
-        } catch (\Exception $e) {
-            dd('Error: ' . $e->getMessage() . ' ID: ' . $id);
-        }
+        //
     }
 
     public function import(Request $request)
@@ -142,9 +126,9 @@ class RealisasiPanenController extends Controller
             'file' => 'required|mimes:xls,xlsx,csv',
         ]);
 
-        Excel::import(new RealisasipanenImport, $request->file('file'));
+        Excel::import(new \App\Imports\RestanImport, $request->file('file'));
 
-        return redirect()->route('realisasipanen.index')->with('success', 'Data berhasil diupload.');
+        return redirect()->route('laprestan.index')->with('success', 'Data berhasil diupload.');
     }
 
     public function exportExcel(Request $request)
@@ -152,7 +136,7 @@ class RealisasiPanenController extends Controller
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
 
-        return Excel::download(new RealisasiPanenExport($minDate, $maxDate), 'realisasi_panen.xlsx');
+        return Excel::download(new LapRestanExport($minDate, $maxDate), 'laporan_restan.xlsx');
     }
 
     public function exportPdf(Request $request)
@@ -160,7 +144,7 @@ class RealisasiPanenController extends Controller
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
 
-        $pdfExport = new RealisasiPanenPdfExport($minDate, $maxDate);
+        $pdfExport = new LapRestanPdfExport($minDate, $maxDate);
         return $pdfExport->generatePdf();
     }
 }

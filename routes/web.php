@@ -34,6 +34,7 @@ use App\Http\Controllers\LhodepreController;
 use App\Http\Controllers\LhoinputController;
 use App\Http\Controllers\LhospartController;
 use App\Http\Controllers\RealisasiPanenController;
+use App\Http\Controllers\RestanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,5 +116,13 @@ Route::resource('/bibit', NurseryController::class);
 Route::resource('/aws', AwsController::class);
 Route::get('/realisasipanen/data', [RealisasiPanenController::class, 'data'])->name('realisasipanen.data');
 Route::post('/realisasipanen/import', [RealisasiPanenController::class, 'import'])->name('realisasipanen.import');
+Route::get('/realisasipanen/export/excel', [RealisasiPanenController::class, 'exportExcel'])->name('realisasipanen.export.excel');
+Route::get('/realisasipanen/export/pdf', [RealisasiPanenController::class, 'exportPdf'])->name('realisasipanen.export.pdf');
 Route::get('/realisasipanen/hapus/{id}', [RealisasiPanenController::class, 'destroy']);
 Route::resource('/realisasipanen', RealisasiPanenController::class);
+Route::get('/laprestan/data', [RestanController::class, 'data'])->name('laprestan.data');
+Route::post('/laprestan/import', [RestanController::class, 'import'])->name('laprestan.import');
+Route::get('/laprestan/export/excel', [RestanController::class, 'exportExcel'])->name('laprestan.export.excel');
+Route::get('/laprestan/export/pdf', [RestanController::class, 'exportPdf'])->name('laprestan.export.pdf');
+Route::get('/laprestan/hapus/{id}', [RestanController::class, 'destroy']);
+Route::resource('/laprestan', RestanController::class);
