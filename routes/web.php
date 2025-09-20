@@ -35,6 +35,7 @@ use App\Http\Controllers\LhoinputController;
 use App\Http\Controllers\LhospartController;
 use App\Http\Controllers\RealisasiPanenController;
 use App\Http\Controllers\RestanController;
+use App\Http\Controllers\SptbsInputController;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,3 +127,8 @@ Route::get('/laprestan/export/excel', [RestanController::class, 'exportExcel'])-
 Route::get('/laprestan/export/pdf', [RestanController::class, 'exportPdf'])->name('laprestan.export.pdf');
 Route::get('/laprestan/hapus/{id}', [RestanController::class, 'destroy']);
 Route::resource('/laprestan', RestanController::class);
+Route::get('/sptbs/data', [SptbsInputController::class, 'data'])->name('sptbs.data');
+Route::post('/sptbs/import', [SptbsInputController::class, 'import'])->name('sptbs.import');
+Route::get('/sptbs/export/excel', [SptbsInputController::class, 'exportExcel'])->name('sptbs.export.excel');
+Route::get('/sptbs/export/pdf', [SptbsInputController::class, 'exportPdf'])->name('sptbs.export.pdf');
+Route::resource('/sptbs', SptbsInputController::class);
