@@ -106,13 +106,14 @@
                     || request()->routeIs('awsinput.index')
                     || request()->routeIs('realisasipanen.index')
                     || request()->routeIs('laprestan.index')
-                    || request()->routeIs('sptbs.index');
+                    || request()->routeIs('sptbs.index')
+                    || request()->routeIs('premi.index');
 
                 $isCurahActive = request()->routeIs('curah.index') || request()->routeIs('airsungai.index');
                 $isPKSActive = request()->routeIs('ffbinternal.index') || request()->routeIs('ffbeksternal.index') || request()->routeIs('produksicpo.index') || request()->routeIs('contractcpo.index') || request()->routeIs('contractpk.index');
                 $isUpkeepActive = request()->routeIs('pupuk.index') || request()->routeIs('perawatan.index') || request()->routeIs('payroll.index');
                 $isUnitActive = request()->routeIs('lho.index') || request()->routeIs('depre.index') || request()->routeIs('spartlho.index') || request()->routeIs('lhounit.index');
-                $isKebunActive = request()->routeIs('realisasipanen.index') || request()->routeIs('laprestan.index') || request()->routeIs('sptbs.index');
+                $isKebunActive = request()->routeIs('realisasipanen.index') || request()->routeIs('laprestan.index') || request()->routeIs('sptbs.index') || request()->routeIs('premi.index');
             @endphp
 
             <li class="nav-item">
@@ -157,6 +158,7 @@
                                     <a class="collapse-item {{ request()->routeIs('sptbs.index') ? 'active' : '' }}" href="{{ route('sptbs.index') }}">{{ __('Input SPTBS') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('realisasipanen.index') ? 'active' : '' }}" href="{{ route('realisasipanen.index') }}">{{ __('Input Realisasi Panen') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('laprestan.index') ? 'active' : '' }}" href="{{ route('laprestan.index') }}">{{ __('Input Restan') }}</a>
+                                    <a class="collapse-item {{ request()->routeIs('premi.index') ? 'active' : '' }}" href="{{ route('premi.index') }}">{{ __('Input Premi') }}</a>
                                 </div>
                             </div>
 

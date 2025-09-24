@@ -2,78 +2,122 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">AWS Weather Station</h1>
+<h1 class="h3 mb-2 text-gray-800">Data AWS GMO</h1>
 <hr>
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAWS" align="right">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <div>
+            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRestan" disabled>
                 <i class="fa fa-plus"></i> Tambah
-            </button>
-            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadAWS" align="right">
+            </button>-->
+            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadAws">
                 <i class="fa fa-upload"></i> Upload
             </button>
-    </div>  
+        </div>
+        <div>
+            <button class="btn btn-success btn-sm btn-flat" id="exportExcel">
+                <i class="fa fa-file-excel"></i> Export Excel
+            </button>
+            <button class="btn btn-danger btn-sm btn-flat" id="exportPdf">
+                <i class="fa fa-file-pdf"></i> Export PDF
+            </button>
+        </div>
+    </div>
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable-ffbint" width="100%" cellsapcing="0">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="minDate">Dari Tanggal</label>
+                    <input type="date" id="minDate" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="maxDate">Sampai Tanggal</label>
+                    <input type="date" id="maxDate" class="form-control">
+                </div>
+            </div>
+            <table id="awsTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Time</th>
                         <th>Tanggal</th>
-                        <th>Suhu (&degC)</th>
-                        <th>Kelembaban (%)</th>
-                        <th>Solar Radiation(W/m&sup2;)</th>
-                        <th>Curah Hujan (mm)</th>
-                        <th>Tekanan Udara (mb)</th>
-                        <th>Kecepatan Angin (m/s)</th>
-                        <th>Arah Angin (&deg)</th>
-                        <th>ET (mm)</th>
-                        <th>Sinar Matahari (h/d)</th>
-                        <th>Ultraviolet (index)</th>
+                        <th>Suhu</th>
+                        <th>Humidity</th>
+                        <th>Solar Radiation</th>
+                        <th>Rainfall</th>
+                        <th>Air Pressure</th>
+                        <th>Wind Speed</th>
+                        <th>Wind Direction</th>
+                        <th>ET</th>
+                        <th>Sunshine</th>
+                        <th>Index UV</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 1; ?>
-                    @foreach ($awsinput as $row)
-                    <tr>
-                        <td>{{ $no }}</td>
-                        <td>{{ \Carbon\Carbon::parse($row->date)->format('d-m-Y') }}</td>
-                        <td>{{ number_format($row->temp, 2) }}</td>
-                        <td>{{ number_format($row->hum, 2) }}</td>
-                        <td>{{ number_format($row->solrad, 2) }}</td>
-                        <td>{{ number_format($row->hujan, 2) }}</td>
-                        <td>{{ number_format($row->air_pres, 2) }}</td>
-                        <td>{{ number_format($row->wind_speed, 2) }}</td>
-                        <td>{{ number_format($row->wind_dir, 2) }}</td>
-                        <td>{{ number_format($row->et, 2) }}</td>
-                        <td>{{ number_format($row->sunshine, 2) }}</td>
-                        <td>{{ number_format($row->uv, 2) }}</td>
-                        <td>
-                            <a href="{{route('awsinput.edit' ,[$row->id])}}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" title="Ubah Data">
-                                <i class="fas fa-edit fa-sm text-white-50"></i>
-                            </a>
-                            <a href="/awsinput/hapus/{{ $row->id }}" onclick="return confirm('Yakin Ingin menghapus data?')" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" title="Hapus Data">
-                                <i class="fas fa-trash-alt fa-sm text-white-50"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <?php $no++; ?>
-                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- Modal File Upload -->
-<div class="modal fade" id="modal-UploadAWS" tabindex="-1" role="dialog" aria-labelledby="modal-UploadAWSLabel" aria-hidden="true">
+<!-- Modal Edit Realisasi Panen -->
+<div class="modal fade" id="modal-EditAws" tabindex="-1" role="dialog" aria-labelledby="modal-EditAwsLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-UploadLhoInputLabel">Unggah Data AWS</h5>
+        <h5 class="modal-title" id="modal-EditAwsLabel">Edit Data Realisasi Panen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+            @csrf
+            @method('PUT')
+            <input type="hidden" id="editId" name="id">
+            <div class="form-group">
+                <label for="editTanggal">Tanggal</label>
+                <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+            </div>
+            <div class="form-group">
+                <label for="editEstate">Estate</label>
+                <input type="text" class="form-control" id="editEstate" name="estate" required>
+            </div>
+            <div class="form-group">
+                <label for="editDivisi">Divisi</label>
+                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
+            </div>
+            <div class="form-group">
+                <label for="editBlok">Blok</label>
+                <input type="text" class="form-control" id="editBlok" name="blok" required>
+            </div>
+            <div class="form-group">
+                <label for="editTonase">Tonase (Ton)</label>
+                <input type="numeric" class="form-control" id="editTonase" name="tonase" required>
+            </div>
+            <div class="form-group">
+                <label for="editKeterangan">Keterangan</label>
+                <input type="text" class="form-control" id="editKeterangan" name="keterangan" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal File Upload -->
+<div class="modal fade" id="modal-UploadAws" tabindex="-1" role="dialog" aria-labelledby="modal-UploadAwsLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-UploadAwsLabel">Unggah Data AWS</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -96,3 +140,109 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+    var table = $('#awsTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ route('awsinput.data') }}",
+            data: function(d) {
+                d.minDate = $('#minDate').val();
+                d.maxDate = $('#maxDate').val();
+            }
+        },
+        drawCallback: function() {
+            console.log('Table drawn');
+        },
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'time', name: 'time' },
+            { data: 'tanggal_formatted', name: 'tanggal_formatted' },
+            { data: 'temp', name: 'temp' },
+            { data: 'humid', name: 'humid' },
+            { data: 'sol_rad', name: 'sol_rad' },
+            { data: 'rainfall', name: 'rainfall' },
+            { data: 'air_pres', name: 'air_pres' },
+            { data: 'wind_speed', name: 'wind_speed' },
+            { data: 'wind_dir', name: 'wind_dir' },
+            { data: 'et', name: 'et' },
+            { data: 'sunshine', name: 'sunshine' },
+            { data: 'index_uv', name: 'index_uv' },
+            { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
+        ]
+    });
+
+    $('#minDate, #maxDate').on('change', function() {
+        table.ajax.reload();
+    });
+
+    // Handle export buttons
+    $('#exportExcel').on('click', function() {
+        var minDate = $('#minDate').val();
+        var maxDate = $('#maxDate').val();
+        var url = "{{ route('awsinput.export.excel') }}";
+        if (minDate || maxDate) {
+            url += '?minDate=' + minDate + '&maxDate=' + maxDate;
+        }
+        window.location.href = url;
+    });
+
+    $('#exportPdf').on('click', function() {
+        var minDate = $('#minDate').val();
+        var maxDate = $('#maxDate').val();
+        var url = "{{ route('awsinput.export.pdf') }}";
+        if (minDate || maxDate) {
+            url += '?minDate=' + minDate + '&maxDate=' + maxDate;
+        }
+        window.location.href = url;
+    });
+
+    // Handle edit button click
+    $(document).on('click', '.edit-btn', function() {
+        var id = $(this).data('id');
+        console.log('ID:', id);
+        console.log('data-id attr:', $(this).attr('data-id'));
+        if (id == null || id === "") {
+            console.error('ID is empty');
+            return;
+        }
+        $.get('/awsinput/' + id + '/edit', function(data) {
+            console.log('Edit data received:', data);
+            $('#editId').val(data.id);
+            $('#editTanggal').val(data.tanggal ? data.tanggal.split(' ')[0] : '');
+            $('#editEstate').val(data.estate);
+            $('#editDivisi').val(data.divisi);
+            $('#editBlok').val(data.blok);
+            $('#editTonase').val(data.tonase);
+            $('#editKeterangan').val(data.keterangan);
+        }).fail(function(xhr, status, error) {
+            console.error('Error fetching edit data:', status, error);
+            toastr.error('Gagal memuat data untuk edit.');
+        });
+    });
+
+    // Handle edit form submission
+    $('#editForm').on('submit', function(e) {
+        e.preventDefault();
+        var id = $('#editId').val();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: '/awsinput/' + id,
+            type: 'PUT',
+            data: formData,
+            success: function(response) {
+                $('#modal-EditAws').modal('hide');
+                table.ajax.reload();
+                toastr.success(response.success);
+            },
+            error: function(xhr) {
+                toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+});
+</script>
+@endpush

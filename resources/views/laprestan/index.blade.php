@@ -2,14 +2,14 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Data Realisasi Panen</h1>
+<h1 class="h3 mb-2 text-gray-800">Data Laporan Restan</h1>
 <hr>
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRestan" disabled>
+            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRestan" disabled>
                 <i class="fa fa-plus"></i> Tambah
-            </button>
+            </button>-->
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadRestan">
                 <i class="fa fa-upload"></i> Upload
             </button>

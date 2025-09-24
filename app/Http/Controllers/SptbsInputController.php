@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\SptbsImport;
-use App\Imports\SptbsInputImport;
 use App\Models\SptbsInput;
+use App\Exports\SptbsExport;
 use Illuminate\Http\Request;
+use App\Exports\SptbsPdfExport;
+use App\Imports\SptbsInputImport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -168,5 +169,22 @@ class SptbsInputController extends Controller
         Excel::import( new SptbsInputImport, $request->file('file'));
 
         return redirect()->route('sptbs.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+
+        return Excel::download(new SptbsExport($minDate, $maxDate), 'sptbs.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+
+        $pdfExport = new SptbsPdfExport($minDate, $maxDate);
+        return $pdfExport->generatePdf();
     }
 }

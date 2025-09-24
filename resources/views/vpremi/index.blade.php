@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Data Laporan SPTBS</h1>
+<h1 class="h3 mb-2 text-gray-800">Data Premi</h1>
 <hr>
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
@@ -10,7 +10,7 @@
             <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
                 <i class="fa fa-plus"></i> Tambah
             </button>-->
-            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadSptbs">
+            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadPremi">
                 <i class="fa fa-upload"></i> Upload
             </button>
         </div>
@@ -37,33 +37,28 @@
                     <input type="date" id="maxDate" class="form-control">
                 </div>
             </div>
-            <table id="sptbsTable" class="table table-bordered table-striped">
+            <table id="premiTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Angkutan</th>
-                        <th>No Tiket</th>
-                        <th>Tanggal Tiket</th>
-                        <th>No SPTBS</th>
-                        <th>Tanggal SPTBS</th>
-                        <th>Tanggal Panen</th>
-                        <th>Nama Supir</th>
-                        <th>No Polisi</th>
-                        <th>Jam Masuk</th>
-                        <th>Jam Keluar</th>
+                        <th>tanggal</th>
+                        <th>No KAB</th>
+                        <th>Nama KAB</th>
+                        <th>NIK</th>
+                        <th>Nama_karyawan</th>
                         <th>Estate</th>
+                        <th>HM/KM Awal</th>
+                        <th>HM/KM Akhir</th>
+                        <th>HM/KM Total</th>
+                        <th>Lokasi</th>
                         <th>Divisi</th>
-                        <th>Blok</th>
-                        <th>Tahun Tanam</th>
-                        <th>Lahan</th>
-                        <th>Jumlah Tandan</th>
-                        <th>Berondolan</th>
-                        <th>Berat Bruto</th>
-                        <th>Berat Tarra</th>
-                        <th>Berat Netto</th>
-                        <th>Jumlah Grading</th>
-                        <th>Berat Bersih</th>
-                        <th>BJR</th>
+                        <th>Jenis Pekerjaan</th>
+                        <th>Tarif/Satuan</th>
+                        <th>Hasil 1</th>
+                        <th>Satuan 1</th>
+                        <th>Hasil 2</th>
+                        <th>Satuan 2</th>
+                        <th>Total Premi</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -192,17 +187,17 @@
 </div>
 
 <!-- Modal File Upload -->
-<div class="modal fade" id="modal-UploadSptbs" tabindex="-1" role="dialog" aria-labelledby="modal-UploadSptbsLabel" aria-hidden="true">
+<div class="modal fade" id="modal-UploadPremi" tabindex="-1" role="dialog" aria-labelledby="modal-UploadPremiLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-UploadSptbsLabel">Unggah Data Realisasi Panen</h5>
+        <h5 class="modal-title" id="modal-UploadPremiLabel">Unggah Data Premi</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('sptbs.import') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('premi.import') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="file">Pilih File Excel</label>
@@ -223,11 +218,11 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-    var table = $('#sptbsTable').DataTable({
+    var table = $('#premiTable').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('sptbs.data') }}",
+            url: "{{ route('premi.data') }}",
             data: function(d) {
                 d.minDate = $('#minDate').val();
                 d.maxDate = $('#maxDate').val();
@@ -238,29 +233,24 @@
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-            { data: 'angkutan', name: 'angkutan' },
-            { data: 'no_tiket', name: 'no_tiket' },
-            { data: 'tanggal_formatted1', name: 'tanggal_formatted1' },
-            { data: 'no_sptbs', name: 'no_sptbs' },
-            { data: 'tanggal_formatted2', name: 'tanggal_formatted2' },
-            { data: 'tanggal_formatted3', name: 'tanggal_formatted3' },
-            { data: 'nama_supir', name: 'nama_supir' },
-            { data: 'no_polisi', name: 'no_polisi' },
-            { data: 'jam_masuk', name: 'jam_masuk' },
-            { data: 'jam_keluar', name: 'jam_keluar' },
+            { data: 'tanggal_formatted', name: 'tanggal_formatted' },
+            { data: 'no_kab', name: 'no_kab' },
+            { data: 'nama_kab', name: 'nama_kab' },
+            { data: 'nik', name: 'nik' },
+            { data: 'nama_karyawan', name: 'nama_karyawan' },
             { data: 'estate', name: 'estate' },
+            { data: 'hmkm_awal', name: 'hmkm_awal' },
+            { data: 'hmkm_akhir', name: 'hmkm_akhir' },
+            { data: 'total_hmkm', name: 'total_hmkm' },
+            { data: 'lokasi', name: 'lokasi' },
             { data: 'divisi', name: 'divisi' },
-            { data: 'blok', name: 'blok' },
-            { data: 'tahun_tanam', name: 'tahun_tanam' },
-            { data: 'lahan', name: 'lahan' },
-            { data: 'jumlah_tandan', name: 'jumlah_tandan' },
-            { data: 'berondolan', name: 'berondolan' },
-            { data: 'berat_bruto', name: 'berat_bruto' },
-            { data: 'berat_tarra', name: 'berat_tarra' },
-            { data: 'berat_netto', name: 'berat_netto' },
-            { data: 'jumlah_grading', name: 'jumlah_grading' },
-            { data: 'berat_bersih', name: 'berat_bersih' },
-            { data: 'bjr', name: 'bjr' },
+            { data: 'jenis_pekerjaan', name: 'jenis_pekerjaan' },
+            { data: 'tarif_satuan', name: 'tarif_satuan' },
+            { data: 'hasil_1', name: 'hasil_1' },
+            { data: 'satuan_1', name: 'satuan_1' },
+            { data: 'hasil_2', name: 'hasil_2' },
+            { data: 'satuan_2', name: 'satuan_2' },
+            { data: 'total_premi', name: 'total_premi' },
             { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
         ]
     });
@@ -273,7 +263,7 @@
     $('#exportExcel').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
-        var url = "{{ route('sptbs.export.excel') }}";
+        var url = "{{ route('premi.export.excel') }}";
         if (minDate || maxDate) {
             url += '?minDate=' + minDate + '&maxDate=' + maxDate;
         }
@@ -283,7 +273,7 @@
     $('#exportPdf').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
-        var url = "{{ route('sptbs.export.pdf') }}";
+        var url = "{{ route('premi.export.pdf') }}";
         if (minDate || maxDate) {
             url += '?minDate=' + minDate + '&maxDate=' + maxDate;
         }
@@ -299,7 +289,7 @@
             console.error('ID is empty');
             return;
         }
-        $.get('/sptbs/' + id + '/edit', function(data) {
+        $.get('/premi/' + id + '/edit', function(data) {
             console.log('Edit data received:', data);
             $('#editId').val(data.id);
             $('#editAngkutan').val(data.angkutan);
