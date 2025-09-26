@@ -26,7 +26,7 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
-        <div class="table-responsive">
+        <div>
             <div class="row mb-3">
                 <div class="col-md-3">
                     <label for="minDate">Dari Tanggal</label>
@@ -123,11 +123,11 @@
             </div>
             <div class="form-group">
                 <label for="editJamMasuk">Jam Masuk</label>
-                <input type="time" class="form-control" id="editJamMasuk" name="jam_masuk" required>
+                <input type="time" class="form-control" id="editJamMasuk" name="jam_masuk">
             </div>
             <div class="form-group">
                 <label for="editJamKeluar">Jam Keluar</label>
-                <input type="time" class="form-control" id="editJamKeluar" name="jam_keluar" required>
+                <input type="time" class="form-control" id="editJamKeluar" name="jam_keluar">
             </div>
             <div class="form-group">
                 <label for="editEstate">Estate</label>
@@ -226,6 +226,9 @@
     var table = $('#sptbsTable').DataTable({
         processing: true,
         serverSide: true,
+        scrollX: true,
+        responsive: false,
+        autoWidth: false,
         ajax: {
             url: "{{ route('sptbs.data') }}",
             data: function(d) {

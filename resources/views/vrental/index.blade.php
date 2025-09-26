@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Data Premi</h1>
+<h1 class="h3 mb-2 text-gray-800">Realisasi Rental Kenderaan & Alat Berat</h1>
 <hr>
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
@@ -10,7 +10,7 @@
             <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
                 <i class="fa fa-plus"></i> Tambah
             </button>-->
-            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadPremi">
+            <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadRental">
                 <i class="fa fa-upload"></i> Upload
             </button>
         </div>
@@ -37,28 +37,33 @@
                     <input type="date" id="maxDate" class="form-control">
                 </div>
             </div>
-            <table id="premiTable" class="table table-bordered table-striped">
+            <table id="rentalTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>tanggal</th>
-                        <th>No KAB</th>
-                        <th>Nama KAB</th>
-                        <th>NIK</th>
-                        <th>Nama_karyawan</th>
+                        <th>Tanggal</th>
                         <th>Estate</th>
-                        <th>HM/KM Awal</th>
-                        <th>HM/KM Akhir</th>
-                        <th>HM/KM Total</th>
-                        <th>Lokasi</th>
+                        <th>Jenis Alat</th>
+                        <th>Nomor Alat</th>
+                        <th>Operator</th>
+                        <th>HM Awal</th>
+                        <th>HM Akhir</th>
+                        <th>Total HM</th>
+                        <th>Potongan HM</th>
+                        <th>Pembayaran HM</th>
+                        <th>Blok</th>
+                        <th>Tahun Tanam</th>
+                        <th>Pekerjaan</th>
                         <th>Divisi</th>
-                        <th>Jenis Pekerjaan</th>
-                        <th>Tarif/Satuan</th>
+                        <th>Kelompok</th>
+                        <th>COA</th>
+                        <th>Tarif</th>
+                        <th>BJR</th>
                         <th>Hasil 1</th>
-                        <th>Satuan 1</th>
+                        <th>SAtuan 1</th>
                         <th>Hasil 2</th>
                         <th>Satuan 2</th>
-                        <th>Total Premi</th>
+                        <th>Total Biaya</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -70,11 +75,11 @@
 </div>
 
 <!-- Modal Edit Realisasi Panen -->
-<div class="modal fade" id="modal-EditPremi" tabindex="-1" role="dialog" aria-labelledby="modal-EditPremiLabel" aria-hidden="true">
+<div class="modal fade" id="modal-EditRental" tabindex="-1" role="dialog" aria-labelledby="modal-EditRentalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-EditPremiLabel">Edit Data Premi</h5>
+        <h5 class="modal-title" id="modal-EditRentalLabel">Edit Data SPTBS</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -101,60 +106,80 @@
                 <input type="text" class="form-control" id="editNik" name="nik" required>
             </div>
             <div class="form-group">
-                <label for="editNamaKaryawan">Nama Karyawan</label>
-                <input type="text" class="form-control" id="editNamaKaryawan" name="nama_karyawan" required>
+                <label for="editTanggalSptbs">Tanggal SPTBS</label>
+                <input type="date" class="form-control" id="editTanggalSptbs" name="tanggal_sptbs" required>
+            </div>
+            <div class="form-group">
+                <label for="editTanggalPanen">Tanggal Panen</label>
+                <input type="date" class="form-control" id="editTanggalPanen" name="tanggal_panen" required>
+            </div>
+            <div class="form-group">
+                <label for="editNamaSupir">Nama Supir</label>
+                <input type="text" class="form-control" id="editNamaSupir" name="Nama Supir" required>
+            </div>
+            <div class="form-group">
+                <label for="editNoPolisi">No Polisi</label>
+                <input type="text" class="form-control" id="editNoPolisi" name="no_polisi" required>
+            </div>
+            <div class="form-group">
+                <label for="editJamMasuk">Jam Masuk</label>
+                <input type="time" class="form-control" id="editJamMasuk" name="jam_masuk" required>
+            </div>
+            <div class="form-group">
+                <label for="editJamKeluar">Jam Keluar</label>
+                <input type="time" class="form-control" id="editJamKeluar" name="jam_keluar" required>
             </div>
             <div class="form-group">
                 <label for="editEstate">Estate</label>
                 <input type="text" class="form-control" id="editEstate" name="estate" required>
             </div>
             <div class="form-group">
-                <label for="editHmkmAwal">HM/KM Awal</label>
-                <input type="text" class="form-control" id="editHmkmAwal" name="hmkm_awal" required>
-            </div>
-            <div class="form-group">
-                <label for="editHmkmAkhir">HM/KM Akhir</label>
-                <input type="text" class="form-control" id="editHmkmAkhir" name="hmkm_akhir" required>
-            </div>
-            <div class="form-group">
-                <label for="editTotalHmkm">Total HM/KM</label>
-                <input type="number" class="form-control" id="editTotalHmkm" name="total_hmkm" required>
-            </div>
-            <div class="form-group">
-                <label for="editLokasi">Lokasi</label>
-                <input type="test" class="form-control" id="editLokasi" name="lokasi" required>
-            </div>
-            <div class="form-group">
                 <label for="editDivisi">Divisi</label>
                 <input type="text" class="form-control" id="editDivisi" name="divisi" required>
             </div>
             <div class="form-group">
-                <label for="editJenisPekerjaan">Jenis pekerjaan</label>
-                <input type="text" class="form-control" id="editJenisPekerjaan" name="jenis_pekerjaan" required>
+                <label for="editBlok">Blok</label>
+                <input type="text" class="form-control" id="editBlok" name="blok" required>
             </div>
             <div class="form-group">
-                <label for="editTarifSatuan">Tarif</label>
-                <input type="text" class="form-control" id="editTarifSatuan" name="tarif_satuan" required>
+                <label for="editTahunTanam">Tahun Tanam</label>
+                <input type="text" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
             </div>
             <div class="form-group">
-                <label for="editHasil1">Hasil 1</label>
-                <input type="number" class="form-control" id="editHasil1" name="hasil_1" required>
+                <label for="editLahan">Lahan</label>
+                <input type="text" class="form-control" id="editLahan" name="lahan" required>
             </div>
             <div class="form-group">
-                <label for="editSatuan1">Satuan 1</label>
-                <input type="text" class="form-control" id="editSatuan1" name="satuan_1" required>
+                <label for="editJumlahTandan">Jumlah Tandan</label>
+                <input type="text" class="form-control" id="editJumlahTandan" name="jumlah_tandan" required>
             </div>
             <div class="form-group">
-                <label for="editHasil2">Hasil 2</label>
-                <input type="number" class="form-control" id="editHasil2" name="hasil_2" required>
+                <label for="editBerondolan">Berondolan</label>
+                <input type="number" step="0.01" class="form-control" id="editBerondolan" name="berondolan" required>
             </div>
             <div class="form-group">
-                <label for="editSatuan2">Satuan 2</label>
-                <input type="text" class="form-control" id="editSatuan2" name="satuan_2" required>
+                <label for="editBeratBruto">Berat Bruto</label>
+                <input type="number" class="form-control" id="editBeratBruto" name="berat_bruto" required>
             </div>
             <div class="form-group">
-                <label for="editTotalPremi">Total Premi</label>
-                <input type="number" class="form-control" id="editTotalPremi" name="total_premi" required>
+                <label for="editBeratTarra">Berat Tarra</label>
+                <input type="number" class="form-control" id="editBeratTarra" name="berat_tarra" required>
+            </div>
+            <div class="form-group">
+                <label for="editBeratNetto">Berat Netto</label>
+                <input type="number" class="form-control" id="editBeratNetto" name="berat_netto" required>
+            </div>
+            <div class="form-group">
+                <label for="editJumlahGrading">Jumlah Grading</label>
+                <input type="number" class="form-control" id="editJumlahGrading" name="jumlah_grading" required>
+            </div>
+            <div class="form-group">
+                <label for="editBeratBersih">Berat Bersih</label>
+                <input type="number" class="form-control" id="editBeratBersih" name="berat_bersih" required>
+            </div>
+            <div class="form-group">
+                <label for="editBjr">BJR</label>
+                <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -167,17 +192,17 @@
 </div>
 
 <!-- Modal File Upload -->
-<div class="modal fade" id="modal-UploadPremi" tabindex="-1" role="dialog" aria-labelledby="modal-UploadPremiLabel" aria-hidden="true">
+<div class="modal fade" id="modal-UploadRental" tabindex="-1" role="dialog" aria-labelledby="modal-UploadRentalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-UploadPremiLabel">Unggah Data Premi</h5>
+        <h5 class="modal-title" id="modal-UploadRentalLabel">Unggah Data Realisasi Rental Kenderaan dan Alat Berat</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('premi.import') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('rental.import') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="file">Pilih File Excel</label>
@@ -198,14 +223,14 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-    var table = $('#premiTable').DataTable({
+    var table = $('#rentalTable').DataTable({
         processing: true,
         serverSide: true,
         scrollX: true,
         responsive: false,
         autoWidth: false,
         ajax: {
-            url: "{{ route('premi.data') }}",
+            url: "{{ route('rental.data') }}",
             data: function(d) {
                 d.minDate = $('#minDate').val();
                 d.maxDate = $('#maxDate').val();
@@ -217,23 +242,28 @@
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'tanggal_formatted', name: 'tanggal_formatted' },
-            { data: 'no_kab', name: 'no_kab' },
-            { data: 'nama_kab', name: 'nama_kab' },
-            { data: 'nik', name: 'nik' },
-            { data: 'nama_karyawan', name: 'nama_karyawan' },
             { data: 'estate', name: 'estate' },
-            { data: 'hmkm_awal', name: 'hmkm_awal' },
-            { data: 'hmkm_akhir', name: 'hmkm_akhir' },
-            { data: 'total_hmkm', name: 'total_hmkm' },
-            { data: 'lokasi', name: 'lokasi' },
+            { data: 'jenis_alat', name: 'jenis_alat' },
+            { data: 'no_alat', name: 'no_alat' },
+            { data: 'operator', name: 'operator' },
+            { data: 'hm_awal', name: 'hm_awal' },
+            { data: 'hm_akhir', name: 'hm_akhir' },
+            { data: 'total_hm', name: 'total_hm' },
+            { data: 'potongan_hm', name: 'potongan_hm' },
+            { data: 'pembayaran_hm', name: 'pembayaran_hm' },
+            { data: 'blok', name: 'blok' },
+            { data: 'tahun_tanam', name: 'tahun_tanam' },
+            { data: 'pekerjaan', name: 'pekerjaan' },
             { data: 'divisi', name: 'divisi' },
-            { data: 'jenis_pekerjaan', name: 'jenis_pekerjaan' },
-            { data: 'tarif_satuan', name: 'tarif_satuan' },
+            { data: 'kelompok', name: 'kelompok' },
+            { data: 'coa', name: 'coa' },
+            { data: 'tarif', name: 'tarif' },
+            { data: 'bjr', name: 'bjr' },
             { data: 'hasil_1', name: 'hasil_1' },
             { data: 'satuan_1', name: 'satuan_1' },
             { data: 'hasil_2', name: 'hasil_2' },
             { data: 'satuan_2', name: 'satuan_2' },
-            { data: 'total_premi', name: 'total_premi' },
+            { data: 'total_biaya', name: 'total_biaya' },
             { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
         ]
     });
@@ -246,7 +276,7 @@
     $('#exportExcel').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
-        var url = "{{ route('premi.export.excel') }}";
+        var url = "{{ route('rental.export.excel') }}";
         if (minDate || maxDate) {
             url += '?minDate=' + minDate + '&maxDate=' + maxDate;
         }
@@ -256,7 +286,7 @@
     $('#exportPdf').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
-        var url = "{{ route('premi.export.pdf') }}";
+        var url = "{{ route('rental.export.pdf') }}";
         if (minDate || maxDate) {
             url += '?minDate=' + minDate + '&maxDate=' + maxDate;
         }
@@ -272,27 +302,32 @@
             console.error('ID is empty');
             return;
         }
-        $.get('/premi/' + id + '/edit', function(data) {
+        $.get('/rental/' + id + '/edit', function(data) {
             console.log('Edit data received:', data);
             $('#editId').val(data.id);
             $('#editTanggal').val(data.tanggal ? data.tanggal.split(' ')[0] : '');
-            $('#editNoKab').val(data.no_kab);
-            $('#editNamaKab').val(data.nama_kab);
-            $('#editNik').val(data.nik);
-            $('#editNamaKaryawan').val(data.nama_karyawan);
-            $('#editEstate').val(data.estate);
-            $('#editHmkmAwal').val(data.hmkm_awal);
-            $('#editHmkmAkhir').val(data.hmkm_akhir);
-            $('#editTotalHmkm').val(data.total_hmkm);
-            $('#editLokasi').val(data.lokasi);
+            $('#editEstate').val(data.Estate);
+            $('#editJenisAlat').val(data.jenis_alat);
+            $('#editNoAlat').val(data.no_alat);
+            $('#editOperator').val(data.operator);
+            $('#editHmAwal').val(data.hm_awal);
+            $('#editHmAkhir').val(data.hm_akhir);
+            $('#editTotalHm').val(data.total_hm);
+            $('#editPotonganHm').val(data.potongan_hm);
+            $('#editPembayaranHm').val(data.pembayaran_hm);
+            $('#editBlok').val(data.blok);
+            $('#editTahunTanam').val(data.tahun_tanam);
+            $('#editPekerjaan').val(data.pekerjaan);
             $('#editDivisi').val(data.divisi);
-            $('#editJenisPekerjaan').val(data.jenis_pekerjaan);
-            $('#editTarifSatuan').val(data.tarif_satuan);
+            $('#editKelompok').val(data.kelompok);
+            $('#editCoa').val(data.coa);
+            $('#editTarif').val(data.tarif);
+            $('#editBjr').val(data.bjr);
             $('#editHasil1').val(data.hasil_1);
             $('#editSatuan1').val(data.satuan_1);
             $('#editHasil2').val(data.hasil_2);
             $('#editSatuan2').val(data.satuan_2);
-            $('#editTotalPremi').val(data.total_premi);
+            $('#editTotalBiaya').val(data.total_biaya);
         }).fail(function(xhr, status, error) {
             console.error('Error fetching edit data:', status, error);
             toastr.error('Gagal memuat data untuk edit.');
@@ -305,11 +340,11 @@
         var id = $('#editId').val();
         var formData = $(this).serialize();
         $.ajax({
-            url: '/premi/' + id,
+            url: '/rental/' + id,
             type: 'PUT',
             data: formData,
             success: function(response) {
-                $('#modal-EditPremi').modal('hide');
+                $('#modal-EditRental').modal('hide');
                 table.ajax.reload();
                 toastr.success(response.success);
             },

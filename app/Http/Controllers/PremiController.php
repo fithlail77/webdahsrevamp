@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\PremiExport;
-use App\Exports\PremiPdfExport;
 use App\Models\Premi;
+use App\Exports\PremiExport;
 use App\Imports\PremiImport;
 use Illuminate\Http\Request;
+use App\Exports\PremiPdfExport;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -97,7 +98,13 @@ class PremiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $premi = Premi::findOrFail($id);
+            return response()->json($premi);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -105,7 +112,31 @@ class PremiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'no_kab' => 'required|string|max:100',
+            'nama_kab' => 'required|string|max:100',
+            'nik' => 'required|string|max:15',
+            'nama_karyawan' => 'required|string|max:255',
+            'estate' => 'required|string|max:30',
+            'hmkm_awal' => 'required|integer',
+            'hmkm_akhir' => 'required|integer',
+            'total_hmkm' => 'required|integer',
+            'lokasi' => 'required|string|max:100',
+            'divisi' => 'required|string|max:10',
+            'jenis_pekerjaan' => 'required|string|max:255',
+            'tarif_satuan' => 'required|numeric',
+            'hasil_1' => 'required|numeric',
+            'satuan_1' => 'required|string|max:10',
+            'hasil_2' => 'required|numeric',
+            'satuan_2' => 'required|string|max:10',
+            'total_premi' => 'required|numeric',
+        ]);
+
+        $premi = Premi::findOrFail($id);
+        $premi->update($request->all());
+
+        return response()->json(['success' => 'Data berhasil diperbarui.']);
     }
 
     /**

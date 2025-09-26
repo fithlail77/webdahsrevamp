@@ -45,7 +45,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Laporan SPTBS</h1>
+        <h1>Laporan Premi</h1>
         <p>Dicetak pada: {{ date('d-m-Y H:i:s') }}</p>
     </div>
 
@@ -53,58 +53,48 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Angkutan</th>
-                <th>No Tiket</th>
-                <th>Tanggal Tiket</th>
-                <th>No SPTBS</th>
-                <th>Tanggal SPTBS</th>
-                <th>Tanggal Panen</th>
-                <th>Nama Supir</th>
-                <th>No Polisi</th>
-                <th>Jam Masuk</th>
-                <th>Jam Keluar</th>
+                <th>Tanggal</th>
+                <th>No KAB</th>
+                <th>Nama KAB</th>
+                <th>NIK</th>
+                <th>Nama Karyawan</th>
                 <th>Estate</th>
+                <th>HM/KM Awal</th>
+                <th>HM/KM Akhir</th>
+                <th>Total HM/KM</th>
+                <th>Lokasi</th>
                 <th>Divisi</th>
-                <th>Blok</th>
-                <th>Tahun Tanam</th>
-                <th>Jenis Lahan</th>
-                <th>Jumlah Tandan</th>
-                <th>Berondolan</th>
-                <th>Berat Bruto</th>
-                <th>Berat Tarra</th>
-                <th>Berat Netto</th>
-                <th>Jumlah Grading</th>
-                <th>Berat Bersih</th>
-                <th>BJR</th>
+                <th>Jenis Pekerjaan</th>
+                <th>Tarif Satuan</th>
+                <th>Hasil 1</th>
+                <th>Satuan 1</th>
+                <th>Hasil 2</th>
+                <th>Satuan 2</th>
+                <th>Total Premi</th>
             </tr>
         </thead>
         <tbody>
             @foreach($data as $index => $item)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $item['angkutan'] }}</td>
-                <td>{{ $item['no_tiket'] }}</td>
-                <td>{{ $item['tanggal_tiket'] }}</td>
-                <td>{{ $item['no_sptbs'] }}</td>
-                <td>{{ $item['tanggal_sptbs'] }}</td>
-                <td>{{ $item['tanggal_panen'] }}</td>
-                <td>{{ $item['nama_supir'] }}</td>
-                <td>{{ $item['no_polisi'] }}</td>
-                <td>{{ $item['jam_masuk'] }}</td>
-                <td>{{ $item['jam_keluar'] }}</td>
+                <td>{{ $item['tanggal'] }}</td>
+                <td>{{ $item['no_kab'] }}</td>
+                <td>{{ $item['nama_kab'] }}</td>
+                <td>{{ $item['nik'] }}</td>
+                <td>{{ $item['nama_karyawan'] }}</td>
                 <td>{{ $item['estate'] }}</td>
+                <td>{{ $item['hmkm_awal'] }}</td>
+                <td>{{ $item['hmkm_akhir'] }}</td>
+                <td>{{ $item['total_hmkm'] }}</td>
+                <td>{{ $item['lokasi'] }}</td>
                 <td>{{ $item['divisi'] }}</td>
-                <td>{{ $item['blok'] }}</td>
-                <td>{{ $item['tahun_tanam'] }}</td>
-                <td>{{ $item['lahan'] }}</td>
-                <td>{{ $item['jumlah_tandan'] }}</td>
-                <td>{{ $item['berondolan'] }}</td>
-                <td>{{ $item['berat_bruto'] }}</td>
-                <td>{{ $item['berat_tarra'] }}</td>
-                <td>{{ $item['berat_netto'] }}</td>
-                <td>{{ $item['jumlah_grading'] }}</td>
-                <td>{{ $item['berat_bersih'] }}</td>
-                <td>{{ $item['bjr'] }}</td>
+                <td>{{ $item['jenis_pekerjaan'] }}</td>
+                <td>{{ $item['tarif_satuan'] }}</td>
+                <td>{{ $item['hasil_1'] }}</td>
+                <td>{{ $item['satuan_1'] }}</td>
+                <td>{{ $item['hasil_2'] }}</td>
+                <td>{{ $item['satuan_2'] }}</td>
+                <td>{{ $item['total_premi'] }}</td>
             </tr>
             @endforeach
         </tbody>

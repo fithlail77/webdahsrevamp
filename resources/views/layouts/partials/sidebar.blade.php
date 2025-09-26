@@ -107,13 +107,14 @@
                     || request()->routeIs('realisasipanen.index')
                     || request()->routeIs('laprestan.index')
                     || request()->routeIs('sptbs.index')
-                    || request()->routeIs('premi.index');
+                    || request()->routeIs('premi.index')
+                    || request()->routeIs('rental.index');
 
                 $isCurahActive = request()->routeIs('curah.index') || request()->routeIs('airsungai.index');
                 $isPKSActive = request()->routeIs('ffbinternal.index') || request()->routeIs('ffbeksternal.index') || request()->routeIs('produksicpo.index') || request()->routeIs('contractcpo.index') || request()->routeIs('contractpk.index');
                 $isUpkeepActive = request()->routeIs('pupuk.index') || request()->routeIs('perawatan.index') || request()->routeIs('payroll.index');
                 $isUnitActive = request()->routeIs('lho.index') || request()->routeIs('depre.index') || request()->routeIs('spartlho.index') || request()->routeIs('lhounit.index');
-                $isKebunActive = request()->routeIs('realisasipanen.index') || request()->routeIs('laprestan.index') || request()->routeIs('sptbs.index') || request()->routeIs('premi.index');
+                $isKebunActive = request()->routeIs('realisasipanen.index') || request()->routeIs('laprestan.index') || request()->routeIs('sptbs.index') || request()->routeIs('premi.index') || request()->routeIs('rental.index');
             @endphp
 
             <li class="nav-item">
@@ -159,6 +160,7 @@
                                     <a class="collapse-item {{ request()->routeIs('realisasipanen.index') ? 'active' : '' }}" href="{{ route('realisasipanen.index') }}">{{ __('Input Realisasi Panen') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('laprestan.index') ? 'active' : '' }}" href="{{ route('laprestan.index') }}">{{ __('Input Restan') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('premi.index') ? 'active' : '' }}" href="{{ route('premi.index') }}">{{ __('Input Premi') }}</a>
+                                    <a class="collapse-item {{ request()->routeIs('rental.index') ? 'active' : '' }}" href="{{ route('rental.index') }}">{{ __('Input Rental KAB') }}</a>
                                 </div>
                             </div>
 
@@ -216,14 +218,18 @@
                 Dashboard
             </div>
 
-            <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('aresta.index') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>{{ __('Areal Statement') }}</span></a>
             </li>
 
-            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('produksikebun.index') }}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>{{ __('Analisa Produksi Kebun') }}</span></a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('curahhujan.index') }}">
                     <i class="fas fa-fw fa-cloud-rain"></i>

@@ -26,7 +26,7 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
-        <div class="table-responsive">
+        <div>
             <div class="row mb-3">
                 <div class="col-md-3">
                     <label for="minDate">Dari Tanggal</label>
@@ -161,6 +161,9 @@
     var table = $('#rpanenTable').DataTable({
         processing: true,
         serverSide: true,
+        scrollX: true,
+        responsive: false,
+        autoWidth: false,
         ajax: {
             url: "{{ route('realisasipanen.data') }}",
             data: function(d) {
