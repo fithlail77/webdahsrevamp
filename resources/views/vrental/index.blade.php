@@ -79,7 +79,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-EditRentalLabel">Edit Data SPTBS</h5>
+        <h5 class="modal-title" id="modal-EditRentalLabel">Edit Data  Rental KAB</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -94,48 +94,40 @@
                 <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
             </div>
             <div class="form-group">
-                <label for="editNoKab">No KAB</label>
-                <input type="text" class="form-control" id="editNoKab" name="no_kab" required>
-            </div>
-            <div class="form-group">
-                <label for="editNamaKab">Nama KAB</label>
-                <input type="text" class="form-control" id="editNamaKab" name="nama_kab" required>
-            </div>
-            <div class="form-group">
-                <label for="editNik">NIK</label>
-                <input type="text" class="form-control" id="editNik" name="nik" required>
-            </div>
-            <div class="form-group">
-                <label for="editTanggalSptbs">Tanggal SPTBS</label>
-                <input type="date" class="form-control" id="editTanggalSptbs" name="tanggal_sptbs" required>
-            </div>
-            <div class="form-group">
-                <label for="editTanggalPanen">Tanggal Panen</label>
-                <input type="date" class="form-control" id="editTanggalPanen" name="tanggal_panen" required>
-            </div>
-            <div class="form-group">
-                <label for="editNamaSupir">Nama Supir</label>
-                <input type="text" class="form-control" id="editNamaSupir" name="Nama Supir" required>
-            </div>
-            <div class="form-group">
-                <label for="editNoPolisi">No Polisi</label>
-                <input type="text" class="form-control" id="editNoPolisi" name="no_polisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editJamMasuk">Jam Masuk</label>
-                <input type="time" class="form-control" id="editJamMasuk" name="jam_masuk" required>
-            </div>
-            <div class="form-group">
-                <label for="editJamKeluar">Jam Keluar</label>
-                <input type="time" class="form-control" id="editJamKeluar" name="jam_keluar" required>
-            </div>
-            <div class="form-group">
                 <label for="editEstate">Estate</label>
                 <input type="text" class="form-control" id="editEstate" name="estate" required>
             </div>
             <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
+                <label for="editJenisAlat">Jenis Alat</label>
+                <input type="text" class="form-control" id="editJenisAlat" name="jenis_alat" required>
+            </div>
+            <div class="form-group">
+                <label for="editNoAlat">Nomor Alat</label>
+                <input type="text" class="form-control" id="editNoAlat" name="no_alat" required>
+            </div>
+            <div class="form-group">
+                <label for="editOperator">Operator</label>
+                <input type="text" class="form-control" id="editOperator" name="operator" required>
+            </div>
+            <div class="form-group">
+                <label for="editHmAwal">HM Awal</label>
+                <input type="number" class="form-control" id="editHmAwal" name="hm_awal" required>
+            </div>
+            <div class="form-group">
+                <label for="editHmAkhir">HM Akhir</label>
+                <input type="number" step="0.01" class="form-control" id="editHmAkhir" name="hm_akhir" required>
+            </div>
+            <div class="form-group">
+                <label for="editTotalHm">Total HM</label>
+                <input type="number" step="0.01" class="form-control" id="editTotalHm" name="total_hm" required>
+            </div>
+            <div class="form-group">
+                <label for="editPotonganHm">Potongan HM</label>
+                <input type="number" step="0.01" class="form-control" id="editPotonganHm" name="potongan_hm" required>
+            </div>
+            <div class="form-group">
+                <label for="editPembayaranHm">Pembayaran HM</label>
+                <input type="number" step="0.01" class="form-control" id="editPembayaranHm" name="pembayaran_hm" required>
             </div>
             <div class="form-group">
                 <label for="editBlok">Blok</label>
@@ -143,43 +135,51 @@
             </div>
             <div class="form-group">
                 <label for="editTahunTanam">Tahun Tanam</label>
-                <input type="text" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+                <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
             </div>
             <div class="form-group">
-                <label for="editLahan">Lahan</label>
-                <input type="text" class="form-control" id="editLahan" name="lahan" required>
+                <label for="editPekerjaan">Pekerjaan</label>
+                <input type="text" class="form-control" id="editPekerjaan" name="pekerjaan" required>
             </div>
             <div class="form-group">
-                <label for="editJumlahTandan">Jumlah Tandan</label>
-                <input type="text" class="form-control" id="editJumlahTandan" name="jumlah_tandan" required>
+                <label for="editDivisi">Divisi</label>
+                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
             </div>
             <div class="form-group">
-                <label for="editBerondolan">Berondolan</label>
-                <input type="number" step="0.01" class="form-control" id="editBerondolan" name="berondolan" required>
+                <label for="editKelompok">Kelompok</label>
+                <input type="text" class="form-control" id="editKelompok" name="kelompok" required>
             </div>
             <div class="form-group">
-                <label for="editBeratBruto">Berat Bruto</label>
-                <input type="number" class="form-control" id="editBeratBruto" name="berat_bruto" required>
+                <label for="editCoa">COA</label>
+                <input type="number" class="form-control" id="editCoa" name="coa" required>
             </div>
             <div class="form-group">
-                <label for="editBeratTarra">Berat Tarra</label>
-                <input type="number" class="form-control" id="editBeratTarra" name="berat_tarra" required>
-            </div>
-            <div class="form-group">
-                <label for="editBeratNetto">Berat Netto</label>
-                <input type="number" class="form-control" id="editBeratNetto" name="berat_netto" required>
-            </div>
-            <div class="form-group">
-                <label for="editJumlahGrading">Jumlah Grading</label>
-                <input type="number" class="form-control" id="editJumlahGrading" name="jumlah_grading" required>
-            </div>
-            <div class="form-group">
-                <label for="editBeratBersih">Berat Bersih</label>
-                <input type="number" class="form-control" id="editBeratBersih" name="berat_bersih" required>
+                <label for="editTarif">Tarif</label>
+                <input type="number" class="form-control" id="editTarif" name="tarif" required>
             </div>
             <div class="form-group">
                 <label for="editBjr">BJR</label>
                 <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
+            </div>
+            <div class="form-group">
+                <label for="editHasil1">Hasil 1</label>
+                <input type="number" class="form-control" id="editHasil1" name="hasil_1" required>
+            </div>
+            <div class="form-group">
+                <label for="editSatuan1">Satuan 1</label>
+                <input type="text" class="form-control" id="editSatuan1" name="satuan_1" required>
+            </div>
+            <div class="form-group">
+                <label for="editHasil2">Hasil 2</label>
+                <input type="number" class="form-control" id="editHasil2" name="hasil_2" required>
+            </div>
+            <div class="form-group">
+                <label for="editSatuan2">Satuan 2</label>
+                <input type="text" class="form-control" id="editSatuan2" name="satuan_2" required>
+            </div>
+            <div class="form-group">
+                <label for="editTotalBiaya">Total Biaya</label>
+                <input type="number" class="form-control" id="editTotalBiaya" name="total_biaya" required>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -306,7 +306,7 @@
             console.log('Edit data received:', data);
             $('#editId').val(data.id);
             $('#editTanggal').val(data.tanggal ? data.tanggal.split(' ')[0] : '');
-            $('#editEstate').val(data.Estate);
+            $('#editEstate').val(data.estate);
             $('#editJenisAlat').val(data.jenis_alat);
             $('#editNoAlat').val(data.no_alat);
             $('#editOperator').val(data.operator);

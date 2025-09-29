@@ -91,7 +91,7 @@
             <input type="hidden" id="editId" name="id">
             <div class="form-group">
                 <label for="editAngkutan">Angkutan</label>
-                <input type="text" class="form-control" id="editAngkutan" name="Angkutan" required>
+                <input type="text" class="form-control" id="editAngkutan" name="angkutan" required>
             </div>
             <div class="form-group">
                 <label for="editNoTiket">No Tiket</label>
@@ -115,19 +115,19 @@
             </div>
             <div class="form-group">
                 <label for="editNamaSupir">Nama Supir</label>
-                <input type="text" class="form-control" id="editNamaSupir" name="Nama Supir" required>
+                <input type="text" class="form-control" id="editNamaSupir" name="nama_supir" required>
             </div>
             <div class="form-group">
                 <label for="editNoPolisi">No Polisi</label>
                 <input type="text" class="form-control" id="editNoPolisi" name="no_polisi" required>
             </div>
             <div class="form-group">
-                <label for="editJamMasuk">Jam Masuk</label>
-                <input type="time" class="form-control" id="editJamMasuk" name="jam_masuk">
+                <label for="editJamMasuk">Jam Masuk (HH:MM:SS)</label>
+                <input type="time" step="1" class="form-control" id="editJamMasuk" name="jam_masuk" required>
             </div>
             <div class="form-group">
-                <label for="editJamKeluar">Jam Keluar</label>
-                <input type="time" class="form-control" id="editJamKeluar" name="jam_keluar">
+                <label for="editJamKeluar">Jam Keluar (HH:MM:SS)</label>
+                <input type="time" step="1" class="form-control" id="editJamKeluar" name="jam_keluar" required>
             </div>
             <div class="form-group">
                 <label for="editEstate">Estate</label>
@@ -349,7 +349,18 @@
                 toastr.success(response.success);
             },
             error: function(xhr) {
-                toastr.error('Terjadi kesalahan saat memperbarui data.');
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else if (xhr.status === 500 && xhr.responseJSON && xhr.responseJSON.error) {
+                    toastr.error('Kesalahan server: ' + xhr.responseJSON.error);
+                } else {
+                    toastr.error('Terjadi kesalahan saat memperbarui data.');
+                }
             }
         });
     });

@@ -61,6 +61,13 @@ class ArestaInputController extends Controller
         return view('aresta.index', compact('aresta', 'aresta1', 'labels1', 'values1', 'labels2', 'values2'));
     }
 
+    public function data(Request $request)
+    {
+        $query = Aresta::select([
+            
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

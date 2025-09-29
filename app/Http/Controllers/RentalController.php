@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Rental;
 use Illuminate\Http\Request;
+use App\Exports\RentalExport;
+use App\Imports\RentalImport;
+use App\Exports\RentalPdfExport;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class RentalController extends Controller
@@ -98,7 +103,13 @@ class RentalController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $rental = Rental::findOrFail($id);
+            return response()->json($rental);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -106,7 +117,41 @@ class RentalController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $request->validate([
+                'tanggal' => 'required|date',
+                'estate' => 'required|string|max:30',
+                'jenis_alat' => 'required|string|max:255',
+                'no_alat' => 'required|string|max:255',
+                'operator' => 'required|string|max:255',
+                'hm_awal' => 'required|numeric',
+                'hm_akhir' => 'required|numeric',
+                'total_hm' => 'required|numeric',
+                'potongan_hm' => 'required|numeric',
+                'pembayaran_hm' => 'required|numeric',
+                'blok' => 'required|string|max:10',
+                'tahun_tanam' => 'required|integer',
+                'pekerjaan' => 'required|string|max:255',
+                'divisi' => 'required|string|max:15',
+                'kelompok' => 'required|string|max:255',
+                'coa' => 'required|integer',
+                'tarif' => 'required|integer',
+                'bjr' => 'required|numeric',
+                'hasil_1' => 'required|integer',
+                'satuan_1' => 'required|string:max:10',
+                'hasil_2'=> 'required|integer',
+                'satuan_2' => 'required|string|max:10',
+                'total_biaya' => 'required|integer',
+            ]);
+
+            $rental = Rental::findOrFail($id);
+            $rental->update($request->all());
+
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Throwable $e) {
+            Log::error('Error updating SPTBS: ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -115,5 +160,33 @@ class RentalController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv',
+        ]);
+
+        Excel::import( new RentalImport, $request->file('file'));
+
+        return redirect()->route('rental.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+
+        return Excel::download(new RentalExport($minDate, $maxDate), 'realisasi_kab.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+
+        $pdfExport = new RentalPdfExport($minDate, $maxDate);
+        return $pdfExport->generatePdf();
     }
 }

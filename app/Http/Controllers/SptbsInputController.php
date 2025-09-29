@@ -121,35 +121,41 @@ class SptbsInputController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'angkutan' => 'required|string|max:5',
-            'no_tiket' => 'required|integer',
-            'tanggal_tiket' => 'required|date',
-            'no_sptbs' => 'required|integer',
-            'tanggal_sptbs' => 'required|date',
-            'tanggal_panen' => 'required|date',
-            'nama_supir' => 'required|string|max:30',
-            'no_polisi' => 'required|string|max:15',
-            'jam_masuk' => 'time',
-            'jam_keluar' => 'time',
-            'estate' => 'required|string|max:15',
-            'divisi' => 'required|string|max:5',
-            'blok' => 'required|string|max:5',
-            'lahan' => 'required|string|max:30',
-            'jumlah_tandan' => 'required|integer',
-            'berondolan' => 'required|numeric',
-            'berat_bruto' => 'required|numeric',
-            'berat_tarra' => 'required|numeric',
-            'berat_netto' => 'required|numeric',
-            'jumlah_grading' => 'required|numeric',
-            'berat_bersih' => 'required|numeric',
-            'bjr' => 'required|numeric',
-        ]);
+        try {
+            $request->validate([
+                'angkutan' => 'required|string|max:5',
+                'no_tiket' => 'required|integer',
+                'tanggal_tiket' => 'required|date',
+                'no_sptbs' => 'required|integer',
+                'tanggal_sptbs' => 'required|date',
+                'tanggal_panen' => 'required|date',
+                'nama_supir' => 'required|string|max:30',
+                'no_polisi' => 'required|string|max:15',
+                'jam_masuk' => 'nullable|string',
+                'jam_keluar' => 'nullable|string',
+                'estate' => 'required|string|max:15',
+                'divisi' => 'required|string|max:5',
+                'blok' => 'required|string|max:5',
+                'tahun_tanam' => 'required|integer',
+                'lahan' => 'required|string|max:30',
+                'jumlah_tandan' => 'required|integer',
+                'berondolan' => 'required|numeric',
+                'berat_bruto' => 'required|numeric',
+                'berat_tarra' => 'required|numeric',
+                'berat_netto' => 'required|numeric',
+                'jumlah_grading' => 'required|numeric',
+                'berat_bersih' => 'required|numeric',
+                'bjr' => 'required|numeric',
+            ]);
 
-        $sptbs = SptbsInput::findOrFail($id);
-        $sptbs->update($request->all());
+            $sptbs = SptbsInput::findOrFail($id);
+            $sptbs->update($request->all());
 
-        return response()->json(['success' => 'Data berhasil diperbarui.']);
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            Log::error('Error updating SPTBS: ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

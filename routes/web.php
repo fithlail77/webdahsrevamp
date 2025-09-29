@@ -144,8 +144,8 @@ Route::post('/premi/import', [PremiController::class, 'import'])->name('premi.im
 Route::get('/premi/export/excel', [PremiController::class, 'exportExcel'])->name('premi.export.excel');
 Route::get('/premi/export/pdf', [PremiController::class, 'exportPdf'])->name('premi.export.pdf');
 Route::resource('/premi', PremiController::class);
-Route::get('/rental/data', [PremiController::class, 'data'])->name('rental.data');
-Route::post('/rental/import', [PremiController::class, 'import'])->name('rental.import');
-Route::get('/rental/export/excel', [PremiController::class, 'exportExcel'])->name('rental.export.excel');
-Route::get('/rental/export/pdf', [PremiController::class, 'exportPdf'])->name('rental.export.pdf');
+Route::get('/rental/data', [RentalController::class, 'data'])->name('rental.data');
+Route::post('/rental/import', [RentalController::class, 'import'])->name('rental.import');
+Route::get('/rental/export/excel', [RentalController::class, 'exportExcel'])->name('rental.export.excel');
+Route::get('/rental/export/pdf', [RentalController::class, 'exportPdf'])->name('rental.export.pdf');
 Route::resource('/rental', RentalController::class);
