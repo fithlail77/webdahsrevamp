@@ -16,6 +16,7 @@ use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\AirSungaiController;
 use App\Http\Controllers\AnalisaProdController;
+use App\Http\Controllers\AramcoController;
 use App\Http\Controllers\PerawatanController;
 use App\Http\Controllers\ContractpkController;
 use App\Http\Controllers\CurahHujanController;
@@ -161,3 +162,8 @@ Route::post('/rawatkebun/import', [PerawatanKebunController::class, 'import'])->
 Route::get('/rawatkebun/export/excel', [PerawatanKebunController::class, 'exportExcel'])->name('rawatkebun.export.excel');
 Route::get('/rawatkebun/export/pdf', [PerawatanKebunController::class, 'exportPdf'])->name('rawatkebun.export.pdf');
 Route::resource('/rawatkebun', PerawatanKebunController::class);
+Route::get('/aramco/data', [AramcoController::class, 'data'])->name('aramco.data');
+Route::post('/aramco/import', [AramcoController::class, 'import'])->name('aramco.import');
+Route::get('/aramco/export/excel', [AramcoController::class, 'exportExcel'])->name('aramco.export.excel');
+Route::get('/aramco/export/pdf', [AramcoController::class, 'exportPdf'])->name('aramco.export.pdf');
+Route::resource('/aramco', AramcoController::class);
