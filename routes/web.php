@@ -75,6 +75,7 @@ Route::resource('/curah', ChInputController::class);
 Route::post('/curah/store', [ChInputController::class, 'store'])->name('curah.store');
 Route::post('/curah', [ChInputController::class, 'import'])->name('curah.import');
 Route::get('/curah/hapus/{id}', [ChInputController::class, 'destroy']);
+Route::get('/areal/data', [ArestaInputController::class, 'data'])->name('areal.data');
 Route::resource('/areal', ArestaInputController::class);
 Route::post('/areal', [ArestaInputController::class, 'import'])->name('areal.import');
 Route::post('/areal/store', [ArestaInputController::class, 'store'])->name('areal.store');

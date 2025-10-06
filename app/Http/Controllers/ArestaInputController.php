@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Aresta;
 use Carbon\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Aresta;
+use Illuminate\Http\Request;
+use Termwind\Components\Raw;
 use App\Imports\ArestaImport;
 use Illuminate\Support\Facades\DB;
-use Termwind\Components\Raw;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class ArestaInputController extends Controller
 {
@@ -17,28 +18,9 @@ class ArestaInputController extends Controller
      */
     public function index()
     {
-        $aresta = Aresta::where('bulan', '>=', Carbon::now()->subDays(30))
-            ->orderBy('bulan', 'desc')
-            ->get();
-
-        $aresta1 = Aresta::select(
-            'estate',
-            'divisi',
-            'blok',
-            'status_lahan',
-            'status_tanaman',
-            'tahun_tanam',
-            'topografi',
-            'jenis_tanah',
-            DB::raw('sum(luas) as luasan'),
-            DB::raw('sum(pokok) as jlh_pokok'),
-            DB::raw('CASE WHEN sum(luas) = 0 THEN 0 ELSE ROUND(sum(pokok)::numeric /sum(luas)) END as sph')
-        )
-            ->groupBy('blok', 'estate', 'divisi', 'status_lahan', 'status_tanaman', 'tahun_tanam', 'topografi', 'jenis_tanah')
-            ->orderBy('blok', 'asc')
-            ->havingRaw('sum(luas) > 0')
-            ->havingRaw('CASE WHEN sum(luas) = 0 THEN 0 ELSE ROUND(sum(pokok)::numeric / sum(luas)) END > 0')
-            ->get();
+        //$aresta = Aresta::where('bulan', '>=', Carbon::now()->subDays(30))
+        //    ->orderBy('bulan', 'desc')
+        //    ->get();
 
         $chart1 = DB::table('aresta')
             ->select('estate', DB::raw('SUM(pokok) as tot_pokok'))
@@ -58,14 +40,48 @@ class ArestaInputController extends Controller
         $labels2 = $chart2->pluck('estate');
         $values2 = $chart2->pluck('tot_luas');
 
-        return view('aresta.index', compact('aresta', 'aresta1', 'labels1', 'values1', 'labels2', 'values2'));
+        return view('aresta.index', compact('labels1', 'values1', 'labels2', 'values2'));
     }
 
     public function data(Request $request)
     {
         $query = Aresta::select([
-            
-        ]);
+            'id',
+            'bulan',
+            'estate',
+            'divisi',
+            'blok',
+            'tahun_tanam',
+            'status_tanaman',
+            'status_lahan',
+            'jenis_bibit',
+            'topografi',
+            'jenis_tanah',
+            'pokok',
+            'luas'
+        ])
+        ->orderBy('bulan','desc');
+
+        if($request->minDate && $request->maxDate) {
+            $query->whereBetween('bulan', [$request->minDate, $request->maxDate]);
+        } elseif ($request->minDate) {
+            $query->whereDate('bulan', '>=', $request->minDate);
+        } elseif ($request->maxDate) {
+            $query->whereDate('bulan', '<=', $request->maxDate);
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tanggal_formatted', function ($row) {
+                return \Carbon\Carbon::parse($row['bulan'])->format('d-m-Y');
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditAresta"><i class="fa fa-edit"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     /**

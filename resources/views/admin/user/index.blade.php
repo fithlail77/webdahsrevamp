@@ -82,6 +82,9 @@
                                 <option value="">--Pilih Akses--</option>
                                 <option value="admin">Admin</option>
                                 <option value="manager">Manager</option>
+                                <option value="ke">Kerani Estate</option>
+                                <option value="dc">Data Center</option>
+                                <option value="kcpo">Admin Mill</option>
                                 <option value="user">User</option>
                             </select>
                         </div>

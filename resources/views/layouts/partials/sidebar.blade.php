@@ -137,7 +137,7 @@
                             </a>
                         @endif
 
-                        @if(auth()->user()->hasAnyRole(['manager','admin','user']))
+                        @if(auth()->user()->hasAnyRole(['manager','admin']))
                             {{-- MENU CURAH HUJAN dengan SUBMENU --}}
                             <a class="collapse-item {{ $isCurahActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseCurah" aria-expanded="{{ $isCurahActive ? 'true' : 'false' }}" aria-controls="collapseCurah">
                                 {{ __('Curah Hujan') }}
@@ -152,7 +152,8 @@
                                     </a>
                                 </div>
                             </div>
-
+                        @endif
+                        @if(auth()->user()->hasAnyRole(['manager','admin','ke']))
                             {{-- MENU DATA KEBUN dengan SUBMENU --}}
                             <a class="collapse-item {{ $isKebunActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseKebun" aria-expanded="{{ $isKebunActive ? 'true' : 'false' }}" aria-controls="collapseKebun">
                                 {{ __('Kebun') }}
@@ -169,7 +170,8 @@
                                     <a class="collapse-item {{ request()->routeIs('aramco.index') ? 'active' : '' }}" href="{{ route('aramco.index') }}">{{ __('Input Aramco') }}</a>
                                 </div>
                             </div>
-
+                        @endif
+                        @if(auth()->user()->hasAnyRole(['manager','admin','kcpo']))
                             {{-- MENU DATA PKS dengan SUBMENU --}}
                             <a class="collapse-item {{ $isPKSActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapsePKS" aria-expanded="{{ $isPKSActive ? 'true' : 'false' }}" aria-controls="collapsePKS">
                                 {{ __('Pabrik') }}
@@ -183,7 +185,8 @@
                                     <a class="collapse-item {{ request()->routeIs('contractpk.index') ? 'active' : '' }}" href="{{ route('contractpk.index') }}">{{ __('Input Kontrak PK') }}</a>
                                 </div>
                             </div>
-
+                        @endif
+                        @if(auth()->user()->hasAnyRole(['manager','admin']))
                             {{-- MENU DATA UPKEEP dengan SUBMENU --}}
                             <a class="collapse-item {{ $isUpkeepActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseUpkeep" aria-expanded="{{ $isUpkeepActive ? 'true' : 'false' }}" aria-controls="collapseUpkeep">
                                 {{ __('Upkeep') }}
@@ -195,7 +198,8 @@
                                     <a class="collapse-item {{ request()->routeIs('payroll.index') ? 'active' : '' }}" href="{{ route('payroll.index') }}">{{ __('Input HK') }}</a>
                                 </div>
                             </div>
-
+                        @endif
+                        @if(auth()->user()->hasAnyRole(['manager','admin']))
                             {{-- MENU DATA KENDERAAN & ALAT BERAT dengan SUBMENU --}}
                             <a class="collapse-item {{ $isUnitActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="{{ $isUnitActive ? 'true' : 'false' }}" aria-controls="collapseUnit">
                                 {{ __('Kenderaan') }}
@@ -208,6 +212,8 @@
                                     <a class="collapse-item {{ request()->routeIS('lhounit.index') ? 'active' : '' }}" href="{{ route('lhounit.index') }}">{{ __('Input Aktifitas') }}</a>
                                 </div>
                             </div>
+                        @endif
+                        @if(auth()->user()->hasAnyRole(['manager','admin']))
                             {{-- Menu lain tetap seperti biasa --}}
                             <a class="collapse-item {{ request()->routeIS('awsinput.index') ? 'active' : '' }}" href="{{ route('awsinput.index') }}">{{ __('Weather Station') }}</a>
                         @endif
