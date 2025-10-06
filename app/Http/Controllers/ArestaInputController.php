@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ArestaExport;
-use App\Exports\ArestaPdfExport;
 use Carbon\Carbon;
 use App\Models\Aresta;
 use Illuminate\Http\Request;
 use Termwind\Components\Raw;
+use App\Exports\ArestaExport;
 use App\Imports\ArestaImport;
+use App\Exports\ArestaPdfExport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -62,7 +63,7 @@ class ArestaInputController extends Controller
             'pokok',
             'luas'
         ])
-        ->orderBy('bulan','desc');
+        ->orderBy('id','desc');
 
         if($request->minDate && $request->maxDate) {
             $query->whereBetween('bulan', [$request->minDate, $request->maxDate]);
@@ -132,8 +133,13 @@ class ArestaInputController extends Controller
      */
     public function edit(string $id)
     {
-        $Aresta = Aresta::findOrFail($id);
-        return view('aresta.edit', ['Aresta' => $Aresta]);
+        try {
+            $aresta = Aresta::findOrFail($id);
+            return response()->json($aresta);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -141,7 +147,30 @@ class ArestaInputController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $Aresta_update = Aresta::findOrFail($id);
+        try {
+            $request->validate([
+                'bulan' => 'required|date',
+                'estate' => 'required|string|max:10',
+                'divisi' => 'required|integer',
+                'blok' => 'required|string|max:3',
+                'tahun_tanam' => 'required|integer',
+                'status_tanaman' => 'required|string|max:3',
+                'status_lahan' => 'required|string|max:10',
+                'jenis_bibit' => 'required|string|max:20',
+                'topografi' => 'required|string|max:20',
+                'jenis_tanah' => 'required|string|max:20',
+                'pokok' => 'required|integer',
+                'luas' => 'required|numeric'
+            ]);
+
+            $aresta = Aresta::findOrFail($id);
+            $aresta->update($request->all());
+
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            Log::error('Error updating Aresta: ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

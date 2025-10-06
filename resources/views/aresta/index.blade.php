@@ -233,6 +233,79 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Edit Areal Statement -->
+<div class="modal fade" id="modal-EditAresta" tabindex="-1" role="dialog" aria-labelledby="modal-EditArestaLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-EditArestaLabel">Edit Data Areal Statement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+            @csrf
+            @method('PUT')
+            <input type="hidden" id="editId" name="id">
+            <div class="form-group">
+                <label for="editTanggal">Tanggal</label>
+                <input type="date" class="form-control" id="editTanggal" name="bulan" required>
+            </div>
+            <div class="form-group">
+                <label for="editEstate">Estate</label>
+                <input type="text" class="form-control" id="editEstate" name="estate" required>
+            </div>
+            <div class="form-group">
+                <label for="editDivisi">Divisi</label>
+                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
+            </div>
+            <div class="form-group">
+                <label for="editBlok">Blok</label>
+                <input type="text" class="form-control" id="editBlok" name="blok" required>
+            </div>
+            <div class="form-group">
+                <label for="editTahunTanam">Tahun Tanam</label>
+                <input type="numeric" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+            </div>
+            <div class="form-group">
+                <label for="editStatusTanaman">Status Tanaman</label>
+                <input type="text" class="form-control" id="editStatusTanaman" name="status_tanaman" required>
+            </div>
+            <div class="form-group">
+                <label for="ediStatusLahann">Status Lahan</label>
+                <input type="text" class="form-control" id="editStatusLahan" name="status_lahan" required>
+            </div>
+            <div class="form-group">
+                <label for="editJenisBibit">Jenis Bibit</label>
+                <input type="text" class="form-control" id="editJenisBibit" name="jenis_bibit" required>
+            </div>
+            <div class="form-group">
+                <label for="editTopografi">Topografi</label>
+                <input type="text" class="form-control" id="editTopografi" name="topografi" required>
+            </div>
+            <div class="form-group">
+                <label for="editJenisTanah">Jenis Tanah</label>
+                <input type="text" class="form-control" id="editJenisTanah" name="jenis_tanah" required>
+            </div>
+            <div class="form-group">
+                <label for="editPokok">Pokok</label>
+                <input type="numeric" class="form-control" id="editPokok" name="pokok" required>
+            </div>
+            <div class="form-group">
+                <label for="editLuasan">Luasan (Ha)</label>
+                <input type="numeric" step="0.01" class="form-control" id="editLuasan" name="luas" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -315,19 +388,18 @@
         $.get('/areal/' + id + '/edit', function(data) {
             console.log('Edit data received:', data);
             $('#editId').val(data.id);
-            $('#editTanggalRakit').val(data.tanggal_rakit ? data.tanggal_rakit.split(' ')[0] : '');
-            $('#editTanggalPasang').val(data.tanggal_pasang ? data.tanggal_pasang.split(' ')[0] : '');
-            $('#editNoPo').val(data.no_po);
-            $('#editUkuran').val(data.ukuran);
-            $('#editJumlah').val(data.jumlah);
-            $('#editSatuan').val(data.satuan);
-            $('#editBlok').val(data.blok);
+            $('#editTanggal').val(data.bulan ? data.bulan.split(' ')[0] : '');
             $('#editEstate').val(data.estate);
             $('#editDivisi').val(data.divisi);
-            $('#editTitikKordinat').val(data.kordinat);
+            $('#editBlok').val(data.blok);
             $('#editTahunTanam').val(data.tahun_tanam);
-            $('#editLahan').val(data.lahan);
-            $('#editStatus').val(data.status);
+            $('#editStatusTanaman').val(data.status_tanaman);
+            $('#editStatusLahan').val(data.status_lahan);
+            $('#editJenisBibit').val(data.jenis_bibit);
+            $('#editTopografi').val(data.topografi);
+            $('#editJenisTanah').val(data.jenis_tanah);
+            $('#editPokok').val(data.pokok);
+            $('#editLuasan').val(data.luas);
         }).fail(function(xhr, status, error) {
             console.error('Error fetching edit data:', status, error);
             toastr.error('Gagal memuat data untuk edit.');
@@ -344,7 +416,7 @@
             type: 'PUT',
             data: formData,
             success: function(response) {
-                $('#modal-EditAreal').modal('hide');
+                $('#modal-EditAresta').modal('hide');
                 table.ajax.reload();
                 toastr.success(response.success);
             },
