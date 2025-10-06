@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ArestaExport;
+use App\Exports\ArestaPdfExport;
 use Carbon\Carbon;
 use App\Models\Aresta;
 use Illuminate\Http\Request;
@@ -161,5 +163,22 @@ class ArestaInputController extends Controller
         Excel::import(new ArestaImport, $request->file('file'));
 
         return redirect()->route('areal.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+
+        return Excel::download(new ArestaExport($minDate, $maxDate), 'Areal_Statement.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+
+        $pdfExport = new ArestaPdfExport($minDate, $maxDate);
+        return $pdfExport->generatePdf();
     }
 }

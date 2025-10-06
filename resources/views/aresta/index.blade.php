@@ -59,6 +59,9 @@
                 <tbody>
                 </tbody>
             </table>
+            <div id="noDataMessage" class="alert alert-warning mt-3" style="display:none;">
+                Tidak ada data yang sesuai dengan filter tanggal.
+            </div>
         </div>
     </div>
 </div>
@@ -248,8 +251,14 @@
                 d.maxDate = $('#maxDate').val();
             }
         },
-        drawCallback: function() {
-            console.log('Table drawn');
+        drawCallback: function(settings) {
+            var api = this.api();
+            var dataCount = api.data().count();
+            if (dataCount === 0) {
+                $('#noDataMessage').show();
+            } else {
+                $('#noDataMessage').hide();
+            }
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
@@ -277,7 +286,7 @@
     $('#exportExcel').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
-        var url = "{{ route('aramco.export.excel') }}";
+        var url = "{{ route('areal.export.excel') }}";
         if (minDate || maxDate) {
             url += '?minDate=' + minDate + '&maxDate=' + maxDate;
         }
@@ -287,7 +296,7 @@
     $('#exportPdf').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
-        var url = "{{ route('aramco.export.pdf') }}";
+        var url = "{{ route('areal.export.pdf') }}";
         if (minDate || maxDate) {
             url += '?minDate=' + minDate + '&maxDate=' + maxDate;
         }
@@ -303,7 +312,7 @@
             console.error('ID is empty');
             return;
         }
-        $.get('/aramco/' + id + '/edit', function(data) {
+        $.get('/areal/' + id + '/edit', function(data) {
             console.log('Edit data received:', data);
             $('#editId').val(data.id);
             $('#editTanggalRakit').val(data.tanggal_rakit ? data.tanggal_rakit.split(' ')[0] : '');
@@ -331,11 +340,11 @@
         var id = $('#editId').val();
         var formData = $(this).serialize();
         $.ajax({
-            url: '/aramco/' + id,
+            url: '/areal/' + id,
             type: 'PUT',
             data: formData,
             success: function(response) {
-                $('#modal-EditAramco').modal('hide');
+                $('#modal-EditAreal').modal('hide');
                 table.ajax.reload();
                 toastr.success(response.success);
             },
