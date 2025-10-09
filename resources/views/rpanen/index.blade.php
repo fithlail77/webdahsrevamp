@@ -26,17 +26,23 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
-        <div>
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <label for="minDate">Dari Tanggal</label>
-                    <input type="date" id="minDate" class="form-control">
-                </div>
-                <div class="col-md-3">
-                    <label for="maxDate">Sampai Tanggal</label>
-                    <input type="date" id="maxDate" class="form-control">
-                </div>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="minDate">Dari Tanggal</label>
+                <input type="date" id="minDate" class="form-control">
             </div>
+            <div class="col-md-3">
+                <label for="maxDate">Sampai Tanggal</label>
+                <input type="date" id="maxDate" class="form-control">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button id="searchBtn" class="btn btn-primary">Cari</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-body">
             <table id="rpanenTable" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -57,7 +63,6 @@
                 <tbody>
                 </tbody>
             </table>
-        </div>
     </div>
 </div>
 
@@ -190,7 +195,7 @@
         ]
     });
 
-    $('#minDate, #maxDate').on('change', function() {
+    $('#searchBtn').on('click', function() {
         table.ajax.reload();
     });
 

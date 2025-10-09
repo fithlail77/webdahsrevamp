@@ -35,7 +35,8 @@ class RealisasiPanenController extends Controller
             'satuan',
             'tk',
             'ha_panen',
-        ]);
+        ])
+        ->orderBy('tanggal','desc');
 
         if ($request->minDate && $request->maxDate) {
             $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);

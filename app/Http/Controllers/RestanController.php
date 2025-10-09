@@ -30,7 +30,8 @@ class RestanController extends Controller
             'blok',
             'tonase',
             'keterangan',
-        ]);
+        ])
+        ->orderBy('tanggal','desc');
 
         if($request->minDate && $request->maxDate) {
             $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);

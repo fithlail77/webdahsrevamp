@@ -26,18 +26,24 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
-        <div>
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <label for="minDate">Dari Tanggal</label>
-                    <input type="date" id="minDate" class="form-control">
-                </div>
-                <div class="col-md-3">
-                    <label for="maxDate">Sampai Tanggal</label>
-                    <input type="date" id="maxDate" class="form-control">
-                </div>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="minDate">Dari Tanggal</label>
+                <input type="date" id="minDate" class="form-control">
             </div>
-            <table class="table table-bordered table-striped" id="arestaTable">
+            <div class="col-md-3">
+                <label for="maxDate">Sampai Tanggal</label>
+                <input type="date" id="maxDate" class="form-control">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button id="searchBtn" class="btn btn-primary">Cari</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <table class="table table-bordered table-striped" id="arestaTable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -62,7 +68,6 @@
             <div id="noDataMessage" class="alert alert-warning mt-3" style="display:none;">
                 Tidak ada data yang sesuai dengan filter tanggal.
             </div>
-        </div>
     </div>
 </div>
 <div class="card shadow mb-4">
@@ -351,7 +356,7 @@
         ]
     });
 
-    $('#minDate, #maxDate').on('change', function() {
+    $('#searchBtn').on('click', function() {
         table.ajax.reload();
     });
 

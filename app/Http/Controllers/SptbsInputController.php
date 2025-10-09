@@ -48,7 +48,8 @@ class SptbsInputController extends Controller
             'jumlah_grading',
             'berat_bersih',
             'bjr',
-        ]);
+        ])
+        ->orderBy('jam_masuk','asc');
 
         if($request->minDate && $request->maxDate) {
             $query->whereBetween('tanggal_tiket', [$request->minDate, $request->maxDate]);

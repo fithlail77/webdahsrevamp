@@ -44,7 +44,6 @@ class PremiController extends Controller
             'satuan_2',
             'total_premi'
         ])
-        ->whereDate('tanggal', '>=', now()->subDays(10)->format('Y-m-d'))
         ->orderBy('tanggal','desc');
 
         if($request->minDate && $request->maxDate) {

@@ -49,7 +49,6 @@ class RentalController extends Controller
             'satuan_2',
             'total_biaya',
         ])
-        ->whereDate('tanggal','>=', now()->subDays(30)->format('Y-m-d'))
         ->orderBy('tanggal','desc');
 
         if($request->minDate && $request->maxDate) {

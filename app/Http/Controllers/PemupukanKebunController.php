@@ -38,7 +38,6 @@ class PemupukanKebunController extends Controller
             'jml_tenaga',
             'keterangan'
         ])
-        ->whereDate('tanggal','>=', now()->subDays(30)->format('Y-m-d'))
         ->orderBy('tanggal','desc');
 
         if($request->minDate && $request->maxDate) {

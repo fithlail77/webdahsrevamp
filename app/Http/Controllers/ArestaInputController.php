@@ -63,7 +63,7 @@ class ArestaInputController extends Controller
             'pokok',
             'luas'
         ])
-        ->orderBy('id','desc');
+        ->orderBy('bulan','desc');
 
         if($request->minDate && $request->maxDate) {
             $query->whereBetween('bulan', [$request->minDate, $request->maxDate]);

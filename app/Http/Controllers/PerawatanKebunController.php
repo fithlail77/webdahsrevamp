@@ -46,7 +46,6 @@ class PerawatanKebunController extends Controller
             'satuan_3',
             'keterangan'
         ])
-        ->whereDate('tanggal','>=', now()->subDays(30)->format('Y-m-d'))
         ->orderBy('tanggal','desc');
 
         if($request->minDate && $request->maxDate) {
