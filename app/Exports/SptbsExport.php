@@ -10,11 +10,13 @@ class SptbsExport implements FromCollection, WithHeadings
 {
     protected $startDate;
     protected $endDate;
+    protected $search;
 
-    public function __construct($startDate = null, $endDate = null)
+    public function __construct($startDate = null, $endDate = null, $search = null)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->search = $search;
     }
 
     /**
@@ -48,8 +50,21 @@ class SptbsExport implements FromCollection, WithHeadings
             'bjr',
         ]);
 
-        if ($this->startDate && $this->endDate) {
-            $query->whereDate('tanggal_tiket', '>=', $this->startDate)->whereDate('tanggal_tiket', '<=', $this->endDate);
+        // Jika ada pencarian, ambil semua data tanpa filter tanggal
+        if (!empty($this->search)) {
+            // Tidak ada filter tanggal
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if ($this->startDate && $this->endDate) {
+                $query->whereDate('tanggal_tiket', '>=', $this->startDate)->whereDate('tanggal_tiket', '<=', $this->endDate);
+            } elseif ($this->startDate) {
+                $query->whereDate('tanggal_tiket', '>=', $this->startDate);
+            } elseif ($this->endDate) {
+                $query->whereDate('tanggal_tiket', '<=', $this->endDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal_tiket', '>=', \Carbon\Carbon::now()->subDays(30));
+            }
         }
 
         return $query->get()->map(function ($item) {

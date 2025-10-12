@@ -8,13 +8,15 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class PremiExport implements FromCollection, WithHeadings
 {
-    protected $startDate;
-    protected $endDate;
+    protected $minDate;
+    protected $maxDate;
+    protected $search;
 
-    public function __construct($startDate = null, $endDate = null)
+    public function __construct($minDate = null, $maxDate = null, $search = null)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->minDate = $minDate;
+        $this->maxDate = $maxDate;
+        $this->search = $search;
     }
 
     /**
@@ -43,8 +45,21 @@ class PremiExport implements FromCollection, WithHeadings
             'total_premi'
         ]);
 
-        if ($this->startDate && $this->endDate) {
-            $query->whereDate('tanggal', '>=', $this->startDate)->whereDate('tanggal', '<=', $this->endDate);
+         // Jika ada pencarian, ambil semua data tanpa filter tanggal
+        if (!empty($this->search)) {
+            // Tidak ada filter tanggal
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if ($this->minDate && $this->maxDate) {
+                $query->whereDate('tanggal', '>=', $this->minDate)->whereDate('tanggal', '<=', $this->maxDate);
+            } elseif ($this->minDate) {
+                $query->whereDate('tanggal', '>=', $this->minDate);
+            } elseif ($this->maxDate) {
+                $query->whereDate('tanggal', '<=', $this->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal', '>=', \Carbon\Carbon::now()->subDays(30));
+            }
         }
 
         return $query->get()->map(function ($item) {

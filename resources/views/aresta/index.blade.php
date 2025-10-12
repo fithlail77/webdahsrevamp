@@ -364,9 +364,14 @@
     $('#exportExcel').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
+        var search = table.search();
         var url = "{{ route('areal.export.excel') }}";
-        if (minDate || maxDate) {
-            url += '?minDate=' + minDate + '&maxDate=' + maxDate;
+        var params = [];
+        if (minDate) params.push('minDate=' + minDate);
+        if (maxDate) params.push('maxDate=' + maxDate);
+        if (search) params.push('search=' + encodeURIComponent(search));
+        if (params.length > 0) {
+            url += '?' + params.join('&');
         }
         window.location.href = url;
     });
@@ -374,9 +379,14 @@
     $('#exportPdf').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
+        var search = table.search();
         var url = "{{ route('areal.export.pdf') }}";
-        if (minDate || maxDate) {
-            url += '?minDate=' + minDate + '&maxDate=' + maxDate;
+        var params = [];
+        if (minDate) params.push('minDate=' + minDate);
+        if (maxDate) params.push('maxDate=' + maxDate);
+        if (search) params.push('search=' + encodeURIComponent(search));
+        if (params.length > 0) {
+            url += '?' + params.join('&');
         }
         window.location.href = url;
     });

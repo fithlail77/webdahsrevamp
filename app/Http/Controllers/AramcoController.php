@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\AramcoExport;
-use App\Exports\AramcoPdfExport;
+use Carbon\Carbon;
 use App\Models\Aramco;
 use Illuminate\Http\Request;
+use App\Exports\AramcoExport;
 use App\Imports\AramcoImport;
+use App\Exports\AramcoPdfExport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -41,12 +42,21 @@ class AramcoController extends Controller
         ])
         ->orderBy('tanggal_pasang','desc');
 
-        if($request->minDate && $request->maxDate) {
-            $query->whereBetween('tanggal_pasang', [$request->minDate, $request->maxDate]);
-        } elseif ($request->minDate) {
-            $query->whereDate('tanggal_pasang', '>=', $request->minDate);
-        } elseif ($request->maxDate) {
-            $query->whereDate('tanggal_pasang', '<=', $request->maxDate);
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('tanggal_pasang', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('tanggal_pasang', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('tanggal_pasang', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal_pasang', '>=', Carbon::now()->subDays(30));
+            }
         }
 
         return DataTables::of($query)

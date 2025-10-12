@@ -11,16 +11,18 @@ class ArestaExport implements FromCollection, WithHeadings
 
     protected $startDate;
     protected $endDate;
+    protected $search;
 
-    public function __construct($startDate = null, $endDate = null)
+    public function __construct($startDate = null, $endDate = null, $search = null)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->search = $search;
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         $query = Aresta::select([
@@ -38,8 +40,21 @@ class ArestaExport implements FromCollection, WithHeadings
             'luas'
         ]);
 
-        if ($this->startDate && $this->endDate) {
-            $query->whereDate('bulan', '>=', $this->startDate)->whereDate('bulan', '<=', $this->endDate);
+        // Jika ada pencarian, ambil semua data tanpa filter tanggal
+        if (!empty($this->search)) {
+            // Tidak ada filter tanggal
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if ($this->startDate && $this->endDate) {
+                $query->whereDate('bulan', '>=', $this->startDate)->whereDate('bulan', '<=', $this->endDate);
+            } elseif ($this->startDate) {
+                $query->whereDate('bulan', '>=', $this->startDate);
+            } elseif ($this->endDate) {
+                $query->whereDate('bulan', '<=', $this->endDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('bulan', '>=', \Carbon\Carbon::now()->subDays(30));
+            }
         }
 
         return $query->get()->map(function ($item) {

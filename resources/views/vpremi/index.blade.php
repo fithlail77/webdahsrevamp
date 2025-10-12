@@ -71,6 +71,9 @@
                 <tbody>
                 </tbody>
             </table>
+        <div id="noDataMessage" class="alert alert-warning mt-3" style="display:none;">
+            Tidak ada data yang sesuai dengan filter tanggal.
+        </div>
     </div>
 </div>
 
@@ -216,8 +219,14 @@
                 d.maxDate = $('#maxDate').val();
             }
         },
-        drawCallback: function() {
-            console.log('Table drawn');
+        drawCallback: function(settings) {
+            var api = this.api();
+            var dataCount = api.data().count();
+            if (dataCount === 0) {
+                $('#noDataMessage').show();
+            } else {
+                $('#noDataMessage').hide();
+            }
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
@@ -251,9 +260,14 @@
     $('#exportExcel').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
+        var search = table.search();
         var url = "{{ route('premi.export.excel') }}";
-        if (minDate || maxDate) {
-            url += '?minDate=' + minDate + '&maxDate=' + maxDate;
+        var params = [];
+        if (minDate) params.push('minDate=' + minDate);
+        if (maxDate) params.push('maxDate=' + maxDate);
+        if (search) params.push('search=' + encodeURIComponent(search));
+        if (params.length > 0) {
+            url += '?' + params.join('&');
         }
         window.location.href = url;
     });
@@ -261,9 +275,14 @@
     $('#exportPdf').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
+        var search = table.search();
         var url = "{{ route('premi.export.pdf') }}";
-        if (minDate || maxDate) {
-            url += '?minDate=' + minDate + '&maxDate=' + maxDate;
+        var params = [];
+        if (minDate) params.push('minDate=' + minDate);
+        if (maxDate) params.push('maxDate=' + maxDate);
+        if (search) params.push('search=' + encodeURIComponent(search));
+        if (params.length > 0) {
+            url += '?' + params.join('&');
         }
         window.location.href = url;
     });

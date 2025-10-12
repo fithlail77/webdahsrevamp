@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\PerawatanKebunExport;
-use App\Exports\PerawatanKebunPdfExport;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\PerawatanKebun;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PerawatanKebunExport;
 use App\Imports\PerawatanKebunImport;
+use App\Exports\PerawatanKebunPdfExport;
 use Yajra\DataTables\Facades\DataTables;
 
 class PerawatanKebunController extends Controller
@@ -48,12 +49,21 @@ class PerawatanKebunController extends Controller
         ])
         ->orderBy('tanggal','desc');
 
-        if($request->minDate && $request->maxDate) {
-            $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
-        } elseif ($request->minDate) {
-            $query->whereDate('tanggal', '>=', $request->minDate);
-        } elseif ($request->maxDate) {
-            $query->whereDate('tanggal', '<=', $request->maxDate);
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('tanggal', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('tanggal', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+            }
         }
 
         return DataTables::of($query)

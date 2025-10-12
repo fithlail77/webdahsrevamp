@@ -5,17 +5,19 @@ namespace App\Exports;
 use App\Models\RealisasiPanen;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Illuminate\Http\Request;
 
 class RealisasiPanenExport implements FromCollection, WithHeadings
 {
     protected $minDate;
     protected $maxDate;
+    protected $search;
 
-    public function __construct($minDate = null, $maxDate = null)
+
+    public function __construct($minDate = null, $maxDate = null, $search = null)
     {
         $this->minDate = $minDate;
         $this->maxDate = $maxDate;
+        $this->search = $search;
     }
 
     /**
@@ -36,12 +38,21 @@ class RealisasiPanenExport implements FromCollection, WithHeadings
             'ha_panen',
         ]);
 
-        if ($this->minDate && $this->maxDate) {
-            $query->whereBetween('tanggal', [$this->minDate, $this->maxDate]);
-        } elseif ($this->minDate) {
-            $query->whereDate('tanggal', '>=', $this->minDate);
-        } elseif ($this->maxDate) {
-            $query->whereDate('tanggal', '<=', $this->maxDate);
+          // Jika ada pencarian, ambil semua data tanpa filter tanggal
+        if (!empty($this->search)) {
+            // Tidak ada filter tanggal
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if ($this->minDate && $this->maxDate) {
+                $query->whereDate('tanggal', '>=', $this->minDate)->whereDate('tanggal', '<=', $this->maxDate);
+            } elseif ($this->minDate) {
+                $query->whereDate('tanggal', '>=', $this->minDate);
+            } elseif ($this->maxDate) {
+                $query->whereDate('tanggal', '<=', $this->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal', '>=', \Carbon\Carbon::now()->subDays(30));
+            }
         }
 
         return $query->get()->map(function ($item) {

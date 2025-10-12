@@ -65,12 +65,21 @@ class ArestaInputController extends Controller
         ])
         ->orderBy('bulan','desc');
 
-        if($request->minDate && $request->maxDate) {
-            $query->whereBetween('bulan', [$request->minDate, $request->maxDate]);
-        } elseif ($request->minDate) {
-            $query->whereDate('bulan', '>=', $request->minDate);
-        } elseif ($request->maxDate) {
-            $query->whereDate('bulan', '<=', $request->maxDate);
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('bulan', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('bulan', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('bulan', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('bulan', '>=', Carbon::now()->subDays(30));
+            }
         }
 
         return DataTables::of($query)
@@ -198,16 +207,18 @@ class ArestaInputController extends Controller
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
 
-        return Excel::download(new ArestaExport($minDate, $maxDate), 'Areal_Statement.xlsx');
+        return Excel::download(new ArestaExport($minDate, $maxDate, $search), 'Areal_Statement.xlsx');
     }
 
     public function exportPdf(Request $request)
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
 
-        $pdfExport = new ArestaPdfExport($minDate, $maxDate);
+        $pdfExport = new ArestaPdfExport($minDate, $maxDate, $search);
         return $pdfExport->generatePdf();
     }
 }

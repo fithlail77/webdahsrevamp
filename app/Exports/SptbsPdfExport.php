@@ -44,8 +44,21 @@ class SptbsPdfExport
             'bjr',
         ]);
 
-        if ($this->startDate && $this->endDate) {
-            $query->whereDate('tanggal_tiket', '>=', $this->startDate)->whereDate('tanggal_tiket', '<=', $this->endDate);
+        // Jika ada pencarian, ambil semua data tanpa filter tanggal
+        if (!empty($this->search)) {
+            // Tidak ada filter tanggal
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if ($this->startDate && $this->endDate) {
+                $query->whereDate('tanggal_tiket', '>=', $this->startDate)->whereDate('tanggal_tiket', '<=', $this->endDate);
+            } elseif ($this->startDate) {
+                $query->whereDate('tanggal_tiket', '>=', $this->startDate);
+            } elseif ($this->endDate) {
+                $query->whereDate('tanggal_tiket', '<=', $this->endDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal_tiket', '>=', \Carbon\Carbon::now()->subDays(30));
+            }
         }
 
         $data = $query->get()->map(function ($item) {

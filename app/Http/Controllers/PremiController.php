@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Premi;
 use App\Exports\PremiExport;
 use App\Imports\PremiImport;
@@ -46,18 +47,27 @@ class PremiController extends Controller
         ])
         ->orderBy('tanggal','desc');
 
-        if($request->minDate && $request->maxDate) {
-            $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
-        } elseif ($request->minDate) {
-            $query->whereDate('tanggal', '>=', $request->minDate);
-        } elseif ($request->maxDate) {
-            $query->whereDate('tanggal', '<=', $request->maxDate);
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('tanggal', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('tanggal', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+            }
         }
 
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_formatted', function ($row) {
-                return \Carbon\Carbon::parse($row['tanggal'])->format('d-m-Y');
+                return Carbon::parse($row['tanggal'])->format('d-m-Y');
             })
             ->addColumn('aksi', function ($row) {
                 return '

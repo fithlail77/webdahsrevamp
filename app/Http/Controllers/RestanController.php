@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\LapRestanExport;
-use App\Exports\LapRestanPdfExport;
+use Carbon\Carbon;
 use App\Models\Restan;
 use Illuminate\Http\Request;
+use App\Exports\LapRestanExport;
+use App\Exports\LapRestanPdfExport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -33,12 +34,21 @@ class RestanController extends Controller
         ])
         ->orderBy('tanggal','desc');
 
-        if($request->minDate && $request->maxDate) {
-            $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
-        } elseif ($request->minDate) {
-            $query->whereDate('tanggal', '>=', $request->minDate);
-        } elseif ($request->maxDate) {
-            $query->whereDate('tanggal', '<=', $request->maxDate);
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('tanggal', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('tanggal', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+            }
         }
 
         return DataTables::of($query)
