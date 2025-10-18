@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Exports\CurahHujanExport;
+use App\Exports\CurahHujanPdfExport;
+use Carbon\Carbon;
 use App\Models\ChInput;
+use App\Imports\ChImport;
+use App\Models\CurahHujan;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\ChImport;
-use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class ChInputController extends Controller
 {
@@ -17,10 +22,10 @@ class ChInputController extends Controller
      */
     public function index()
     {
-        $ChInput = ChInput::where('dates', '>=', Carbon::now()->subDays(30))
-            ->where('pt', 'GUM')
-            ->orderBy('dates', 'desc')
-            ->get();
+        //$ChInput = ChInput::where('dates', '>=', Carbon::now()->subDays(30))
+        //    ->where('pt', 'GUM')
+        //    ->orderBy('dates', 'desc')
+        //    ->get();
 
         $start = Carbon::now()->startOfMonth();
         $end = Carbon::now()->endOfMonth();
@@ -52,7 +57,51 @@ class ChInputController extends Controller
         $chart1 = $result;
 
 
-        return view('ch.index', compact('ChInput', 'labels1', 'chart1'));
+        return view('ch.index', compact('labels1', 'chart1'));
+    }
+
+    public function data(Request $request)
+    {
+        $query = ChInput::select([
+            'id',
+            'pt',
+            'dates',
+            'estate',
+            'divisi',
+            'ch'
+        ])
+        ->orderBy('dates','desc');
+
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('dates', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('dates', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('dates', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('dates', '>=', Carbon::now()->subDays(30));
+            }
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tanggal_formatted', function ($row) {
+                return \Carbon\Carbon::parse($row['dates'])->format('d-m-Y');
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditCurahHujan"><i class="fa fa-edit"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+
     }
 
     /**
@@ -103,8 +152,13 @@ class ChInputController extends Controller
      */
     public function edit(string $id)
     {
-        $ChInput = ChInput::findOrFail($id);
-        return view('ch.edit', ['ChInput' => $ChInput]);
+        try {
+            $curah = ChInput::findOrFail($id);
+            return response()->json($curah);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -112,15 +166,23 @@ class ChInputController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $ChInput_update = ChInput::findOrFail($id);
-        $ChInput_update->pt = $request->get('pt');
-        $ChInput_update->dates = $request->get('dates');
-        $ChInput_update->estate = $request->get('estate');
-        $ChInput_update->divisi = $request->get('divisi');
-        $ChInput_update->ch = $request->get('ch');
-        $ChInput_update->save();
+        try {
+            $request->validate([
+                'pt' => 'required|string',
+                'dates' => 'required|date',
+                'estate' => 'required|string',
+                'divisi' => 'required|integer',
+                'ch' => 'required|numeric'
+            ]);
 
-        return redirect()->route('curah.index')->with('success', 'Data Berhasil diubah');
+            $curah = ChInput::findOrFail($id);
+            $curah->update($request->only(['pt', 'dates', 'estate', 'divisi', 'ch']));
+
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            Log::error('Error updating Curah Hujan: ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -142,5 +204,24 @@ class ChInputController extends Controller
         Excel::import(new ChImport, $request->file('file'));
 
         return redirect()->route('curah.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        return Excel::download(new CurahHujanExport($minDate, $maxDate, $search), 'Curah_Hujan.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        $pdfExport = new CurahHujanPdfExport($minDate, $maxDate, $search);
+        return $pdfExport->generatePdf();
     }
 }

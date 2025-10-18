@@ -5,17 +5,44 @@
 <h1 class="h3 mb-2 text-gray-800">FFB Internal</h1>
 <hr>
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <div>
             <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right" disabled>
                 <i class="fa fa-plus"></i> Tambah
             </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadFfbInt" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>
+        </div>
+        <div>
+            <button class="btn btn-success btn-sm btn-flat" id="exportExcel">
+                <i class="fa fa-file-excel"></i> Export Excel
+            </button>
+            <button class="btn btn-danger btn-sm btn-flat" id="exportPdf">
+                <i class="fa fa-file-pdf"></i> Export PDF
+            </button>
+        </div>
     </div>
 </div>
 <div class="card shadow mb-4">
-    <!-- Area chart example-->
+    <div class="card-body">
+        <div class="row mb-1">
+            <div class="col-md-3">
+                <label for="minDate">Dari Tanggal</label>
+                <input type="date" id="minDate" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label for="maxDate">Sampai Tanggal</label>
+                <input type="date" id="maxDate" class="form-control">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button id="searchBtn" class="btn btn-primary">Cari</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="card shadow mb-4">
+
     <div class="card mb-2">
       <div class="card-header">Grafik TBS Internal GUM -  Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</div>
         <div class="card-body">
@@ -23,11 +50,10 @@
         </div>
         <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
     </div>
-</div>
+</div>-->
 <div class="card shadow mb-4">
     <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable-ffbint" width="100%" cellsapcing="0">
+        <table id="ffbintTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                   <th>No</th>
@@ -52,41 +78,11 @@
                 </tr>
             </thead>
             <tbody>
-                    <?php $no = 1; ?>
-                    @foreach ($ffbint as $row)
-                    <tr>
-                        <td>{{ $no }}</td>
-                        <td>{{ $row->no_po }}</td>
-                        <td>{{ $row->vendor_detail }}</td>
-                        <td>{{ \Carbon\Carbon::parse($row->tanggal)->format('d-m-Y') }}</td>
-                        <td>{{ $row->time_in }}</td>
-                        <td>{{ $row->time_out }}</td>
-                        <td>{{ $row->no_plat }}</td>
-                        <td>{{ $row->driver }}</td>
-                        <td>{{ $row->bruto_awal }}</td>
-                        <td>{{ $row->tarra }}</td>
-                        <td>{{ $row->ton_bruto }}</td>
-                        <td>{{ $row->grading }}</td>
-                        <td>{{ $row->netto }}</td>
-                        <td>{{ $row->jml_tandan }}</td>
-                        <td>{{ $row->bjr }}</td>
-                        <td>{{ $row->estate }}</td>
-                        <td>{{ $row->divisi }}</td>
-                        <td>{{ $row->asal_tbs }}</td>
-                        <td>
-                            <a href="{{route('ffbinternal.edit' ,[$row->id])}}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" title="Ubah Data">
-                                    <i class="fas fa-edit fa-sm text-white-50"></i>
-                                </a>
-                                <a href="/ffbinternal/hapus/{{ $row->id }}" onclick="return confirm('Yakin Ingin menghapus data?')" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" title="Hapus Data">
-                                    <i class="fas fa-trash-alt fa-sm text-white-50"></i>
-                                </a>
-                        </td>
-                    </tr>
-                    <?php $no++; ?>
-                    @endforeach
-                </tbody>
+            </tbody>
         </table>
-      </div>
+        <div id="noDataMessage" class="alert alert-warning mt-3" style="display:none;">
+            Tidak ada data yang sesuai dengan filter tanggal.
+        </div>
     </div>
 </div>
 
@@ -126,6 +122,131 @@
 @endsection
 
 @push('scripts')
+<script>
+    $(document).ready(function() {
+    var table = $('#ffbintTable').DataTable({
+        processing: true,
+        serverSide: true,
+        scrollX: true,
+        responsive: false,
+        autoWidth: false,
+        ajax: {
+            url: "{{ route('ffbinternal.data') }}",
+            data: function(d) {
+                d.minDate = $('#minDate').val();
+                d.maxDate = $('#maxDate').val();
+            }
+        },
+        drawCallback: function(settings) {
+            var api = this.api();
+            var dataCount = api.data().count();
+            if (dataCount === 0) {
+                $('#noDataMessage').show();
+            } else {
+                $('#noDataMessage').hide();
+            }
+        },
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'no_po', name: 'no_po' },
+            { data: 'vendor_detail', name: 'vendor_detail' },
+            { data: 'tanggal_formatted', name: 'tanggal_formatted' },
+            { data: 'time_in', name: 'time_in' },
+            { data: 'time_out', name: 'time_out' },
+            { data: 'no_plat', name: 'no_plat'},
+            { data: 'driver', name: 'driver' },
+            { data: 'bruto_awal', name: 'bruto_awal' },
+            { data: 'tarra', name: 'tarra' },
+            { data: 'ton_bruto', name: 'ton_bruto' },
+            { data: 'grading', name: 'grading' },
+            { data: 'netto', name: 'netto' },
+            { data: 'jml_tandan', name: 'jml_tandan' },
+            { data: 'bjr', name: 'bjr' },
+            { data: 'estate', name: 'estate' },
+            { data: 'divisi', name: 'divisi' },
+            { data: 'asal_tbs', name: 'asal_tbs' },
+            { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
+        ]
+    });
+
+    $('#searchBtn').on('click', function() {
+        table.ajax.reload();
+    });
+
+    // Handle export buttons
+    $('#exportExcel').on('click', function() {
+        var minDate = $('#minDate').val();
+        var maxDate = $('#maxDate').val();
+        var search = table.search();
+        var url = "{{ route('ffbinternal.export.excel') }}";
+        var params = [];
+        if (minDate) params.push('minDate=' + minDate);
+        if (maxDate) params.push('maxDate=' + maxDate);
+        if (search) params.push('search=' + encodeURIComponent(search));
+        if (params.length > 0) {
+            url += '?' + params.join('&');
+        }
+        window.location.href = url;
+    });
+
+    $('#exportPdf').on('click', function() {
+        var minDate = $('#minDate').val();
+        var maxDate = $('#maxDate').val();
+        var search = table.search();
+        var url = "{{ route('ffbinternal.export.pdf') }}";
+        var params = [];
+        if (minDate) params.push('minDate=' + minDate);
+        if (maxDate) params.push('maxDate=' + maxDate);
+        if (search) params.push('search=' + encodeURIComponent(search));
+        if (params.length > 0) {
+            url += '?' + params.join('&');
+        }
+        window.location.href = url;
+    });
+
+    // Handle edit button click
+    $(document).on('click', '.edit-btn', function() {
+        var id = $(this).data('id');
+        console.log('ID:', id);
+        console.log('data-id attr:', $(this).attr('data-id'));
+        if (id == null || id === "") {
+            console.error('ID is empty');
+            return;
+        }
+        $.get('/ffbinternal/' + id + '/edit', function(data) {
+            console.log('Edit data received:', data);
+            $('#editId').val(data.id);
+            $('#editTanggal').val(data.tanggal ? data.tanggal.split(' ')[0] : '');
+            $('#editTinggiPagi').val(data.pagi_m);
+            $('#editTinggiSore').val(data.sore_m);
+            $('#editRata').val(data.rataan);
+        }).fail(function(xhr, status, error) {
+            console.error('Error fetching edit data:', status, error);
+            toastr.error('Gagal memuat data untuk edit.');
+        });
+    });
+
+    // Handle edit form submission
+    $('#editForm').on('submit', function(e) {
+        e.preventDefault();
+        var id = $('#editId').val();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: '/ffbinternal/' + id,
+            type: 'PUT',
+            data: formData,
+            success: function(response) {
+                $('#modal-EditAirSungai').modal('hide');
+                table.ajax.reload();
+                toastr.success(response.success);
+            },
+            error: function(xhr) {
+                toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+});
+</script>
 <!--<script>
         const ctx1 = document.getElementById('FfbIntChart').getContext('2d');
         const FfbIntChart = new Chart(ctx1, {
@@ -174,7 +295,7 @@
             plugins: [ChartDataLabels]
         });
 </script>-->
-<script>
+<!--<script>
 const ctx1 = document.getElementById('FfbIntChart').getContext('2d');
 const grading = @json($grading);
 
@@ -270,5 +391,5 @@ const FfbIntChart = new Chart(ctx1, {
     },
     plugins: [ChartDataLabels]
 });
-</script>
+</script>-->
 @endpush

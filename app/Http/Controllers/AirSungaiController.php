@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\AirSungai;
+use Illuminate\Http\Request;
+use App\Exports\AirSungaiExport;
+use App\Imports\AirSungaiImport;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use App\Exports\AirSungaiPdfExport;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\AirSungaiImport;
-use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class AirSungaiController extends Controller
 {
@@ -17,9 +21,9 @@ class AirSungaiController extends Controller
      */
     public function index()
     {
-        $sungai = AirSungai::where('tanggal', '>=', Carbon::now()->subDays(30))
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        //$sungai = AirSungai::where('tanggal', '>=', Carbon::now()->subDays(30))
+        //    ->orderBy('tanggal', 'desc')
+        //    ->get();
 
         $chart1 = DB::table('air_sungais')
             ->select('tanggal', DB::raw('ROUND(rataan, 2) as rataan'))
@@ -35,7 +39,49 @@ class AirSungaiController extends Controller
 
         $values1 = $chart1->pluck('rataan');
 
-        return view('airsungai.index', compact('sungai','labels1', 'values1'));
+        return view('airsungai.index', compact('labels1', 'values1'));
+    }
+
+    public function data(Request $request)
+    {
+        $query = AirSungai::select([
+            'id',
+            'tanggal',
+            'pagi_m',
+            'sore_m',
+            'rataan',
+        ])
+        ->orderBy('tanggal','desc');
+
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('tanggal', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('tanggal', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+            }
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tanggal_formatted', function ($row) {
+                return \Carbon\Carbon::parse($row['tanggal'])->format('d-m-Y');
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditAirSungai"><i class="fa fa-edit"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     /**
@@ -75,8 +121,13 @@ class AirSungaiController extends Controller
      */
     public function edit(string $id)
     {
-        $sungai = AirSungai::findOrFail($id);
-        return view('airsungai.edit', ['AirSungai' => $sungai]);
+        try {
+            $airsungai = AirSungai::findOrFail($id);
+            return response()->json($airsungai);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -84,14 +135,22 @@ class AirSungaiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $sungai = AirSungai::findOrFail($id);
-        $sungai->tanggal = $request->get('tanggal');
-        $sungai->pagi_m = $request->get('pagi_m');
-        $sungai->sore_m = $request->get('sore_m');
-        $sungai->rataan = $request->get('rataan');
-        $sungai->save();
+       try {
+            $request->validate([
+                'tanggal' => 'required|date',
+                'pagi_m' => 'required|integer',
+                'sore_m' => 'required|integer',
+                'rataan' => 'required|numeric'
+            ]);
 
-        return redirect()->route('airsungai.index')->with('success', 'Data berhasil diubah.');
+            $airsungai = AirSungai::findOrFail($id);
+            $airsungai->update($request->all());
+
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            Log::error('Error updating Air Sungai ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -113,5 +172,24 @@ class AirSungaiController extends Controller
         Excel::import(new AirSungaiImport, $request->file('file'));
 
         return redirect()->route('airsungai.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        return Excel::download(new AirSungaiExport($minDate, $maxDate, $search), 'Air_Sungai.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        $pdfExport = new AirSungaiPdfExport($minDate, $maxDate, $search);
+        return $pdfExport->generatePdf();
     }
 }

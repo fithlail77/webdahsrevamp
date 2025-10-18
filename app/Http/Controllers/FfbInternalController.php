@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Ffbinternal;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\FfbinternalImport;
+use App\Exports\FfbInternalExport;
+use App\Exports\FfbInternalPdfExport;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class FfbInternalController extends Controller
 {
@@ -16,9 +19,9 @@ class FfbInternalController extends Controller
      */
     public function index()
     {
-        $ffbint = Ffbinternal::where('tanggal', '>=', Carbon::now()->subDays(30))
-        ->orderBy('tanggal', 'desc')
-        ->get();
+        //$ffbint = Ffbinternal::where('tanggal', '>=', Carbon::now()->subDays(30))
+        //->orderBy('tanggal', 'desc')
+        //->get();
 
         //$start = Carbon::now()->startOfMonth();
         //$end = Carbon::now()->endOfMonth();
@@ -91,7 +94,65 @@ class FfbInternalController extends Controller
             $grading[] = ($brutoVal > 0) ? round(($gradingVal / $brutoVal) * 100, 2) : 0;
         }
 
-        return view('ffbint.index', compact('ffbint','labels', 'bruto', 'netto', 'grading', 'target'));
+        return view('ffbint.index', compact('labels', 'bruto', 'netto', 'grading', 'target'));
+    }
+
+    public function data(Request $request)
+    {
+        $query = Ffbinternal::select([
+            'id',
+            'no_po',
+            'vendor_detail',
+            'tanggal',
+            'time_in',
+            'time_out',
+            'no_plat',
+            'driver',
+            'bruto_awal',
+            'tarra',
+            'ton_bruto',
+            'grading',
+            'netto',
+            'jml_tandan',
+            'bjr',
+            'estate',
+            'divisi',
+            'asal_tbs',
+        ])
+        ->orderBy('tanggal','desc');
+
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('tanggal', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('tanggal', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+            }
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tanggal_formatted', function ($row) {
+                return \Carbon\Carbon::parse($row['tanggal'])->format('d-m-Y');
+            })
+             ->addColumn('tanggal_formatted1', function ($row) {
+                return \Carbon\Carbon::parse($row['bulan'])->format('d-m-Y');
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditFfbInternal"><i class="fa fa-edit"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     /**
@@ -153,5 +214,24 @@ class FfbInternalController extends Controller
         Excel::import(new FfbinternalImport, $request->file('file'));
 
         return redirect()->route('ffbinternal.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        return Excel::download(new FfbInternalExport($minDate, $maxDate, $search), 'FFB_Internal.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        $pdfExport = new FfbInternalPdfExport($minDate, $maxDate, $search);
+        return $pdfExport->generatePdf();
     }
 }

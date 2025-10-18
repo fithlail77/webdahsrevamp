@@ -70,10 +70,10 @@
             </div>
     </div>
 </div>
-<div class="card shadow mb-4">
+<!--<div class="card shadow mb-4">
     <div class="row">
         <div class="col-lg-6">
-        <!-- Bar chart example-->
+ 
             <div class="card mb-5">
             <div class="card-header">Total Pokok Per Estate</div>
                 <div class="card-body">
@@ -83,7 +83,7 @@
             </div>
             </div>
         <div class="col-lg-6">
-        <!-- Bar chart example-->
+
             <div class="card mb-5">
             <div class="card-header">Total Luas Per Estate</div>
                 <div class="card-body">
@@ -93,7 +93,7 @@
             </div>
             </div>
     </div>
-</div>
+</div> -->
 <!-- Modal File Upload -->
 <div class="modal fade" id="modal-UploadAreal" tabindex="-1" role="dialog" aria-labelledby="modal-UploadArealLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -443,7 +443,7 @@
 });
 </script>
 
-    <script>
+    <!--<script>
         const ctx1 = document.getElementById('arestaChart1').getContext('2d');
         const arestaChart1 = new Chart(ctx1, {
             type: 'bar',
@@ -536,5 +536,5 @@
             },
             plugins: [ChartDataLabels]
         });
-    </script>
+    </script> -->
 @endpush
