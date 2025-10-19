@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Ffbinternal;
 use Illuminate\Http\Request;
-use App\Imports\FfbinternalImport;
 use App\Exports\FfbInternalExport;
-use App\Exports\FfbInternalPdfExport;
+use App\Imports\FfbinternalImport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\FfbInternalPdfExport;
 use Yajra\DataTables\Facades\DataTables;
 
 class FfbInternalController extends Controller
@@ -103,6 +104,11 @@ class FfbInternalController extends Controller
             'id',
             'no_po',
             'vendor_detail',
+            'vendor_group',
+            'vendor_transportir',
+            'tgl',
+            'bln',
+            'thn',
             'tanggal',
             'time_in',
             'time_out',
@@ -115,6 +121,9 @@ class FfbInternalController extends Controller
             'netto',
             'jml_tandan',
             'bjr',
+            'area',
+            'umur_tanaman',
+            'bulan',
             'estate',
             'divisi',
             'asal_tbs',
@@ -184,7 +193,13 @@ class FfbInternalController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $tbsinternal = Ffbinternal::findOrFail($id);
+            return response()->json($tbsinternal);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -192,7 +207,42 @@ class FfbInternalController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $request->validate([
+                'no_po' => 'required|numeric',
+                'vendor_detail' => 'required|string',
+                'vendor_group' => 'required|string',
+                'vendor_transportir' => 'required|string',
+                'tgl' => 'required|integer',
+                'bln' => 'required|integer',
+                'thn' => 'required|integer',
+                'tanggal' => 'required|date',
+                'time_in' => 'nullable|string',
+                'time_out' => 'nullable|string',
+                'no_plat' => 'required|string',
+                'driver' => 'required|string',
+                'bruto_awal' => 'required|numeric',
+                'tarra' => 'required|numeric',
+                'ton_bruto' => 'required|numeric',
+                'grading' => 'required|numeric',
+                'netto' => 'required|numeric',
+                'jml_tandan' => 'required|numeric',
+                'bjr' => 'required|numeric',
+                'umur_tanaman' => 'required|numeric',
+                'bulan' => 'required|date',
+                'estate' => 'required|string',
+                'divisi' => 'required|numeric',
+                'asal_tbs' => 'required|string'
+            ]);
+
+            $tbsinternal = Ffbinternal::findOrFail($id);
+            $tbsinternal->update($request->all());
+
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            Log::error('Error updating FFB Internal Data ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

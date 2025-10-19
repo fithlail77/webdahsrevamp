@@ -28,6 +28,11 @@ class FfbInternalExport implements FromCollection, WithHeadings
         $query = Ffbinternal::select([
             'no_po',
             'vendor_detail',
+            'vendor_group',
+            'vendor_transportir',
+            'tgl',
+            'bln',
+            'thn',
             'tanggal',
             'time_in',
             'time_out',
@@ -40,9 +45,12 @@ class FfbInternalExport implements FromCollection, WithHeadings
             'netto',
             'jml_tandan',
             'bjr',
+            'area',
+            'umur_tanaman',
+            'bulan',
             'estate',
             'divisi',
-            'asal_tbs'
+            'asal_tbs',
         ]);
 
         // Jika ada pencarian, ambil semua data tanpa filter tanggal
@@ -66,6 +74,11 @@ class FfbInternalExport implements FromCollection, WithHeadings
             return [
                 'no_po' => $item->no_po,
                 'vendor_detail' => $item->vendor_detail,
+                'vendor_group' => $item->vendor_group,
+                'vendor_transportir' => $item->vendor_transportir,
+                'tgl' => $item->tgl,
+                'bln' => $item->bln,
+                'thn' => $item->thn,
                 'tanggal' => \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y'),
                 'time_in' => $item->time_in,
                 'time_out' => $item->time_out,
@@ -78,6 +91,9 @@ class FfbInternalExport implements FromCollection, WithHeadings
                 'netto' => $item->netto,
                 'jml_tandan' => $item->jml_tandan,
                 'bjr' => $item->bjr,
+                'area' => $item->area,
+                'umur_tanaman' => $item->umur_tanaman,
+                'bulan' => \Carbon\Carbon::parse($item->bulan)->format('d-m-Y'),
                 'estate' => $item->estate,
                 'divisi' => $item->divisi,
                 'asal_tbs' => $item->asal_tbs,
@@ -90,6 +106,11 @@ class FfbInternalExport implements FromCollection, WithHeadings
         return [
             'No PO',
             'Vendor Detail',
+            'Vendor Group',
+            'Vendor Transportir',
+            'Tgl',
+            'Bln',
+            'Thn',
             'Tanggal',
             'Jam Masuk',
             'Jam Keluar',
@@ -102,6 +123,9 @@ class FfbInternalExport implements FromCollection, WithHeadings
             'Netto',
             'Janjang',
             'BJR',
+            'Area',
+            'Umur Tanaman',
+            'Bulan',
             'Estate',
             'Divisi',
             'Asal TBS'
