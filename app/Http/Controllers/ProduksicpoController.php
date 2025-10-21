@@ -6,8 +6,9 @@ use Carbon\Carbon;
 use App\Models\Produksicpo;
 use Illuminate\Http\Request;
 use App\Imports\ProduksicpoImport;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProduksicpoController extends Controller
 {
@@ -16,9 +17,9 @@ class ProduksicpoController extends Controller
      */
     public function index()
     {
-        $cpo = Produksicpo::where('tanggal', '>=', Carbon::now()->subDays(30))
-        ->orderBy('tanggal', 'desc')
-        ->get();
+        //$cpo = Produksicpo::where('tanggal', '>=', Carbon::now()->subDays(30))
+        //->orderBy('tanggal', 'desc')
+        //->get();
 
         $start = Carbon::now()->startOfMonth();
         $end = Carbon::now()->endOfMonth();
@@ -65,7 +66,91 @@ class ProduksicpoController extends Controller
         
         $chart2 = $result2;
 
-        return view('cpo.index', compact('cpo','labels1','chart1','chart2'));
+        return view('cpo.index', compact('labels1','chart1','chart2'));
+    }
+
+    public function data(Request $request)
+    {
+        $query = Produksicpo::select([
+            'id',
+            'tanggal',
+            'tbs_terima_internal',
+            'persen_terima_internal',
+            'tbs_terima_eksternal',
+            'persen_terima_eksternal',
+            'total_tbs_terima',
+            'tbs_olah',
+            'sisa',
+            'cpo_produksi_today',
+            'cpo_produksi_todate',
+            'ffa_cpo_today',
+            'ffa_cpo_todate',
+            'kernel_produksi',
+            'oer',
+            'ker',
+            'oil_loss',
+            'kernel_loss',
+            'stok_cpo_pks_1',
+            'stok_cpo_pks_2',
+            'stok_cpo_jetty_1',
+            'stok_cpo_jetty_2',
+            'cpo_despatch_jetty',
+            'cpo_despatch_tongkang',
+            'stock_nut_produksi',
+            'stok_kernel_sistem_proses_silo_1',
+            'stok_kernel_sistem_proses_silo_2',
+            'stok_kernel_gudang',
+            'stok_kernel_st_kernel',
+            'stok_kernel_depan_workshop',
+            'stok_kernel_st_despatch',
+            'stok_kernel_bulking_silo',
+            'stok_kernel_total',
+            'despatch_kernel',
+            'sisa_produksi_cangkang',
+            'stok_cangkang',
+            'despatch_cangkang',
+            'bulan',
+            'tahun',
+            'tbs_olah_netto_internal',
+            'tbs_olah_netto_eksternal',
+            'tbs_olah_netto',
+            'oer_after_grading',
+            'ker_after_grading',
+        ])
+        ->orderBy('tanggal','desc');
+
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('tanggal', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('tanggal', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+            }
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tanggal_formatted', function ($row) {
+                return \Carbon\Carbon::parse($row['tanggal'])->format('d-m-Y');
+            })
+             ->addColumn('tanggal_formatted1', function ($row) {
+                return \Carbon\Carbon::parse($row['bulan'])->format('d-m-Y');
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditProduksiCpo"><i class="fa fa-edit"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     /**

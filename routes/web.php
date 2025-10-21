@@ -99,8 +99,12 @@ Route::get('/ffbinternal/export/excel',[FfbInternalController::class, 'exportExc
 Route::get('/ffbinternal/export/pdf', [FfbInternalController::class, 'exportPdf'])->name('ffbinternal.export.pdf');
 Route::resource('/ffbinternal', FfbInternalController::class);
 Route::post('/ffbinternal', [FfbInternalController::class, 'import'])->name('ffbinternal.import');
+Route::get('/ffbekternal/data', [FfbEksternalController::class, 'data'])->name('ffbeksternal.data');
+Route::get('/ffbeksternal/export/excel', [FfbEksternalController::class, 'exportExcel'])->name('ffbeksternal.export.excel');
+Route::get('/ffbeksternal/export/pdf', [FfbEksternalController::class, 'exportPdf'])->name('ffbeksternal.export.pdf');
 Route::resource('/ffbeksternal', FfbEksternalController::class);
 Route::post('/ffbeksternal', [FfbEksternalController::class, 'import'])->name('ffbeksternal.import');
+Route::get('/produksicpo/data', [ProduksicpoController::class, 'data'])->name('produksicpo.data');
 Route::resource('/produksicpo', ProduksicpoController::class);
 Route::post('/produksicpo', [ProduksicpoController::class, 'import'])->name('produksicpo.import');
 Route::resource('/contractcpo', ContractcpoController::class);

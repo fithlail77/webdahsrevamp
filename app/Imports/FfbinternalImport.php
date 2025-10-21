@@ -5,8 +5,9 @@ namespace App\Imports;
 use Carbon\Carbon;
 use App\Models\Ffbinternal;
 use Illuminate\Support\Collection;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class FfbinternalImport implements ToModel, WithHeadingRow
@@ -16,6 +17,38 @@ class FfbinternalImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
+
+        $tanggal = null;
+        $bulan = null;
+
+        if (!empty($row['tanggal'])) {
+            try {
+                // Jika format string seperti "2025-04-01"
+                if (is_string($row['tanggal'])) {
+                    $tanggal = Carbon::parse($row['tanggal'])->format('Y-m-d');
+                } else {
+                    // Jika format numeric (Excel date serial number)
+                    $tanggal = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal']))->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                Log::error("Format tanggal error: " . json_encode($row['tanggal']));
+            }
+        }
+
+        if (!empty($row['bulan'])) {
+            try {
+                // Jika format string seperti "2025-04-01"
+                if (is_string($row['bulan'])) {
+                    $bulan = Carbon::parse($row['bulan'])->format('Y-m-d');
+                } else {
+                    // Jika format numeric (Excel date serial number)
+                    $bulan = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['bulan']))->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                Log::error("Format tanggal error: " . json_encode($row['bulan']));
+            }
+        }
+
         return new Ffbinternal([
             'no_po' => $row['no_po'],
             'vendor_detail' => $row['vendor_detail'],
@@ -24,7 +57,7 @@ class FfbinternalImport implements ToModel, WithHeadingRow
             'tgl' => $row['tgl'],
             'bln' => $row['bln'],
             'thn' => $row['thn'],
-            'tanggal' => $row['tanggal'],
+            'tanggal' => $tanggal,
             'time_in' => $this->parseTime($row['time_in']),
             'time_out' => $this->parseTime($row['time_out']),
             'no_plat' => $row['no_plat'],
@@ -38,7 +71,7 @@ class FfbinternalImport implements ToModel, WithHeadingRow
             'bjr' => $row['bjr'],
             'area' => $row['area'],
             'umur_tanaman' => $row['umur_tanaman'],
-            'bulan' => $row['bulan'],
+            'bulan' => $bulan,
             'estate' => $row['estate'],
             'divisi' => $row['divisi'],
             'asal_tbs' => $row['asal_tbs'],
