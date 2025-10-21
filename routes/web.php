@@ -105,6 +105,8 @@ Route::get('/ffbeksternal/export/pdf', [FfbEksternalController::class, 'exportPd
 Route::resource('/ffbeksternal', FfbEksternalController::class);
 Route::post('/ffbeksternal', [FfbEksternalController::class, 'import'])->name('ffbeksternal.import');
 Route::get('/produksicpo/data', [ProduksicpoController::class, 'data'])->name('produksicpo.data');
+Route::get('/produksicpo/export/excel', [ProduksicpoController::class, 'exportExcel'])->name('produksicpo.export.excel');
+Route::get('/produksicpo/export/pdf', [ProduksicpoController::class, 'exportPdf'])->name('produksicpo.export.pdf');
 Route::resource('/produksicpo', ProduksicpoController::class);
 Route::post('/produksicpo', [ProduksicpoController::class, 'import'])->name('produksicpo.import');
 Route::resource('/contractcpo', ContractcpoController::class);

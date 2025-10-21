@@ -227,7 +227,7 @@
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
         var search = table.search();
-        var url = "{{ route('ffbeksternal.export.pdf') }}";
+        var url = "{{ route('produksicpo.export.pdf') }}";
         var params = [];
         if (minDate) params.push('minDate=' + minDate);
         if (maxDate) params.push('maxDate=' + maxDate);
