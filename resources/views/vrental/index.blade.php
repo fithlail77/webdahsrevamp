@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRental">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadRental">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -81,7 +81,154 @@
         </div>
     </div>
 </div>
-
+<!-- Modal Tambah Data Realisasi Panen -->
+<div class="modal fade" id="modal-AddRental" tabindex="-1" role="dialog" aria-labelledby="modal-AddRentalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddRentalLabel">Tambah Data Rental Alat & Kenderaan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('rental.store') }}" method="POST">
+            @csrf
+            <div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jenis Alat</label>
+                        <input class="form-control" name="jenis_alat" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Alat</label>
+                        <input class="form-control" name="no_alat" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Operator</label>
+                        <input class="form-control" name="operator" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">HM Awal</label>
+                        <input class="form-control" name="hm_awal" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">HM Akhir</label></label>
+                        <input class="form-control" name="hm_akhir" type="number" step="0.01"/>
+                    </div>
+                     <div class="col-md-3">
+                        <label class="small mb-1">Total HM</label></label>
+                        <input class="form-control" name="total_hm" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Potongan HM</label>
+                        <input class="form-control" name="potongan_hm" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Pembayaran HM</label>
+                        <input class="form-control" name="ha_panen" id="hapanen" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tahun_tanam" type="number"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Pekerjaan</label>
+                        <input class="form-control" name="pekerjaan" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Kelompok</label>
+                        <input class="form-control" name="kelompok" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">COA</label>
+                        <input class="form-control" name="coa" type="number"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tarif</label>
+                        <input class="form-control" name="tarif" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">BJR</label>
+                        <input class="form-control" name="bjr" id="bjr" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Hasil 1</label>
+                        <input class="form-control" name="hasil_1" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan 1</label>
+                        <select class="form-control" name="hasil_2">
+                            <option value="">-- Pilih --</option>
+                            <option value="Jjg">Janjang</option></option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Rit">Rit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Hasil 2</label>
+                        <input class="form-control" name="hasil_2" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan 2</label>
+                        <select class="form-control" name="hasil_2">
+                            <option value="">-- Pilih --</option>
+                            <option value="Jjg">Janjang</option></option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Rit">Rit</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Total Biaya</label>
+                        <input class="form-control" name="total_biaya" type="number"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal Edit Realisasi Panen -->
 <div class="modal fade" id="modal-EditRental" tabindex="-1" role="dialog" aria-labelledby="modal-EditRentalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -374,6 +521,47 @@
             },
             error: function(xhr) {
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+
+    // Auto replace comma with dot for BJR input
+    $('#bjr').on('input', function() {
+        var value = $(this).val();
+        if (value.includes(',')) {
+            $(this).val(value.replace(/,/g, '.'));
+        }
+    });
+
+    // Handle form submission for Add Rental Kenderaan dan alat modal
+    $('#modal-AddRental form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '{{ route("rental.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#modal-AddRental').modal('hide');
+                table.ajax.reload();
+                toastr.success('Data Rental Alat & Kenderaan berhasil disimpan.');
+                // Reset form
+                $('#modal-AddRental form')[0].reset();
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat menyimpan data.');
+                }
             }
         });
     });

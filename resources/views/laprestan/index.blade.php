@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRestan" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRestan">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadRestan">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -64,7 +64,68 @@
         </div>
     </div>
 </div>
-
+<!-- Modal Tambah Data Laporan Restan -->
+<div class="modal fade" id="modal-AddRestan" tabindex="-1" role="dialog" aria-labelledby="modal-AddRestanLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddRestanLabel">Tambah Laporan Restan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('laprestan.store') }}" method="POST">
+            @csrf
+            <div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tonase</label>
+                        <input class="form-control" name="tonase" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Keterangan</label>
+                        <input class="form-control" name="keterangan" type="textarea"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal Edit Realisasi Panen -->
 <div class="modal fade" id="modal-EditRestan" tabindex="-1" role="dialog" aria-labelledby="modal-EditRestanLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -113,7 +174,6 @@
     </div>
   </div>
 </div>
-
 <!-- Modal File Upload -->
 <div class="modal fade" id="modal-UploadRestan" tabindex="-1" role="dialog" aria-labelledby="modal-UploadRestanLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -255,6 +315,39 @@
             },
             error: function(xhr) {
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+
+    // Handle form submission for Add Laporan restan modal
+    $('#modal-AddRestan form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '{{ route("laprestan.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#modal-AddRestan').modal('hide');
+                table.ajax.reload();
+                toastr.success('Data Restan berhasil disimpan.');
+                // Reset form
+                $('#modal-AddRestan form')[0].reset();
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat menyimpan data.');
+                }
             }
         });
     });

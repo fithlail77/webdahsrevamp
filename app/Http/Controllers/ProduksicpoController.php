@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProduksiCpoExport;
+use App\Exports\ProduksiCpoPdfExport;
 use Carbon\Carbon;
 use App\Models\Produksicpo;
 use Illuminate\Http\Request;
@@ -210,5 +212,24 @@ class ProduksicpoController extends Controller
         Excel::import(new ProduksicpoImport, $request->file('file'));
 
         return redirect()->route('produksicpo.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        return Excel::download(new ProduksiCpoExport($minDate, $maxDate, $search), 'Produksi_CPO.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        $pdfExport = new ProduksiCpoPdfExport($minDate, $maxDate, $search);
+        return $pdfExport->generatePdf();
     }
 }

@@ -79,7 +79,7 @@
                     <th>OER</th>
                     <th>KER</th>
                     <th>Oil Loss</th>
-                    <th>Kerner Loss</th>
+                    <th>Kernel Loss</th>
                     <th>Stok Tangki 1</th>
                     <th>Stok Tangki 2</th>
                     <th>Stok Jetty</th>
@@ -128,6 +128,129 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modal-EditProduksiCpo" tabindex="-1" role="dialog" aria-labelledby="modal-EditFProduksiCpoLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-EditProduksiCpoLabel">Ubah Data Produksi Harian PKS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+            @csrf
+            @method('PUT')
+            <input type="hidden" id="editId" name="id">
+            <div class="form-group">
+                <label for="editTanggal">Tanggal</label>
+                <input type="date" class="form-control" id="editTanggal" name="tanggal" disabled>
+            </div>
+            <div class="form-group">
+                <label for="editTbsInt">TBS Internal</label>
+                <input type="number" class="form-control" id="editTbsInt" name="tbs_terima_internal">
+            </div>
+            <div class="form-group">
+                <label for="editPersenInt">Persen TBS Internal</label>
+                <input type="number" step="0.01" class="form-control" id="editPersenInt" name="persen_terima_internal" >
+            </div>
+            <div class="form-group">
+                <label for="editTbsEks">TBS Eksternal</label>
+              <input type="number" class="form-control" id="editTbsEks" name="tbs_terima_eksternal" >
+            </div>
+            <div class="form-group">
+                <label for="PersenEks">Persen TBS Eksternal</label>
+                <input type="number" step='0.01' class="form-control" id="PersenEks" name="" >
+            </div>
+            <div class="form-group">
+                <label for="editTotalTbs">Total TBS</label>
+                <input type="number" class="form-control" id="editTotalTbs" name="total_terima_tbs" >
+            </div>
+            <div class="form-group">
+                <label for="editTbsOlah">Total TBS Olah</label>
+                <input type="number" class="form-control" id="editTbsOlah" name="tbs_olah" >
+            </div>
+            <div class="form-group">
+                <label for="editSisa">Sisa</label>
+                <input type="date" class="form-control" id="editSisa" name="sisa">
+            </div>
+            <div class="form-group">
+                <label for="editCpoToday">CPO Today</label>
+                <input type="number" class="form-control" id="editCpoToday" name="cpo_produksi_today">
+            </div>
+            <div class="form-group">
+                <label for="editCpoTodate">CPO Todate</label>
+                <input type="number" class="form-control" id="editCpoTodate" name="cpo_produksi_todate">
+            </div>
+            <div class="form-group">
+                <label for="editKernel">Kernel</label>
+                <input type="number" class="form-control" id="editKernel" name="kernel_produksi">
+            </div>
+            <div class="form-group">
+                <label for="editOer">OER</label>
+                <input type="number" step="0.01" class="form-control" id="editOer" name="oer">
+            </div>
+            <div class="form-group">
+                <label for="editKer">KER</label>
+                <input type="number" step="0.01" class="form-control" id="editKer" name="ker">
+            </div>
+            <div class="form-group">
+                <label for="editOilLoss">Oil Loss</label>
+                <input type="number" step="0.01" class="form-control" id="editOilLoss" name="oil_loss">
+            </div>
+            <div class="form-group">
+                <label for="editKernelLoss">Kernel Loss</label>
+                <input type="number" step="0.01" class="form-control" id="editKernelLoss" name="kernel_loss">
+            </div>
+            <div class="form-group">
+                <label for="editTangki1">Stok Tangki 1 CPO</label>
+                <input type="number" class="form-control" id="editTangki1" name="stok_cpo_pks_1">
+            </div>
+            <div class="form-group">
+                <label for="editTangki2">Stok Tangki 2 CPO</label>
+                <input type="number" class="form-control" id="editTangki2" name="stok_cpo_pks_2">
+            </div>
+            <div class="form-group">
+                <label for="editJetty">Stok Jetty CPO</label>
+                <input type="number" class="form-control" id="editJetty" name="stok_cpo_jetty_1">
+            </div>
+            <div class="form-group">
+                <label for="editDespatchJetty">Despatch Jetty</label>
+                <input type="number" class="form-control" id="editDespatchJetty" name="cpo_despatch_jetty">
+            </div>
+            <div class="form-group">
+                <label for="editDespatchTongkang">Despatch Tongkang</label>
+                <input type="number" class="form-control" id="editDespatchTongkang" name="cpo_despatch_tongkang">
+            </div>
+            <div class="form-group">
+                <label for="editSilo1">Kernel Silo 1</label>
+                <input type="number" class="form-control" id="editSilo1" name="stok_kernel_sistem_proses_silo_1">
+            </div>
+            <div class="form-group">
+                <label for="editSilo2">Kernel Silo 2</label>
+                <input type="number" class="form-control" id="editSilo2" name="stok_kernel_sistem_proses_silo_2">
+            </div>
+            <div class="form-group">
+                <label for="editEstate">Estate</label>
+                <input type="text" class="form-control" id="editEstate" name="estate">
+            </div>
+            <div class="form-group">
+                <label for="editDivisi">Divisi</label>
+                <input type="text" class="form-control" id="editDivisi" name="divisi">
+            </div>
+            <div class="form-group">
+                <label for="editAsalTbs">Asal TBS</label>
+                <input type="text" class="form-control" id="editAsalTbs" name="asal_tbs">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
             </div>
         </form>
       </div>

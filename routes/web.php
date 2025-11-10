@@ -154,6 +154,7 @@ Route::get('/sptbs/data', [SptbsInputController::class, 'data'])->name('sptbs.da
 Route::post('/sptbs/import', [SptbsInputController::class, 'import'])->name('sptbs.import');
 Route::get('/sptbs/export/excel', [SptbsInputController::class, 'exportExcel'])->name('sptbs.export.excel');
 Route::get('/sptbs/export/pdf', [SptbsInputController::class, 'exportPdf'])->name('sptbs.export.pdf');
+Route::post('/sptbs/simpan', [SptbsInputController::class, 'simpan'])->name('sptbs.simpan');
 Route::resource('/sptbs', SptbsInputController::class);
 Route::get('/awsinput/data/', [AwsInputController::class, 'data'])->name('awsinput.data');
 Route::post('/awsinput/import', [AwsInputController::class, 'import'])->name('awsinput.import');

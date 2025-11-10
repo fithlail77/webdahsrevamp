@@ -10,6 +10,7 @@ use App\Exports\LapRestanPdfExport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Company;
 
 class RestanController extends Controller
 {
@@ -18,7 +19,16 @@ class RestanController extends Controller
      */
     public function index()
     {
-        return view('laprestan.index');
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('laprestan.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -78,7 +88,25 @@ class RestanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'estate' => 'required|string|max:30',
+            'divisi' => 'required|string|max:5',
+            'blok' => 'required|string|max:5',
+            'tonase' => 'required|integer',
+            'keterangan' => 'required|string|max:255'
+        ]);
+
+        Restan::create([
+            'tanggal' => $request->tanggal,
+            'estate' => $request->estate,
+            'divisi' => $request->divisi,
+            'blok' => $request->blok,
+            'tonase' => $request->tonase,
+            'keterangan' => $request->keterangan
+        ]);
+
+        return redirect()->route('laprestan.index')->with('success', 'Data Restan berhasil disimpan.');
     }
 
     /**

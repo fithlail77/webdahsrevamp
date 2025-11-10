@@ -8,6 +8,7 @@ use App\Exports\SptbsExport;
 use Illuminate\Http\Request;
 use App\Exports\SptbsPdfExport;
 use App\Imports\SptbsInputImport;
+use App\Models\Company;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,7 +20,16 @@ class SptbsInputController extends Controller
      */
     public function index()
     {
-        return view('vsptbs.index');
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('vsptbs.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -94,7 +104,7 @@ class SptbsInputController extends Controller
      */
     public function create()
     {
-        //
+        return view('vsptbs.create');
     }
 
     /**
@@ -102,7 +112,38 @@ class SptbsInputController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $sptbs = $request->input('sptbs');
+
+        foreach ($sptbs as $data) {
+            SptbsInput::create([
+                'angkutan' => $data['angkutan'],
+                'no_tiket' => $data['no_tiket'],
+                'tanggal_tiket' => $data['tanggal_tiket'],
+                'no_sptbs' => $data['no_sptbs'],
+                'tanggal_sptbs' => $data['tanggal_sptbs'],
+                'tanggal_panen' => $data['tanggal_panen'],
+                'nama_supir' => $data['nama_supir'],
+                'no_polisi' => $data['no_polisi'],
+                'jam_masuk' => $data['jam_masuk'],
+                'jam_keluar' => $data['jam_keluar'],
+                'estate' => $data['estate'],
+                'divisi' => $data['divisi'],
+                'blok' => $data['blok'],
+                'tahun_tanam' => $data['tahun_tanam'],
+                'lahan' => $data['lahan'],
+                'jumlah_tandan' => $data['jumlah_tandan'],
+                'berondolan' => $data['berondolan'],
+                'berat_bruto' => $data['berat_bruto'],
+                'berat_tarra' => $data['berat_tarra'],
+                'berat_netto' => $data['berat_netto'],
+                'jumlah_grading' => $data['jumlah_grading'],
+                'berat_bersih' => $data['berat_bersih'],
+                'bjr' => $data['bjr']
+            ]);
+        }
+
+        return response()->json(['message' => 'Data berhasil disimpan.']);
+
     }
 
     /**
@@ -203,5 +244,62 @@ class SptbsInputController extends Controller
 
         $pdfExport = new SptbsPdfExport($minDate, $maxDate);
         return $pdfExport->generatePdf();
+    }
+
+    public function simpan(Request $request)
+    {
+        $request->validate([
+            'angkutan' => 'required|string|max:5',
+            'notiket' => 'required|integer',
+            'tgltiket' => 'required|date',
+            'nosptbs' => 'required|integer',
+            'tglsptbs' => 'required|date',
+            'tglpanen' => 'required|date',
+            'supir' => 'required|string|max:30',
+            'nopol' => 'required|string|max:15',
+            'timein' => 'nullable|string',
+            'timeout' => 'nullable|string',
+            'estate' => 'required|string|max:15',
+            'divisi' => 'required|string|max:5',
+            'blok' => 'required|string|max:5',
+            'tahuntanam' => 'required|integer',
+            'lahan' => 'required|string|max:30',
+            'jmltandan' => 'required|integer',
+            'berondolan' => 'required|numeric',
+            'bruto' => 'required|numeric',
+            'tarra' => 'required|numeric',
+            'netto' => 'required|numeric',
+            'grading' => 'required|numeric',
+            'bersih' => 'required|numeric',
+            'bjr' => 'required|numeric',
+        ]);
+
+        SptbsInput::create([
+            'angkutan' => $request->angkutan,
+            'no_tiket' => $request->notiket,
+            'tanggal_tiket' => $request->tgltiket,
+            'no_sptbs' => $request->nosptbs,
+            'tanggal_sptbs' => $request->tglsptbs,
+            'tanggal_panen' => $request->tglpanen,
+            'nama_supir' => $request->supir,
+            'no_polisi' => $request->nopol,
+            'jam_masuk' => $request->timein,
+            'jam_keluar' => $request->timeout,
+            'estate' => $request->estate,
+            'divisi' => $request->divisi,
+            'blok' => $request->blok,
+            'tahun_tanam' => $request->tahuntanam,
+            'lahan' => $request->lahan,
+            'jumlah_tandan' => $request->jmltandan,
+            'berondolan' => $request->berondolan,
+            'berat_bruto' => $request->bruto,
+            'berat_tarra' => $request->tarra,
+            'berat_netto' => $request->netto,
+            'jumlah_grading' => $request->grading,
+            'berat_bersih' => $request->bersih,
+            'bjr' => $request->bjr,
+        ]);
+
+        return redirect()->route('sptbs.index')->with('success', 'Data SPTBS berhasil disimpan.');
     }
 }

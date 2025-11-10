@@ -7,9 +7,11 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
-                <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            <a href="{{ route('blokkoordinat.create') }}">
+                <button class="btn btn-primary btn-sm btn-flat">
+                    <i class="fa fa-plus"></i> Tambah
+                </button>
+            </a> 
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadBlokKoordinat">
                 <i class="fa fa-upload"></i> Upload
             </button>

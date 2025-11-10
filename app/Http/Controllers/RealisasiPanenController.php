@@ -11,6 +11,7 @@ use App\Exports\RealisasiPanenExport;
 use App\Imports\RealisasipanenImport;
 use App\Exports\RealisasiPanenPdfExport;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Company;
 
 class RealisasiPanenController extends Controller
 {
@@ -19,7 +20,16 @@ class RealisasiPanenController extends Controller
      */
     public function index()
     {
-        return view('rpanen.index');
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('rpanen.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -83,7 +93,33 @@ class RealisasiPanenController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'jenis_kerja' => 'required|string|max:50',
+            'blok' => 'required|string|max:5',
+            'tt' => 'required|integer',
+            'divisi' => 'required|string|max:5',
+            'estate' => 'required|string|max:30',
+            'hasil' => 'required|integer',
+            'satuan' => 'required|string|max:15',
+            'tk' => 'required|integer',
+            'ha_panen' => 'required|numeric',
+        ]);
+
+        RealisasiPanen::create([
+            'tanggal' => $request->tanggal,
+            'jenis_kerja' => $request->jenis_kerja,
+            'blok' => $request->blok,
+            'tt' => $request->tt,
+            'divisi' => $request->divisi,
+            'estate' => $request->estate,
+            'hasil' => $request->hasil,
+            'satuan' => $request->satuan,
+            'tk' => $request->tk,
+            'ha_panen' => $request->ha_panen
+        ]);
+
+        return redirect()->route('realisasipanen.index')->with('success', 'Data Realisasi Panen berhasil disimpan.');
     }
 
     /**

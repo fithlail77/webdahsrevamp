@@ -2,8 +2,10 @@
 
 namespace App\Imports;
 
+use Carbon\Carbon;
 use App\Models\Produksicpo;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -14,8 +16,39 @@ class ProduksicpoImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
+        $tanggal = null;
+        $bulan = null;
+
+        if (!empty($row['tanggal'])) {
+            try {
+                // Jika format string seperti "2025-04-01"
+                if (is_string($row['tanggal'])) {
+                    $tanggal = Carbon::parse($row['tanggal'])->format('Y-m-d');
+                } else {
+                    // Jika format numeric (Excel date serial number)
+                    $tanggal = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal']))->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                Log::error("Format tanggal error: " . json_encode($row['tanggal']));
+            }
+        }
+
+        if (!empty($row['bulan'])) {
+            try {
+                // Jika format string seperti "2025-04-01"
+                if (is_string($row['bulan'])) {
+                    $bulan = Carbon::parse($row['bulan'])->format('Y-m-d');
+                } else {
+                    // Jika format numeric (Excel date serial number)
+                    $bulan = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['bulan']))->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                Log::error("Format tanggal error: " . json_encode($row['bulan']));
+            }
+        }
+
         return new Produksicpo([
-            'tanggal' => $row['tanggal'],
+            'tanggal' => $tanggal,
             'tbs_terima_internal' => $row['tbs_terima_internal'],
             'persen_terima_internal' => $row['persen_terima_internal'],
             'tbs_terima_eksternal' => $row['tbs_terima_eksternal'],
@@ -51,7 +84,7 @@ class ProduksicpoImport implements ToModel, WithHeadingRow
             'sisa_produksi_cangkang' => $row['sisa_produksi_cangkang'],
             'stok_cangkang' => $row['stok_cangkang'],
             'despatch_cangkang' => $row['despatch_cangkang'],
-            'bulan' => $row['bulan'],
+            'bulan' => $bulan,
             'tahun' => $row['tahun'],
             'tbs_olah_netto_internal' => $row['tbs_olah_netto_internal'],
             'tbs_olah_netto_eksternal' => $row['tbs_olah_netto_eksternal'],

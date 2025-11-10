@@ -7,9 +7,14 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSPTBS" align="right">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
+            <!--<a href="{{ route('sptbs.create') }}">
+                <button class="btn btn-primary btn-sm btn-flat">
+                    <i class="fa fa-plus"></i> Tambah
+                </button>
+            </a> -->
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadSptbs">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -81,8 +86,151 @@
         </div>
     </div>
 </div>
-
-<!-- Modal Edit Realisasi Panen -->
+<!-- Modal Tambah Data SPTBS -->
+<div class="modal fade" id="modal-AddSPTBS" tabindex="-1" role="dialog" aria-labelledby="modal-AddSPTBSLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddSPTBSLabel">Tambah Data SPTBS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('sptbs.simpan') }}" method="POST">
+            @csrf
+            <div class="table-responsive">
+                <div class="row gx-3 mb-3">
+                    <!-- Form Group (first name)-->
+                    <div class="col-md-3">
+                        <label class="small mb-1">Angkutan</label>
+                        <input class="form-control" name="angkutan" type="text"/>
+                    </div>
+                    <!-- Form Group (last name)-->
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Tiket</label>
+                        <input class="form-control" name="notiket" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal Tiket</label>
+                        <input class="form-control" name="tgltiket" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No SPTBS</label>
+                        <input class="form-control" name="nosptbs" type="number"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal SPTBS</label>
+                        <input class="form-control" name="tglsptbs" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal Panen</label>
+                        <input class="form-control" name="tglpanen" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Nama Supir</label>
+                        <input class="form-control" name="supir" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Polisi</label></label>
+                        <input class="form-control" name="nopol" type="text" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jam Masuk</label>
+                        <input class="form-control" name="timein" type="time"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jam Keluar</label>
+                        <input class="form-control" name="timeout" type="time"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tahuntanam" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Lahan</label>
+                        <select class="form-control" name="lahan">
+                            <option value="">-- Pilih --</option>
+                            <option value="Inti">Inti</option></option>
+                            <option value="Plasma">Plasma</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Tandan</label></label>
+                        <input class="form-control" name="jmltandan" type="number" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berondolan</label>
+                        <input class="form-control" name="berondolan" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Bruto</label>
+                        <input class="form-control" name="bruto" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Tarra</label>
+                        <input class="form-control" name="tarra" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Netto</label></label>
+                        <input class="form-control" name="netto" type="number" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Grading</label>
+                        <input class="form-control" name="grading" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Bersih</label>
+                        <input class="form-control" name="bersih" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">BJR</label>
+                        <input class="form-control" name="bjr" id="bjr" type="number" step="0.01"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Edit Data SPTBS -->
 <div class="modal fade" id="modal-EditSptbs" tabindex="-1" role="dialog" aria-labelledby="modal-EditSptbsLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -384,6 +532,47 @@
                     toastr.error('Kesalahan server: ' + xhr.responseJSON.error);
                 } else {
                     toastr.error('Terjadi kesalahan saat memperbarui data.');
+                }
+            }
+        });
+    });
+
+    // Auto replace comma with dot for BJR input
+    $('#bjr').on('input', function() {
+        var value = $(this).val();
+        if (value.includes(',')) {
+            $(this).val(value.replace(/,/g, '.'));
+        }
+    });
+
+    // Handle form submission for Add SPTBS modal
+    $('#modal-AddSPTBS form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '{{ route("sptbs.simpan") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#modal-AddSPTBS').modal('hide');
+                table.ajax.reload();
+                toastr.success('Data SPTBS berhasil disimpan.');
+                // Reset form
+                $('#modal-AddSPTBS form')[0].reset();
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat menyimpan data.');
                 }
             }
         });

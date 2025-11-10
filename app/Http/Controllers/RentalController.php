@@ -11,6 +11,7 @@ use App\Exports\RentalPdfExport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Company;
 
 class RentalController extends Controller
 {
@@ -19,7 +20,16 @@ class RentalController extends Controller
      */
     public function index()
     {
-        return view('vrental.index');
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('vrental.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -96,7 +106,59 @@ class RentalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'estate' => 'required|string|max:35',
+            'jenis_alat' => 'required|string|max:255',
+            'no_alat' => 'required|string|max:255',
+            'operator' => 'required|string|max:150',
+            'hm_awal' => 'required|numeric',
+            'hm_akhir' => 'required|numeric',
+            'total_hm' => 'required|numeric',
+            'potongan_hm' => 'required|numeric',
+            'pembayaran_hm' => 'required|numeric',
+            'blok' => 'required|string|max:5',
+            'tahun_tanam' => 'required|integer',
+            'pekerjaan' => 'required|string|max:255',
+            'divisi' => 'requried|string|max:5',
+            'kelompok' => 'required|string|max:255',
+            'coa' => 'integer',
+            'tarif' => 'required|integer',
+            'bjr' => 'required|numeric',
+            'hasil_1' => 'required|integer',
+            'satuan_1' => 'required|string|max:15',
+            'hasil_2' => 'required|integer',
+            'satuan_2' => 'required|string|max:15',
+            'total_biaya' => 'required|integer'
+        ]);
+
+        Rental::create([
+            'tanggal' => $request->tanggal,
+            'estate' => $request->estate,
+            'jenis_alat' => $request->jenis_alat,
+            'no_alat' => $request->no_alat,
+            'operator' => $request->operator,
+            'hm_awal' => $request->hm_awal,
+            'hm_akhir' => $request->hm_akhir,
+            'total_hm' => $request->total_hm,
+            'potongan_hm' => $request->potongan_hm,
+            'pembayaran_hm' => $request->pembayaran_hm,
+            'blok' => $request->blok,
+            'tahun_tanam' => $request->tahun_tanam,
+            'pekerjaan' => $request->pekerjaan,
+            'divisi' => $request->divisi,
+            'kelompok' => $request->kelompok,
+            'coa' => $request->coa,
+            'tarif' => $request->tarif,
+            'bjr' => $request->bjr,
+            'hasil_1' => $request->hasil_1,
+            'satuan_1' => $request->satuan_1,
+            'hasil_2' => $request->hasil_2,
+            'satuan_2' => $request->satuan_2,
+            'total_biaya' => $request->total_biaya
+        ]);
+
+        return redirect()->route('rental.index')->with('success', 'Data Rental Alat & Kenderaan berhasil disimpan.');
     }
 
     /**

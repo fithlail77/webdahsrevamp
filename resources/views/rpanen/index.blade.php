@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRealisasiPanen" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRealisasiPanen">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadRealisasiPanen">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -68,7 +68,94 @@
         </div>
     </div>
 </div>
-
+<!-- Modal Tambah Data Realisasi Panen -->
+<div class="modal fade" id="modal-AddRealisasiPanen" tabindex="-1" role="dialog" aria-labelledby="modal-AddRealisasiPanenLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddRealisasiPanenLabel">Tambah Realisasi Panen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('realisasipanen.store') }}" method="POST">
+            @csrf
+            <div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jenis Pekerjaan</label></label>
+                        <select class="form-control" name="jenis_kerja">
+                            <option value="">-- Pilih --</option>
+                            <option value="Panen">Panen</option></option>
+                            <option value="Kutip Brondolan">Kutip Brondolan</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tt" type="number"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Hasil</label>
+                        <input class="form-control" name="hasil" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label></label>
+                        <select class="form-control" name="satuan">
+                            <option value="">-- Pilih --</option>
+                            <option value="Jjg">Janjang</option></option>
+                            <option value="Kg">Kilogram</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah TK</label>
+                        <input class="form-control" name="tk" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Ha Panen</label>
+                        <input class="form-control" name="ha_panen" id="hapanen" type="number" step="0.01"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal Edit Realisasi Panen -->
 <div class="modal fade" id="modal-EditRealisasiPanen" tabindex="-1" role="dialog" aria-labelledby="modal-EditRealisasiPanenLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -283,6 +370,47 @@
             },
             error: function(xhr) {
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+
+    // Auto replace comma with dot for Ha Panen input
+    $('#hapanen').on('input', function() {
+        var value = $(this).val();
+        if (value.includes(',')) {
+            $(this).val(value.replace(/,/g, '.'));
+        }
+    });
+
+    // Handle form submission for Add Realisasi Panen modal
+    $('#modal-AddRealisasiPanen form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '{{ route("realisasipanen.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#modal-AddRealisasiPanen').modal('hide');
+                table.ajax.reload();
+                toastr.success('Data Realisasi Panen berhasil disimpan.');
+                // Reset form
+                $('#modal-AddRealisasiPanen form')[0].reset();
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat menyimpan data.');
+                }
             }
         });
     });

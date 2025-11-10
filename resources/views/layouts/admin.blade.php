@@ -12,6 +12,9 @@
 
     <title>{{ config('app.name', 'Dashboard') }}</title>
 
+     <!-- Jspreadsheet CE -->
+    @stack('styles')
+
     <!-- Custom fonts for this template-->
     <link href="{{ asset('adminpage/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
@@ -37,7 +40,7 @@
 
     <!-- Toastr -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-
+    
 </head>
 <body id="page-top">
 

@@ -49,7 +49,7 @@ class BlokKordinatController extends Controller
      */
     public function create()
     {
-        //
+        return view('vblok.input');
     }
 
     /**
@@ -57,7 +57,22 @@ class BlokKordinatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $blokkordinat = $request->input('blokkordinat');
+
+        foreach ($blokkordinat as $data) {
+            BlokKordinat::create([
+                'estate' => $data['estate'],
+                'divisi' => $data['divisi'],
+                'blok' => $data['blok'],
+                'x' => $data['x'],
+                'y' => $data['y'],
+                'l1' => $data['l1'],
+                'l2' => $data['l2'],
+                'poly_id' => $data['poly_id'],
+            ]);
+        }
+
+        return response()->json(['message' => 'Data berhasil disimpan.']);
     }
 
     /**

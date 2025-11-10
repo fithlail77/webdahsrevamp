@@ -164,7 +164,7 @@
                                     <a class="collapse-item {{ request()->routeIs('sptbs.index') ? 'active' : '' }}" href="{{ route('sptbs.index') }}">{{ __('Input SPTBS') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('realisasipanen.index') ? 'active' : '' }}" href="{{ route('realisasipanen.index') }}">{{ __('Input Realisasi Panen') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('laprestan.index') ? 'active' : '' }}" href="{{ route('laprestan.index') }}">{{ __('Input Restan') }}</a>
-                                    <a class="collapse-item {{ request()->routeIs('premi.index') ? 'active' : '' }}" href="{{ route('premi.index') }}">{{ __('Input Premi') }}</a>
+                                    <a class="collapse-item {{ request()->routeIs('premi.index') ? 'active' : '' }}" href="{{ route('premi.index') }}">{{ __('Input LHO') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('rental.index') ? 'active' : '' }}" href="{{ route('rental.index') }}">{{ __('Input Rental KAB') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('pupukkebun.index') ? 'active' : '' }}" href="{{ route('pupukkebun.index') }}">{{ __('Input Pemupukan') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('rawatkebun.index') ? 'active' : '' }}" href="{{ route('rawatkebun.index') }}">{{ __('Input Perawatan') }}</a>
