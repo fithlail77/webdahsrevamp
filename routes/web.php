@@ -109,6 +109,7 @@ Route::get('/produksicpo/export/excel', [ProduksicpoController::class, 'exportEx
 Route::get('/produksicpo/export/pdf', [ProduksicpoController::class, 'exportPdf'])->name('produksicpo.export.pdf');
 Route::resource('/produksicpo', ProduksicpoController::class);
 Route::post('/produksicpo', [ProduksicpoController::class, 'import'])->name('produksicpo.import');
+Route::get('/contractcpo/data', [ContractcpoController::class, 'data'])->name('contractcpo.data');
 Route::resource('/contractcpo', ContractcpoController::class);
 Route::post('/contractcpo', [ContractcpoController::class, 'import'])->name('contractcpo.import');
 Route::resource('/contractpk', ContractpkController::class);

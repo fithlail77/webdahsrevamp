@@ -9,11 +9,13 @@ class SptbsPdfExport
 {
     protected $startDate;
     protected $endDate;
+    protected $userEstate;
 
-    public function __construct($startDate = null, $endDate = null)
+    public function __construct($startDate = null, $endDate = null, $userEstate = null)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->userEstate = $userEstate;
     }
 
     public function generatePdf()
@@ -43,6 +45,11 @@ class SptbsPdfExport
             'berat_bersih',
             'bjr',
         ]);
+
+        // Filter berdasarkan estate user
+        if ($this->userEstate && $this->userEstate !== 'all') {
+            $query->where('estate', $this->userEstate);
+        }
 
         // Jika ada pencarian, ambil semua data tanpa filter tanggal
         if (!empty($this->search)) {

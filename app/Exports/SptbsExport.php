@@ -10,13 +10,13 @@ class SptbsExport implements FromCollection, WithHeadings
 {
     protected $startDate;
     protected $endDate;
-    protected $search;
+    protected $userEstate;
 
-    public function __construct($startDate = null, $endDate = null, $search = null)
+    public function __construct($startDate = null, $endDate = null, $userEstate = null)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->search = $search;
+        $this->userEstate = $userEstate;
     }
 
     /**
@@ -49,6 +49,11 @@ class SptbsExport implements FromCollection, WithHeadings
             'berat_bersih',
             'bjr',
         ]);
+
+        // Filter berdasarkan estate user
+        if ($this->userEstate && $this->userEstate !== 'all') {
+            $query->where('estate', $this->userEstate);
+        }
 
         // Jika ada pencarian, ambil semua data tanpa filter tanggal
         if (!empty($this->search)) {

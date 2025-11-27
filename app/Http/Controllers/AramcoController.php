@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Aramco;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Exports\AramcoExport;
 use App\Imports\AramcoImport;
@@ -19,7 +20,16 @@ class AramcoController extends Controller
      */
     public function index()
     {
-        return view('varamco.index');
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('varamco.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -89,7 +99,39 @@ class AramcoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal_rakit' => 'required|date',
+            'tanggal_pasang' => 'required|date',
+            'no_po' => 'required|string|max:30',
+            'ukuran' => 'required|string|max:255',
+            'jumlah' => 'required|integer',
+            'satuan' => 'required|string|max:10',
+            'blok' => 'required|string|max:10',
+            'estate' => 'required|string|max:35',
+            'divisi' => 'required|string|max:5',
+            'kordinat' => 'required|string|max:255',
+            'tahun_tanam' => 'required|integer',
+            'lahan' => 'required|string|max:30',
+            'status' => 'required|string|max:30'
+        ]);
+
+        Aramco::create([
+            'tanggal_rakit' => $request->tanggal_rakit,
+            'tanggal_pasang' => $request->tanggal_pasang,
+            'no_po' => $request->no_po,
+            'ukuran' => $request->ukuran,
+            'jumlah' => $request->jumlah,
+            'satuan' => $request->satuan,
+            'blok' => $request->blok,
+            'estate' => $request->estate,
+            'divisi' => $request->divisi,
+            'kordinat' => $request->kordinat,
+            'tahun_tanam' => $request->tahun_tanam,
+            'lahan' => $request->lahan,
+            'status' => $request->status
+        ]);
+
+        return redirect()->route('aramco.index')->with('success', 'Data Aramco berhasil disimpan.');
     }
 
     /**

@@ -120,7 +120,7 @@ class RentalController extends Controller
             'blok' => 'required|string|max:5',
             'tahun_tanam' => 'required|integer',
             'pekerjaan' => 'required|string|max:255',
-            'divisi' => 'requried|string|max:5',
+            'divisi' => 'required|string|max:5',
             'kelompok' => 'required|string|max:255',
             'coa' => 'integer',
             'tarif' => 'required|integer',

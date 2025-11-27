@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\PerawatanKebun;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +20,16 @@ class PerawatanKebunController extends Controller
      */
     public function index()
     {
-        return view('vrawatkebun.index');
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('vrawatkebun.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -92,7 +102,53 @@ class PerawatanKebunController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'jenis_perawatan' => 'required|string|max:255',
+            'blok' => 'required|string|max:5',
+            'tahun_tanam' => 'required|integer',
+            'divisi' => 'required|string|max:5',
+            'estate' => 'required|string|max:15',
+            'lahan' => 'required|string|max:5',
+            'hasil' => 'required|numeric',
+            'satuan' => 'required|string|max:5',
+            'jml_tenaga' => 'required|integer',
+            'material_1' => 'nullable|string|max:255',
+            'jumlah_1' => 'nullable|numeric',
+            'satuan_1' => 'nullable|string|max:5',
+            'material_2' => 'nullable|string|max:255',
+            'jumlah_2' => 'nullable|numeric',
+            'satuan_2' => 'nullable|string|max:5',
+            'material_3' => 'nullable|string|max:255',
+            'jumlah_3' => 'nullable|numeric',
+            'satuan_3' => 'nullable|string|max:5',
+            'keterangan' => 'nullable|string|max:255'
+        ]);
+
+        PerawatanKebun::create([
+            'tanggal' => $request->tanggal,
+            'jenis_perawatan' => $request->jenis_perawatan,
+            'blok' => $request->blok,
+            'tahun_tanam' => $request->tahun_tanam,
+            'divisi' => $request->divisi,
+            'estate' => $request->estate,
+            'lahan' => $request->lahan,
+            'hasil' => $request->hasil,
+            'satuan' => $request->satuan,
+            'jml_tenaga' => $request->jml_tenaga,
+            'material_1' => $request->material_1,
+            'jumlah_1' => $request->jumlah_1,
+            'satuan_1' => $request->satuan_1,
+            'material_2' => $request->material_2,
+            'jumlah_2' => $request->jumlah_2,
+            'satuan_2' => $request->satuan_2,
+            'material_3' => $request->material_3,
+            'jumlah_3' => $request->jumlah_3,
+            'satuan_3' => $request->satuan_3,
+            'keterangan' => $request->keterangan
+        ]);
+
+        return redirect()->route('rawatkebun.index')->with('success', 'Data Perawatan berhasil disimpan.');
     }
 
     /**

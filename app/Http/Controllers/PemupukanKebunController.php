@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\PemupukanKebun;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +20,16 @@ class PemupukanKebunController extends Controller
      */
     public function index()
     {
-        return view('vpupukebun.index');
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('vpupukebun.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -85,7 +95,37 @@ class PemupukanKebunController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'jenis_pupuk' => 'required|string|max:255',
+            'blok' => 'required|string|max:5',
+            'tahun_tanam' => 'required|integer',
+            'divisi' => 'required|string|max:5',
+            'estate' => 'required|string|max:10',
+            'lahan' => 'required|string|max:5',
+            'hasil' => 'required|numeric',
+            'pokok' => 'required|integer',
+            'dosis' => 'required|numeric',
+            'jml_tenaga' => 'required|integer',
+            'keterangan' => 'required|string|max:255'
+        ]);
+
+        PemupukanKebun::create([
+            'tanggal' => $request->tanggal,
+            'jenis_pupuk' => $request->jenis_pupuk,
+            'blok' => $request->blok,
+            'tahun_tanam' => $request->tahun_tanam,
+            'divisi' => $request->divisi,
+            'estate' => $request->estate,
+            'lahan' => $request->lahan,
+            'hasil' => $request->hasil,
+            'pokok' => $request->pokok,
+            'dosis' => $request->dosis,
+            'jml_tenaga' => $request->jml_tenaga,
+            'keterangan' => $request->keterangan
+        ]);
+
+        return redirect()->route('pupukkebun.index')->with('success', 'Data Pemupukan berhasil disimpan.');
     }
 
     /**

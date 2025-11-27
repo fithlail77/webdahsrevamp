@@ -154,7 +154,7 @@
                                 </div>
                             </div>
                         @endif
-                        @if(auth()->user()->hasAnyRole(['manager','admin','ke']))
+                        @if(auth()->user()->hasAnyRole(['manager','admin','ke','estate_user']) || (auth()->check() && strtolower(auth()->user()->estate ?? '') == 'sedadung' || 'tugang' || 'melamor' || 'mulau' || 'ngaring'))
                             {{-- MENU DATA KEBUN dengan SUBMENU --}}
                             <a class="collapse-item {{ $isKebunActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseKebun" aria-expanded="{{ $isKebunActive ? 'true' : 'false' }}" aria-controls="collapseKebun">
                                 {{ __('Kebun') }}

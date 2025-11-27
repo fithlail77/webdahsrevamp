@@ -143,7 +143,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Pembayaran HM</label>
-                        <input class="form-control" name="ha_panen" id="hapanen" type="number" step="0.01"/>
+                        <input class="form-control" name="pembayaran_hm" id="pembayaran_hm" type="number" step="0.01"/>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Blok</label>
@@ -192,9 +192,9 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Satuan 1</label>
-                        <select class="form-control" name="hasil_2">
+                        <select class="form-control" name="satuan_1">
                             <option value="">-- Pilih --</option>
-                            <option value="Jjg">Janjang</option></option>
+                            <option value="Jjg">Janjang</option>
                             <option value="Kg">Kilogram</option>
                             <option value="Rit">Rit</option>
                         </select>
@@ -207,9 +207,9 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Satuan 2</label>
-                        <select class="form-control" name="hasil_2">
+                        <select class="form-control" name="satuan_2">
                             <option value="">-- Pilih --</option>
-                            <option value="Jjg">Janjang</option></option>
+                            <option value="Jjg">Janjang</option>
                             <option value="Kg">Kilogram</option>
                             <option value="Rit">Rit</option>
                         </select>

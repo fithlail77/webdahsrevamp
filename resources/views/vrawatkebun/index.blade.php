@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRawat">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadRawatKebun">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -78,8 +78,148 @@
         </div>
     </div>
 </div>
-
-<!-- Modal Edit Realisasi Panen -->
+<!-- Modal Tambah Data Perawatan Kebun -->
+<div class="modal fade" id="modal-AddRawat" tabindex="-1" role="dialog" aria-labelledby="modal-AddRawatLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddRawatLabel">Tambah Data Pemupukan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('rawatkebun.store') }}" method="POST">
+            @csrf
+            <div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jenis Perawatan</label>
+                        <input class="form-control" name="jenis_perawatan" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text"/>
+                    </div>
+                     <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tahun_tanam" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Lahan</label>
+                        <select class="form-control" name="lahan">
+                            <option value="">-- Pilih --</option>
+                            <option value="TM">TM</option>
+                            <option value="TBM">TBM</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Hasil</label>
+                        <input class="form-control" name="hasil" id="hasil" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label>
+                        <select class="form-control" name="satuan">
+                            <option value="">-- Pilih --</option>
+                            <option value="Pkk">Pokok</option>
+                            <option value="Ha">Hektar</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Tenaga</label>
+                        <input class="form-control" name="jml_tenaga" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Material 1</label>
+                        <input class="form-control" name="material_1" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah</label>
+                        <input class="form-control" name="jumlah_1" id="jumlah1" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label>
+                        <select class="form-control" name="satuan_1">
+                            <option value="">-- Pilih --</option>
+                            <option value="Ltr">Liter</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Material 2</label>
+                        <input class="form-control" name="material_2" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah</label>
+                        <input class="form-control" name="jumlah_2" id="jumlah2" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label>
+                        <select class="form-control" name="satuan_2">
+                            <option value="">-- Pilih --</option>
+                            <option value="Ltr">Liter</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Material 3</label>
+                        <input class="form-control" name="material_3" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah</label>
+                        <input class="form-control" name="jumlah_3" id="jumlah3" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label>
+                        <select class="form-control" name="satuan_3">
+                            <option value="">-- Pilih --</option>
+                            <option value="Ltr">Liter</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Keterangan</label>
+                        <input class="form-control" name="keterangan" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Edit Data Perawatan Kebun -->
 <div class="modal fade" id="modal-EditRawatKebun" tabindex="-1" role="dialog" aria-labelledby="modal-EditRawatKebunLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -353,6 +493,71 @@
             },
             error: function(xhr) {
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+
+    // Auto replace comma with dot for Hasil Input
+    $('#hasil').on('input', function() {
+        var value = $(this).val();
+        if (value.includes(',')) {
+            $(this).val(value.replace(/,/g, '.'));
+        }
+    });
+
+    // Auto replace comma with dot for Jumlah 1 Input
+    $('#jumlah1').on('input', function() {
+        var value = $(this).val();
+        if (value.includes(',')) {
+            $(this).val(value.replace(/,/g, '.'));
+        }
+    });
+
+    // Auto replace comma with dot for Jumlah 2 Input
+    $('#jumlah2').on('input', function() {
+        var value = $(this).val();
+        if (value.includes(',')) {
+            $(this).val(value.replace(/,/g, '.'));
+        }
+    });
+
+    // Auto replace comma with dot for Jumlah 3 Input
+    $('#jumlah3').on('input', function() {
+        var value = $(this).val();
+        if (value.includes(',')) {
+            $(this).val(value.replace(/,/g, '.'));
+        }
+    });
+
+    // Handle form submission for Add Perawatan
+    $('#modal-AddRawat form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '{{ route("rawatkebun.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#modal-AddRawat').modal('hide');
+                table.ajax.reload();
+                toastr.success('Data Perawatan berhasil disimpan.');
+                // Reset form
+                $('#modal-AddRawat form')[0].reset();
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat menyimpan data.');
+                }
             }
         });
     });

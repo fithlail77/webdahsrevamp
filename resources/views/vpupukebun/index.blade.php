@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddPupuk">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadPupukKebun">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -70,8 +70,95 @@
         </div>
     </div>
 </div>
-
-<!-- Modal Edit Realisasi Panen -->
+<!-- Modal Tambah Data Pemupukan Kebun -->
+<div class="modal fade" id="modal-AddPupuk" tabindex="-1" role="dialog" aria-labelledby="modal-AddPupukLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddPupukLabel">Tambah Data Pemupukan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('rental.store') }}" method="POST">
+            @csrf
+            <div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jenis Pupuk</label>
+                        <input class="form-control" name="jenis_pupuk" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text"/>
+                    </div>
+                     <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tahun_tanam" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Lahan</label>
+                        <input class="form-control" name="lahan" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Hasil</label>
+                        <input class="form-control" name="hasil" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Pokok</label>
+                        <input class="form-control" name="pokok" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Dosis</label>
+                        <input class="form-control" name="dosis" id="dosis" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Tenaga</label>
+                        <input class="form-control" name="jml_tenaga" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Keterangan</label>
+                        <input class="form-control" name="keterangan" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Edit Pemupukan Kebun -->
 <div class="modal fade" id="modal-EditPupukKebun" tabindex="-1" role="dialog" aria-labelledby="modal-EditPupukKebunLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -297,6 +384,47 @@
             },
             error: function(xhr) {
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+
+    // Auto replace comma with dot for Dosis Input
+    $('#dosis').on('input', function() {
+        var value = $(this).val();
+        if (value.includes(',')) {
+            $(this).val(value.replace(/,/g, '.'));
+        }
+    });
+
+    // Handle form submission for Add Pemupukan
+    $('#modal-AddPupuk form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '{{ route("pupukkebun.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#modal-AddPupuk').modal('hide');
+                table.ajax.reload();
+                toastr.success('Data Pempupkan berhasil disimpan.');
+                // Reset form
+                $('#modal-AddPupuk form')[0].reset();
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat menyimpan data.');
+                }
             }
         });
     });

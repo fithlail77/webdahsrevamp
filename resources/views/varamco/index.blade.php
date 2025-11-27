@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAramco">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadAramco">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -71,8 +71,105 @@
         </div>
     </div>
 </div>
-
-<!-- Modal Edit Realisasi Panen -->
+<!-- Modal Tambah Data Aramco -->
+<div class="modal fade" id="modal-AddAramco" tabindex="-1" role="dialog" aria-labelledby="modal-AddAramcoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddAramcoLabel">Tambah Data Pemupukan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('aramco.store') }}" method="POST">
+            @csrf
+            <div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal Rakit</label>
+                        <input class="form-control" name="tanggal_rakit" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal Pasang</label>
+                        <input class="form-control" name="tanggal_pasang" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No PO</label>
+                        <input class="form-control" name="no_po" type="text"/>
+                    </div>
+                     <div class="col-md-3">
+                        <label class="small mb-1">Ukuran</label>
+                        <input class="form-control" name="ukuran" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah</label>
+                        <input class="form-control" name="jumlah" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label>
+                        <input class="form-control" name="satuan" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Koordinat</label>
+                        <input class="form-control" name="kordinat" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tahun_tanam" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Lahan</label>
+                        <select class="form-control" name="lahan">
+                            <option value="">-- Pilih --</option>
+                            <option value="TM">TM</option>
+                            <option value="TBM">TBM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Status</label>
+                        <input class="form-control" name="status" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Edit Aramco -->
 <div class="modal fade" id="modal-EditAramco" tabindex="-1" role="dialog" aria-labelledby="modal-EditAramcoLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -304,6 +401,39 @@
             },
             error: function(xhr) {
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+
+    // Handle form submission for Add Perawatan
+    $('#modal-AddAramco form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '{{ route("aramco.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#modal-AddAramco').modal('hide');
+                table.ajax.reload();
+                toastr.success('Data Perawatan berhasil disimpan.');
+                // Reset form
+                $('#modal-AddAramco form')[0].reset();
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat menyimpan data.');
+                }
             }
         });
     });

@@ -10,6 +10,7 @@ use App\Exports\SptbsPdfExport;
 use App\Imports\SptbsInputImport;
 use App\Models\Company;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -61,6 +62,12 @@ class SptbsInputController extends Controller
             'bjr',
         ])
         ->orderBy('jam_masuk','asc');
+
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
 
         // Jika ada pencarian global, ambil semua data tanpa filter tanggal
         if (!empty($request->input('search.value'))) {
@@ -233,16 +240,18 @@ class SptbsInputController extends Controller
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        return Excel::download(new SptbsExport($minDate, $maxDate), 'sptbs.xlsx');
+        return Excel::download(new SptbsExport($minDate, $maxDate, $userEstate), 'sptbs.xlsx');
     }
 
     public function exportPdf(Request $request)
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        $pdfExport = new SptbsPdfExport($minDate, $maxDate);
+        $pdfExport = new SptbsPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
     }
 
