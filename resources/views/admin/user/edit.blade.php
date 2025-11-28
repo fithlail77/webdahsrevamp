@@ -31,19 +31,21 @@
                     <form action="{{route('user.update', [$user->id])}}" method="POST">
                         @csrf
                         <input type="hidden" name="_method" value="PUT">
-                        <!-- Form Group (username)-->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputUsername">Nama Pengguna</label>
-                            <input class="form-control" id="inputUsername" type="text" placeholder="Nama Pengguna" value="{{$user->name}}" readonly />
-                        </div>
-                        <!-- Form Row-->
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group (first name)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputUsername">Nama Pengguna</label>
+                                <input class="form-control" id="inputUsername" type="text" placeholder="Nama Pengguna" value="{{$user->name}}" readonly />
+                            </div>
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFirstName">Email </label>
                                 <input class="form-control" id="inputFirstName" type="text" placeholder="Nama Profil" value="{{$user->email}}" readonly />
                             </div>
-                            <!-- Form Group (last name)-->
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputFirstName">Estate </label>
+                                <input class="form-control" id="inputFirstName" type="text" placeholder="Nama Profil" value="{{$user->estate}}" readonly />
+                            </div>
                             <div class="col-md-6">
                                 @foreach ($user->roles as $role)
                                 <label class="small mb-1" for="inputLastName">Akses</label>
@@ -51,7 +53,6 @@
                                 @endforeach
                             </div>
                         </div>
-                        <!-- Form Group (email address)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Ubah Akses</label>
                             <select id="roles" name="role" class="form-control" required>
@@ -62,6 +63,18 @@
                                 <option value="dc">Data Center</option>
                                 <option value="kcpo">Admin Mill</option>
                                 <option value="user">User</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">Ubah Estate</label>
+                            <select id="estate" name="estate" class="form-control" required>
+                                <option value="">--Pilih Akses--</option>
+                                <option value="all">All</option>
+                                <option value="melamor">Melamor</option>
+                                <option value="sedadung">Sedadung</option>
+                                <option value="tugang">Tugang</option>
+                                <option value="mulau">Mulau</option>
+                                <option value="ngaring">Ngaring</option>
                             </select>
                         </div>
                         <!-- Save changes button-->

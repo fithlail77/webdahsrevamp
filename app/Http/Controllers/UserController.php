@@ -36,6 +36,7 @@ class UserController extends Controller
         $user = new User;
         $user->name = $request->get('username');
         $user->email = $request->get('email');
+        $user->estate = $request->get('estate');
         $user->password = bcrypt('password');
         $user->assignRole($request->get('roles') == 'admin' ? 'admin' : 'user');
         $user->save();

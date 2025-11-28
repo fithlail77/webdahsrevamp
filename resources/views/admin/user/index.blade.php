@@ -18,6 +18,7 @@
                         <td>No</td>
                         <td>Nama</td>
                         <td>Email</td>
+                        <td>Estate</td>
                         <td>Role Akses</td>
                         <td>Aksi</td>
                     </tr>
@@ -29,6 +30,7 @@
                         <td>{{ $no }}</td>
                         <td>{{ $row->name }}</td>
                         <td>{{ $row->email }}</td>
+                        <td>{{ $row->estate }}</td>
                         <td>
                             @foreach ($row->roles as $r)
                             {{ $r->name }}
@@ -73,6 +75,20 @@
                         <label class="col-lg-20 control-label">Email</label>
                         <div class="col-lg-10">
                             <input type="email" name="email" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-20 control-label">Estate</label>
+                        <div class="col-lg-10">
+                            <select name="estate" class="form-control" required>
+                                <option value="">--Pilih Akses--</option>
+                                <option value="All">All</option>
+                                <option value="Melamor">Melamor</option>
+                                <option value="Sedadung">Sedadung</option>
+                                <option value="Tugang">Tugang</option>
+                                <option value="Mulau">Mulau</option>
+                                <option value="Ngaring">Ngaring</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
