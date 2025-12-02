@@ -10,6 +10,7 @@ use App\Exports\AramcoExport;
 use App\Imports\AramcoImport;
 use App\Exports\AramcoPdfExport;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -51,6 +52,12 @@ class AramcoController extends Controller
             'status'
         ])
         ->orderBy('tanggal_pasang','desc');
+
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
 
         // Jika ada pencarian global, ambil semua data tanpa filter tanggal
         if (!empty($request->input('search.value'))) {
@@ -211,16 +218,18 @@ class AramcoController extends Controller
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        return Excel::download(new AramcoExport($minDate, $maxDate), 'Monitoring_Aramco.xlsx');
+        return Excel::download(new AramcoExport($minDate, $maxDate, $userEstate), 'Monitoring_Aramco.xlsx');
     }
 
     public function exportPdf(Request $request)
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        $pdfExport = new AramcoPdfExport($minDate, $maxDate);
+        $pdfExport = new AramcoPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
     }
 }

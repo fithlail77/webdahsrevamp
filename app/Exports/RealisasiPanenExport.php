@@ -10,14 +10,14 @@ class RealisasiPanenExport implements FromCollection, WithHeadings
 {
     protected $minDate;
     protected $maxDate;
-    protected $search;
+    protected $userEstate;
 
 
-    public function __construct($minDate = null, $maxDate = null, $search = null)
+    public function __construct($minDate = null, $maxDate = null, $userEstate = null)
     {
         $this->minDate = $minDate;
         $this->maxDate = $maxDate;
-        $this->search = $search;
+        $this->userEstate = $userEstate;
     }
 
     /**
@@ -37,6 +37,11 @@ class RealisasiPanenExport implements FromCollection, WithHeadings
             'tk',
             'ha_panen',
         ]);
+
+         // Filter berdasarkan estate user
+        if ($this->userEstate && $this->userEstate !== 'all') {
+            $query->where('estate', $this->userEstate);
+        }
 
           // Jika ada pencarian, ambil semua data tanpa filter tanggal
         if (!empty($this->search)) {

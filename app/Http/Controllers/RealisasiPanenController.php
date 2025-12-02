@@ -12,6 +12,7 @@ use App\Imports\RealisasipanenImport;
 use App\Exports\RealisasiPanenPdfExport;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
 
 class RealisasiPanenController extends Controller
 {
@@ -49,6 +50,12 @@ class RealisasiPanenController extends Controller
         ])
         ->orderBy('tanggal','desc');
 
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
+
         // Jika ada pencarian global, ambil semua data tanpa filter tanggal
         if (!empty($request->input('search.value'))) {
             // Tidak ada filter tanggal, ambil semua
@@ -62,7 +69,7 @@ class RealisasiPanenController extends Controller
                 $query->whereDate('tanggal', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+                $query->where('tanggal', '>=', Carbon::now()->subDays(1));
             }
         }
 
@@ -198,16 +205,18 @@ class RealisasiPanenController extends Controller
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        return Excel::download(new RealisasiPanenExport($minDate, $maxDate), 'realisasi_panen.xlsx');
+        return Excel::download(new RealisasiPanenExport($minDate, $maxDate, $userEstate), 'realisasi_panen.xlsx');
     }
 
     public function exportPdf(Request $request)
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        $pdfExport = new RealisasiPanenPdfExport($minDate, $maxDate);
+        $pdfExport = new RealisasiPanenPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
     }
 }

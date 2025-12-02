@@ -4,18 +4,19 @@ namespace App\Exports;
 
 use App\Models\Restan;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class LapRestanPdfExport
 {
     protected $minDate;
     protected $maxDate;
-    protected $search;
+    protected $userEstate;
 
-    public function __construct($minDate = null, $maxDate = null, $search = null)
+    public function __construct($minDate = null, $maxDate = null, $userEstate = null)
     {
         $this->minDate = $minDate;
         $this->maxDate = $maxDate;
-        $this->search = $search;
+        $this->userEstate = $userEstate;
     }
 
     public function generatePdf()
@@ -28,6 +29,12 @@ class LapRestanPdfExport
             'tonase',
             'keterangan',
         ]);
+
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
 
         // Jika ada pencarian, ambil semua data tanpa filter tanggal
         if (!empty($this->search)) {

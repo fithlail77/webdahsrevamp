@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Restan;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Exports\LapRestanExport;
 use App\Exports\LapRestanPdfExport;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\Company;
 
 class RestanController extends Controller
 {
@@ -44,6 +45,12 @@ class RestanController extends Controller
         ])
         ->orderBy('tanggal','desc');
 
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
+
         // Jika ada pencarian global, ambil semua data tanpa filter tanggal
         if (!empty($request->input('search.value'))) {
             // Tidak ada filter tanggal, ambil semua
@@ -57,7 +64,7 @@ class RestanController extends Controller
                 $query->whereDate('tanggal', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+                $query->where('tanggal', '>=', Carbon::now()->subDays(1));
             }
         }
 
@@ -174,16 +181,18 @@ class RestanController extends Controller
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        return Excel::download(new LapRestanExport($minDate, $maxDate), 'laporan_restan.xlsx');
+        return Excel::download(new LapRestanExport($minDate, $maxDate, $userEstate), 'laporan_restan.xlsx');
     }
 
     public function exportPdf(Request $request)
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        $pdfExport = new LapRestanPdfExport($minDate, $maxDate);
+        $pdfExport = new LapRestanPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
     }
 }

@@ -3,21 +3,22 @@
 namespace App\Exports;
 
 use App\Models\Rental;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class RentalExport implements FromCollection, WithHeadings
 {
 
     protected $minDate;
     protected $maxDate;
-    protected $search;
+    protected $userEstate;
 
-    public function __construct($minDate = null, $maxDate = null, $search = null)
+    public function __construct($minDate = null, $maxDate = null, $userEstate = null)
     {
         $this->minDate = $minDate;
         $this->maxDate = $maxDate;
-        $this->search = $search;
+        $this->userEstate = $userEstate;
     }
 
     /**
@@ -50,6 +51,12 @@ class RentalExport implements FromCollection, WithHeadings
             'satuan_2',
             'total_biaya'
         ]);
+
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
 
         // Jika ada pencarian, ambil semua data tanpa filter tanggal
         if (!empty($this->search)) {

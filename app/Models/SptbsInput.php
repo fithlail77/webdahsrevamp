@@ -37,5 +37,14 @@ class SptbsInput extends Model
         'jumlah_grading',
         'berat_bersih',
         'bjr',
+        'f00',
+        'f0',
+        'f14',
+        'f5',
+        'f6',
+        't_kosong',
+        'sampah',
+        'tangkai_pjg',
+        'kastrasi',
     ];
 }

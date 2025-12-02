@@ -5,6 +5,7 @@ namespace App\Exports;
 use Carbon\Carbon;
 use App\Models\PerawatanKebun;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 
 class PerawatanKebunPdfExport 
@@ -12,14 +13,14 @@ class PerawatanKebunPdfExport
 
     protected $minDate;
     protected $maxDate;
-    protected $search;
+    protected $userEstate;
 
 
-    public function __construct($minDate = null, $maxDate = null, $search = null)
+    public function __construct($minDate = null, $maxDate = null, $userEstate = null)
     {
         $this->minDate = $minDate;
         $this->maxDate = $maxDate;
-        $this->search = $search;
+        $this->userEstate = $userEstate;
     }
 
     /**
@@ -49,6 +50,12 @@ class PerawatanKebunPdfExport
             'satuan_3',
             'keterangan'
         ]);
+
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
 
         if (!empty($this->search)) {
             // Tidak ada filter tanggal

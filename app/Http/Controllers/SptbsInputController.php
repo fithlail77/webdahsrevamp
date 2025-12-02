@@ -60,6 +60,15 @@ class SptbsInputController extends Controller
             'jumlah_grading',
             'berat_bersih',
             'bjr',
+            'f00',
+            'f0',
+            'f14',
+            'f5',
+            'f6',
+            't_kosong',
+            'sampah',
+            'tangkai_pjg',
+            'kastrasi',
         ])
         ->orderBy('jam_masuk','asc');
 
@@ -82,7 +91,7 @@ class SptbsInputController extends Controller
                 $query->whereDate('tanggal_tiket', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal_tiket', '>=', Carbon::now()->subDays(30));
+                $query->where('tanggal_tiket', '>=', Carbon::now()->subDays(1));
             }
         }
 
@@ -205,6 +214,15 @@ class SptbsInputController extends Controller
                 'jumlah_grading' => 'required|numeric',
                 'berat_bersih' => 'required|numeric',
                 'bjr' => 'required|numeric',
+                'f00' => 'nullable|numeric',
+                'f0' => 'nullable|numeric',
+                'f14' => 'nullable|numeric',
+                'f5' => 'nullable|numeric',
+                'f6' => 'nullable|numeric',
+                't_kosong' => 'nullable|numeric',
+                'sampah' => 'nullable|numeric',
+                'tangkai_pjg' => 'nullable|numeric',
+                'kastrasi' => 'nullable|numeric',
             ]);
 
             $sptbs = SptbsInput::findOrFail($id);
@@ -281,6 +299,15 @@ class SptbsInputController extends Controller
             'grading' => 'required|numeric',
             'bersih' => 'required|numeric',
             'bjr' => 'required|numeric',
+            'f00' => 'nullable|numeric',
+            'f0' => 'nullable|numeric',
+            'f14' => 'nullable|numeric',
+            'f5' => 'nullable|numeric',
+            'f6' => 'nullable|numeric',
+            'tankos' => 'nullable|numeric',
+            'sampah' => 'nullable|numeric',
+            'tangkai_pjg' => 'nullable|numeric',
+            'kastrasi' => 'nullable|numeric',
         ]);
 
         SptbsInput::create([
@@ -307,6 +334,15 @@ class SptbsInputController extends Controller
             'jumlah_grading' => $request->grading,
             'berat_bersih' => $request->bersih,
             'bjr' => $request->bjr,
+            'f00' => $request->f00,
+            'f0' => $request->f0,
+            'f14' => $request->f14,
+            'f5' => $request->f5,
+            'f6' => $request->f6,
+            't_kosong' => $request->tankos,
+            'sampah' => $request->sampah,
+            'tangkai_pjg' => $request->tangkai_pjg,
+            'kastrasi' => $request->kastrasi,
         ]);
 
         return redirect()->route('sptbs.index')->with('success', 'Data SPTBS berhasil disimpan.');

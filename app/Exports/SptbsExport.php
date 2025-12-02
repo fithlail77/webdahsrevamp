@@ -48,6 +48,15 @@ class SptbsExport implements FromCollection, WithHeadings
             'jumlah_grading',
             'berat_bersih',
             'bjr',
+            'f00',
+            'f0',
+            'f14',
+            'f5',
+            'f6',
+            't_kosong',
+            'sampah',
+            'tangkai_pjg',
+            'kastrasi',
         ]);
 
         // Filter berdasarkan estate user
@@ -97,6 +106,15 @@ class SptbsExport implements FromCollection, WithHeadings
                 'jumlah_grading' => $item->jumlah_grading,
                 'berat_bersih' => $item->berat_bersih,
                 'bjr' => $item->bjr,
+                'f00' => $item->f00,
+                'f0' => $item->f0,
+                'f14' => $item->f14,
+                'f5' => $item->f5,
+                'f6' => $item->f6,
+                't_kosong' => $item->t_kosong,
+                'sampah' => $item->sampah,
+                'tangkai_pjg' => $item->tangkai_pjg,
+                'kastrasi' => $item->kastrasi,
             ];
         });
     }
@@ -126,7 +144,16 @@ class SptbsExport implements FromCollection, WithHeadings
             'Berat Netto',
             'Jumlah Grading',
             'Berat Bersih',
-            'BJR'
+            'BJR',
+            'F-00',
+            'F-0',
+            'F1 s.d F4',
+            'F-5',
+            'F-6',
+            'Tandan Kosong',
+            'Sampah',
+            'Tangkai Pjg',
+            'Kastrasi'
         ];
     }
 }

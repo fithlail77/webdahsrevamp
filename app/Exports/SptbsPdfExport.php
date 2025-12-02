@@ -44,6 +44,15 @@ class SptbsPdfExport
             'jumlah_grading',
             'berat_bersih',
             'bjr',
+            'f00',
+            'f0',
+            'f14',
+            'f5',
+            'f6',
+            't_kosong',
+            'sampah',
+            'tangkai_pjg',
+            'kastrasi',
         ]);
 
         // Filter berdasarkan estate user
@@ -93,10 +102,19 @@ class SptbsPdfExport
                 'jumlah_grading' => $item->jumlah_grading,
                 'berat_bersih' => $item->berat_bersih,
                 'bjr' => $item->bjr,
+                'f00' => $item->f00,
+                'f0' => $item->f0,
+                'f14' => $item->f14,
+                'f5' => $item->f5,
+                'f6' => $item->f6,
+                't_kosong' => $item->t_kosong,
+                'sampah' => $item->sampah,
+                'tangkai_pjg' => $item->tangkai_pjg,
+                'kastrasi' => $item->kastrasi,
             ];
         });
 
-        $pdf = Pdf::loadView('vsptbs.pdf', compact('data'))->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('vsptbs.pdf', compact('data'))->setPaper('a3', 'landscape');
         return $pdf->download('sptbs_data.pdf');
     }
 }

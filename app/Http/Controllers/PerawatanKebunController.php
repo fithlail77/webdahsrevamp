@@ -7,6 +7,7 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\PerawatanKebun;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PerawatanKebunExport;
 use App\Imports\PerawatanKebunImport;
@@ -59,6 +60,12 @@ class PerawatanKebunController extends Controller
         ])
         ->orderBy('tanggal','desc');
 
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
+
         // Jika ada pencarian global, ambil semua data tanpa filter tanggal
         if (!empty($request->input('search.value'))) {
             // Tidak ada filter tanggal, ambil semua
@@ -72,7 +79,7 @@ class PerawatanKebunController extends Controller
                 $query->whereDate('tanggal', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+                $query->where('tanggal', '>=', Carbon::now()->subDays(1));
             }
         }
 
@@ -235,16 +242,18 @@ class PerawatanKebunController extends Controller
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        return Excel::download(new PerawatanKebunExport($minDate, $maxDate), 'perawatan_kebun.xlsx');
+        return Excel::download(new PerawatanKebunExport($minDate, $maxDate, $userEstate), 'perawatan_kebun.xlsx');
     }
 
     public function exportPdf(Request $request)
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
+        $userEstate = Auth::user()->estate ?? null;
 
-        $pdfExport = new PerawatanKebunPdfExport($minDate, $maxDate);
+        $pdfExport = new PerawatanKebunPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
     }
 }

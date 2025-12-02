@@ -86,6 +86,15 @@ class SptbsInputImport implements ToModel, WithHeadingRow
             'jumlah_grading' => $row['jumlah_grading'],
             'berat_bersih' => $row['berat_bersih'],
             'bjr' => $row['bjr'],
+            'f00' => $row['f00'] ?? null,
+            'f0' => $row['f0'] ?? null,
+            'f14' => $row['f14'] ?? null,
+            'f5' => $row['f5'] ?? null,
+            'f6' => $row['f6'] ?? null,
+            't_kosong' => $row['t_kosong'] ?? null,
+            'sampah' => $row['sampah'] ?? null,
+            'tangkai_pjg' => $row['tangkai_pjg'] ?? null,
+            'kastrasi' => $row['kastrasi'] ?? null,
         ]);
     }
 }

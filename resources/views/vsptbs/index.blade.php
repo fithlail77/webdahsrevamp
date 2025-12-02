@@ -66,7 +66,7 @@
                         <th>Divisi</th>
                         <th>Blok</th>
                         <th>Tahun Tanam</th>
-                        <th>Lahan</th>
+                        <th>Inti/Plasma</th>
                         <th>Jumlah Tandan</th>
                         <th>Berondolan</th>
                         <th>Berat Bruto</th>
@@ -75,6 +75,15 @@
                         <th>Jumlah Grading</th>
                         <th>Berat Bersih</th>
                         <th>BJR</th>
+                        <th>F-00</th>
+                        <th>F-0</th>
+                        <th>F1 s.d F4</th>
+                        <th>F-5</th>
+                        <th>F-6</th>
+                        <th>Tandan Kosong</th>
+                        <th>Sampah</th>
+                        <th>Tangkai Pjg</th>
+                        <th>Kastrasi</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -141,11 +150,11 @@
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Jam Masuk</label>
-                        <input class="form-control" name="timein" type="time"/>
+                        <input class="form-control" name="timein" type="time" step="1"/>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Jam Keluar</label>
-                        <input class="form-control" name="timeout" type="time"/>
+                        <input class="form-control" name="timeout" type="time" step="1"/>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
@@ -176,7 +185,7 @@
                         <input class="form-control" name="tahuntanam" type="number"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Lahan</label>
+                        <label class="small mb-1">Inti/Plasma</label>
                         <select class="form-control" name="lahan">
                             <option value="">-- Pilih --</option>
                             <option value="Inti">Inti</option></option>
@@ -218,6 +227,51 @@
                     <div class="col-md-3">
                         <label class="small mb-1">BJR</label>
                         <input class="form-control" name="bjr" id="bjr" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <hr>
+                <label class="small mb-1">Grading (Kg)</label>
+                <hr>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">F-O0</label>
+                        <input class="form-control" name="f00" id="f00" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">F-0</label>
+                        <input class="form-control" name="f0" id="f0" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">F1 s.d F4</label>
+                        <input class="form-control" name="f14" id="f14" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">F5</label>
+                        <input class="form-control" name="f5" id="f5" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">F6</label>
+                        <input class="form-control" name="f6" id="f6" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tandan Kosong</label>
+                        <input class="form-control" name="tankos" id="t_kosong" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Sampah</label>
+                        <input class="form-control" name="sampah" id="sampah" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tangkai Pjg</label>
+                        <input class="form-control" name="tangkai_pjg" id="tangkai_pjg" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Kastrasi</label>
+                        <input class="form-control" name="kastrasi" id="kastrasi" type="number" step="0.01"/>
                     </div>
                 </div>
             </div>
@@ -337,6 +391,42 @@
                 <label for="editBjr">BJR</label>
                 <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
             </div>
+            <div class="form-group">
+                <label class="small mb-1">F-O0</label>
+                <input class="form-control" name="f00" id="editF00" type="number" step="0.01"/>
+            </div>
+            <div class="form-group">
+                <label class="small mb-1">F-0</label>
+                <input class="form-control" name="f0" id="editF0" type="number" step="0.01"/>
+            </div>
+            <div class="form-group">
+                <label class="small mb-1">F1 s.d F4</label>
+                <input class="form-control" name="f14" id="editF14" type="number" step="0.01"/>
+            </div>
+            <div class="form-group">
+                <label class="small mb-1">F5</label>
+                <input class="form-control" name="f5" id="editF5" type="number" step="0.01"/>
+            </div>
+            <div class="form-group">
+                <label class="small mb-1">F6</label>
+                <input class="form-control" name="f6" id="editF6" type="number" step="0.01"/>
+            </div>
+            <div class="form-group">
+                <label class="small mb-1">Tandan Kosong</label>
+                <input class="form-control" name="t_kosong" id="editTKosong" type="number" step="0.01"/>
+            </div>
+            <div class="form-group">
+                <label class="small mb-1">Sampah</label>
+                <input class="form-control" name="sampah" id="editSampah" type="number" step="0.01"/>
+            </div>
+            <div class="form-group">
+                <label class="small mb-1">Tangkai Pjg</label>
+                <input class="form-control" name="tangkai_pjg" id="editTangkaiPjg" type="number" step="0.01"/>
+            </div>
+            <div class="form-group">
+                <label class="small mb-1">Kastrasi</label>
+                <input class="form-control" name="kastrasi" id="editKastrasi" type="number" step="0.01"/>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
@@ -426,6 +516,15 @@
             { data: 'jumlah_grading', name: 'jumlah_grading' },
             { data: 'berat_bersih', name: 'berat_bersih' },
             { data: 'bjr', name: 'bjr' },
+            { data: 'f00', name: 'f00' },
+            { data: 'f0', name: 'f0' },
+            { data: 'f14', name: 'f14' },
+            { data: 'f5', name: 'f5' },
+            { data: 'f6', name: 'f6' },
+            { data: 't_kosong', name: 't_kosong' },
+            { data: 'sampah', name: 'sampah' },
+            { data: 'tangkai_pjg', name: 'tangkai_pjg' },
+            { data: 'kastrasi', name: 'kastrasi' },
             { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
         ]
     });
@@ -500,6 +599,15 @@
             $('#editJumlahGrading').val(data.jumlah_grading);
             $('#editBeratBersih').val(data.berat_bersih);
             $('#editBjr').val(data.bjr);
+            $('#editF00').val(data.f00);
+            $('#editF0').val(data.f0);
+            $('#editF14').val(data.f14);
+            $('#editF5').val(data.f5);
+            $('#editF6').val(data.f6);
+            $('#editTKosong').val(data.t_kosong);
+            $('#editSampah').val(data.sampah);
+            $('#editTangkaiPjg').val(data.tangkai_pjg);
+            $('#editKastrasi').val(data.kastrasi);
         }).fail(function(xhr, status, error) {
             console.error('Error fetching edit data:', status, error);
             toastr.error('Gagal memuat data untuk edit.');

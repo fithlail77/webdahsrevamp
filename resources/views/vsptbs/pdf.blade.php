@@ -5,7 +5,7 @@
     <title>Laporan SPTBS</title>
     <style>
         @page {
-            size: A4 landscape;
+            size: A3 landscape;
         }
         body {
             font-family: Arial, sans-serif;
@@ -75,6 +75,15 @@
                 <th>Berat Netto</th>
                 <th>Jumlah Grading</th>
                 <th>Berat Bersih</th>
+                <th>F-00</th>
+                <th>F-0</th>
+                <th>F1 s.d F4</th>
+                <th>F-5</th>
+                <th>F-6</th>
+                <th>Tandan Kosong</th>
+                <th>Sampah</th>
+                <th>Tangkai Pjg</th>
+                <th>Kastrasi</th>
                 <th>BJR</th>
             </tr>
         </thead>
@@ -105,6 +114,15 @@
                 <td>{{ $item['jumlah_grading'] }}</td>
                 <td>{{ $item['berat_bersih'] }}</td>
                 <td>{{ $item['bjr'] }}</td>
+                <td>{{ $item['f00'] }}</td>
+                <td>{{ $item['f0'] }}</td>
+                <td>{{ $item['f14'] }}</td>
+                <td>{{ $item['f5'] }}</td>
+                <td>{{ $item['f6'] }}</td>
+                <td>{{ $item['t_kosong'] }}</td>
+                <td>{{ $item['sampah'] }}</td>
+                <td>{{ $item['tangkai_pjg'] }}</td>
+                <td>{{ $item['kastrasi'] }}</td>
             </tr>
             @endforeach
         </tbody>
