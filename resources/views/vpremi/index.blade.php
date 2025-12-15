@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddSptbs" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddPremi">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadPremi">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -50,8 +50,8 @@
                         <th>tanggal</th>
                         <th>No KAB</th>
                         <th>Nama KAB</th>
-                        <th>NIK</th>
-                        <th>Nama_karyawan</th>
+                        <th>No Karyawan</th>
+                        <th>Nama</th>
                         <th>Estate</th>
                         <th>HM/KM Awal</th>
                         <th>HM/KM Akhir</th>
@@ -76,7 +76,124 @@
         </div>
     </div>
 </div>
-
+<!-- Modal Tambah Data Premi KAB -->
+<div class="modal fade" id="modal-AddPremi" tabindex="-1" role="dialog" aria-labelledby="modal-AddPremiLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddPremiLabel">Tambah Data Premi Kenderaan dan Alat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('premi.store') }}" method="POST">
+            @csrf
+            <div class="table-responsive">
+                <div class="row gx-3 mb-3">
+                    <!-- Form Group (first name)-->
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date"/>
+                    </div>
+                    <!-- Form Group (last name)-->
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Kenderaan</label>
+                        <input class="form-control" name="no_kab" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Nama Kenderaan</label>
+                        <input class="form-control" name="nama_kab" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Induk Karyawan</label>
+                        <input class="form-control" name="nik" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Nama Karyawan</label>
+                        <input class="form-control" name="nama_karyawan" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">HM/KM Awal</label>
+                        <input class="form-control" name="hmkm_awal" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">HM/KM Akhir</label></label>
+                        <input class="form-control" name="hmkm_akhir" type="number" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">HM/KM Total</label>
+                        <input class="form-control" name="total_hmkm" type="number" readonly/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Lokasi</label>
+                        <input class="form-control" name="lokasi" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jenis Pekerjaan</label>
+                        <input class="form-control" name="jenis_pekerjaan" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tarif/Satuan</label>
+                        <input class="form-control" name="tarif_satuan" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Hasil 1</label>
+                        <input class="form-control" name="hasil_1" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan 1</label>
+                        <input class="form-control" name="satuan_1" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Hasil 2</label></label>
+                        <input class="form-control" name="hasil_2" type="number" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan 2</label>
+                        <input class="form-control" name="satuan_2" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Total Premi</label>
+                        <input class="form-control" name="total_premi" type="number" step="0.01"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal Edit Realisasi Panen -->
 <div class="modal fade" id="modal-EditPremi" tabindex="-1" role="dialog" aria-labelledby="modal-EditPremiLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -126,7 +243,7 @@
             </div>
             <div class="form-group">
                 <label for="editTotalHmkm">Total HM/KM</label>
-                <input type="number" class="form-control" id="editTotalHmkm" name="total_hmkm" required>
+                <input type="number" class="form-control" id="editTotalHmkm" name="total_hmkm" required readonly>
             </div>
             <div class="form-group">
                 <label for="editLokasi">Lokasi</label>
@@ -341,6 +458,22 @@
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
             }
         });
+    });
+
+    // Auto calculate HM/KM Total in add modal
+    $('input[name="hmkm_awal"], input[name="hmkm_akhir"]').on('input', function() {
+        var awal = parseFloat($('input[name="hmkm_awal"]').val()) || 0;
+        var akhir = parseFloat($('input[name="hmkm_akhir"]').val()) || 0;
+        var total = akhir - awal;
+        $('input[name="total_hmkm"]').val(total);
+    });
+
+    // Auto calculate HM/KM Total in edit modal
+    $('#editHmkmAwal, #editHmkmAkhir').on('input', function() {
+        var awal = parseFloat($('#editHmkmAwal').val()) || 0;
+        var akhir = parseFloat($('#editHmkmAkhir').val()) || 0;
+        var total = akhir - awal;
+        $('#editTotalHmkm').val(total);
     });
 });
 </script>

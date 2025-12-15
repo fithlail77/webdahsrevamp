@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Premi;
+use App\Models\Company;
 use App\Exports\PremiExport;
 use App\Imports\PremiImport;
 use Illuminate\Http\Request;
 use App\Exports\PremiPdfExport;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -19,7 +21,16 @@ class PremiController extends Controller
      */
     public function index()
     {
-        return view('vpremi.index');
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('vpremi.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -47,6 +58,12 @@ class PremiController extends Controller
         ])
         ->orderBy('tanggal','desc');
 
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
+
         // Jika ada pencarian global, ambil semua data tanpa filter tanggal
         if (!empty($request->input('search.value'))) {
             // Tidak ada filter tanggal, ambil semua
@@ -60,7 +77,7 @@ class PremiController extends Controller
                 $query->whereDate('tanggal', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
+                $query->where('tanggal', '>=', Carbon::now()->subDays(1));
             }
         }
 
@@ -91,7 +108,49 @@ class PremiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'no_kab' => 'required|string|max:30',
+            'nama_kab' => 'required|string|max:255',
+            'nik' => 'required|string|max:15',
+            'nama_karyawan' => 'required|string|max:55',
+            'estate' => 'required|string|max:15',
+            'hmkm_awal' => 'required|integer',
+            'hmkm_akhir' => 'required|integer',
+            'total_hmkm' => 'required|integer',
+            'lokasi' => 'required|string|max:30',
+            'divisi' => 'required|string|max:10',
+            'jenis_pekerjaan' => 'required|string|max:255',
+            'tarif_satuan' => 'nullable|numeric',
+            'hasil_1' => 'nullable|integer',
+            'satuan_1' => 'nullable|string|max:5',
+            'hasil_2' => 'nullable|integer',
+            'satuan_2' => 'nullable|string|max:5',
+            'total_premi' => 'nullable|numeric'
+        ]);
+
+        Premi::create([
+            'tanggal' => $request->tanggal,
+            'no_kab' => $request->no_kab,
+            'nama_kab' => $request->nama_kab,
+            'nik' => $request->nik,
+            'nama_karyawan' => $request->nama_karyawan,
+            'estate' => $request->estate,
+            'hmkm_awal' => $request->hmkm_awal,
+            'hmkm_akhir' => $request->hmkm_akhir,
+            'total_hmkm' => $request->total_hmkm,
+            'lokasi' => $request->lokasi,
+            'divisi' => $request->divisi,
+            'jenis_pekerjaan' => $request->jenis_pekerjaan,
+            'tarif_satuan' => $request->tarif_satuan,
+            'hasil_1' => $request->hasil_1,
+            'satuan_1' => $request->satuan_1,
+            'hasil_2' => $request->hasil_2,
+            'satuan_2' => $request->satuan_2,
+            'total_premi' => $request->total_premi
+        ]);
+
+        return redirect()->route('premi.index')->with('success', 'Data Premi berhasil disimpan.');
     }
 
     /**
