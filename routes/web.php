@@ -43,6 +43,7 @@ use App\Http\Controllers\RealisasiPanenController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RestanController;
 use App\Http\Controllers\SptbsInputController;
+use App\Http\Controllers\TSAController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,7 @@ Route::get('/panen/hapus/{id}', [PanenController::class, 'destroy']);
 Route::get('/ffbinternal/data', [FfbInternalController::class, 'data'])->name('ffbinternal.data');
 Route::get('/ffbinternal/export/excel',[FfbInternalController::class, 'exportExcel'])->name('ffbinternal.export.excel');
 Route::get('/ffbinternal/export/pdf', [FfbInternalController::class, 'exportPdf'])->name('ffbinternal.export.pdf');
+Route::post('/ffbinternal/simpan', [FfbInternalController::class, 'simpan'])->name('ffbinternal.simpan');
 Route::resource('/ffbinternal', FfbInternalController::class);
 Route::post('/ffbinternal', [FfbInternalController::class, 'import'])->name('ffbinternal.import');
 Route::get('/ffbekternal/data', [FfbEksternalController::class, 'data'])->name('ffbeksternal.data');
@@ -192,3 +194,5 @@ Route::post('/blokkoordinat/import', [BlokKordinatController::class, 'import'])-
 Route::get('/blokkoordinat/export/excel', [BlokKordinatController::class, 'exportExcel'])->name('blokkoordinat.export.excel');
 Route::get('/blokkoordinat/export/pdf', [BlokKordinatController::class, 'exportPdf'])->name('blokkoordinat.export.pdf');
 Route::resource('/blokkoordinat', BlokKordinatController::class);
+Route::get('/tsa/data', [TSAController::class, 'data'])->name('tsa.data');
+Route::resource('/tsa', TSAController::class);

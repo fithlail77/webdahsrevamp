@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddFFBInt" align="right">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadFfbInt" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -115,6 +115,193 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Tambah Data Penerimaan FFB Int PKS -->
+<div class="modal fade" id="modal-AddFFBInt" tabindex="-1" role="dialog" aria-labelledby="modal-AddFFBIntLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddFFBIntLabel">Tambah Data Penerimaan FFB Internal PKS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('ffbinternal.simpan') }}" method="POST">
+            @csrf
+            <div class="table-responsive">
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">No PO</label>
+                        <input class="form-control" name="no_po" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Vendor Detail</label>
+                        <input class="form-control" name="vendor_detail" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Vendor Group</label>
+                        <input class="form-control" name="vendor_group" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Vendor Transportir</label>
+                        <input class="form-control" name="vendor_transportir" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal SPTBS</label>
+                        <input class="form-control" name="tglsptbs" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal Panen</label>
+                        <input class="form-control" name="tglpanen" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Nama Supir</label>
+                        <input class="form-control" name="supir" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Polisi</label></label>
+                        <input class="form-control" name="nopol" type="text" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jam Masuk</label>
+                        <input class="form-control" name="timein" type="time" step="1"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jam Keluar</label>
+                        <input class="form-control" name="timeout" type="time" step="1"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tahuntanam" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Inti/Plasma</label>
+                        <select class="form-control" name="lahan">
+                            <option value="">-- Pilih --</option>
+                            <option value="Inti">Inti</option></option>
+                            <option value="Plasma">Plasma</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Tandan</label></label>
+                        <input class="form-control" name="jmltandan" type="number" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berondolan</label>
+                        <input class="form-control" name="berondolan" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Bruto</label>
+                        <input class="form-control" name="bruto" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Tarra</label>
+                        <input class="form-control" name="tarra" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Netto</label></label>
+                        <input class="form-control" name="netto" type="number" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Grading</label>
+                        <input class="form-control" name="grading" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Bersih</label>
+                        <input class="form-control" name="bersih" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">BJR</label>
+                        <input class="form-control" name="bjr" id="bjr" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <hr>
+                <label class="small mb-1">Grading (Kg)</label>
+                <hr>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">F-O0</label>
+                        <input class="form-control" name="f00" id="f00" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">F-0</label>
+                        <input class="form-control" name="f0" id="f0" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">F1 s.d F4</label>
+                        <input class="form-control" name="f14" id="f14" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">F5</label>
+                        <input class="form-control" name="f5" id="f5" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">F6</label>
+                        <input class="form-control" name="f6" id="f6" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tandan Kosong</label>
+                        <input class="form-control" name="tankos" id="t_kosong" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Sampah</label>
+                        <input class="form-control" name="sampah" id="sampah" type="number" step="0.01"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tangkai Pjg</label>
+                        <input class="form-control" name="tangkai_pjg" id="tangkai_pjg" type="number" step="0.01"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Kastrasi</label>
+                        <input class="form-control" name="kastrasi" id="kastrasi" type="number" step="0.01"/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
       </div>

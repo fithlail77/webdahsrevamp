@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Company;
 use App\Models\Ffbinternal;
 use Illuminate\Http\Request;
 use App\Exports\FfbInternalExport;
@@ -95,7 +96,16 @@ class FfbInternalController extends Controller
             $grading[] = ($brutoVal > 0) ? round(($gradingVal / $brutoVal) * 100, 2) : 0;
         }
 
-        return view('ffbint.index', compact('labels', 'bruto', 'netto', 'grading', 'target'));
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('ffbint.index', compact('labels', 'bruto', 'netto', 'grading', 'target','estate','divisi'));
     }
 
     public function data(Request $request)

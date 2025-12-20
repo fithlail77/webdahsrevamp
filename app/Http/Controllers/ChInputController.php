@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\CurahHujanExport;
-use App\Exports\CurahHujanPdfExport;
 use Carbon\Carbon;
 use App\Models\ChInput;
 use App\Imports\ChImport;
 use App\Models\CurahHujan;
 use Illuminate\Http\Request;
+use App\Exports\CurahHujanExport;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
+use App\Exports\CurahHujanPdfExport;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -71,6 +72,12 @@ class ChInputController extends Controller
             'ch'
         ])
         ->orderBy('dates','desc');
+
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
 
         // Jika ada pencarian global, ambil semua data tanpa filter tanggal
         if (!empty($request->input('search.value'))) {
@@ -210,18 +217,18 @@ class ChInputController extends Controller
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
-        $search = $request->input('search');
+        $userEstate = Auth::user()->estate ?? null;
 
-        return Excel::download(new CurahHujanExport($minDate, $maxDate, $search), 'Curah_Hujan.xlsx');
+        return Excel::download(new CurahHujanExport($minDate, $maxDate, $userEstate), 'Curah_Hujan.xlsx');
     }
 
     public function exportPdf(Request $request)
     {
         $minDate = $request->input('minDate');
         $maxDate = $request->input('maxDate');
-        $search = $request->input('search');
+        $userEstate = Auth::user()->estate ?? null;
 
-        $pdfExport = new CurahHujanPdfExport($minDate, $maxDate, $search);
+        $pdfExport = new CurahHujanPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
     }
 }

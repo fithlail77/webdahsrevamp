@@ -112,13 +112,14 @@
                     || request()->routeIs('rental.index')
                     || request()->routeIs('pupukkebun.index')
                     || request()->routeIs('rawatkebun.index')
-                    || request()->routeIs('aramco.index');
+                    || request()->routeIs('aramco.index')
+                    || request()->routeIs('tsa.index');
 
                 $isCurahActive = request()->routeIs('curah.index') || request()->routeIs('airsungai.index');
                 $isPKSActive = request()->routeIs('ffbinternal.index') || request()->routeIs('ffbeksternal.index') || request()->routeIs('produksicpo.index') || request()->routeIs('contractcpo.index') || request()->routeIs('contractpk.index');
                 $isUpkeepActive = request()->routeIs('pupuk.index') || request()->routeIs('perawatan.index') || request()->routeIs('payroll.index');
                 $isUnitActive = request()->routeIs('lho.index') || request()->routeIs('depre.index') || request()->routeIs('spartlho.index') || request()->routeIs('lhounit.index');
-                $isKebunActive = request()->routeIs('realisasipanen.index') || request()->routeIs('laprestan.index') || request()->routeIs('sptbs.index') || request()->routeIs('premi.index') || request()->routeIs('rental.index') || request()->routeIs('pupukkebun.index') || request()->routeIs('rawatkebun.index') || request()->routeIs('aramco.index');
+                $isKebunActive = request()->routeIs('realisasipanen.index') || request()->routeIs('laprestan.index') || request()->routeIs('sptbs.index') || request()->routeIs('premi.index') || request()->routeIs('rental.index') || request()->routeIs('pupukkebun.index') || request()->routeIs('rawatkebun.index') || request()->routeIs('aramco.index') || request()->routeIs('curah.index') || request()->routeIs('tsa.index');
             @endphp
 
             <li class="nav-item">
@@ -138,22 +139,6 @@
                             </a>
                         @endif
 
-                        @if(auth()->user()->hasAnyRole(['manager','admin']))
-                            {{-- MENU CURAH HUJAN dengan SUBMENU --}}
-                            <a class="collapse-item {{ $isCurahActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseCurah" aria-expanded="{{ $isCurahActive ? 'true' : 'false' }}" aria-controls="collapseCurah">
-                                {{ __('Curah Hujan') }}
-                            </a>
-                            <div id="collapseCurah" class="collapse {{ $isCurahActive ? 'show' : '' }}" data-parent="#collapseTransaksi">
-                                <div class="bg-light py-2 collapse-inner rounded ml-3">
-                                    <a class="collapse-item {{ request()->routeIs('curah.index') ? 'active' : '' }}" href="{{ route('curah.index') }}">
-                                        {{ __('Input Curah Hujan') }}
-                                    </a>
-                                    <a class="collapse-item {{ request()->routeIs('airsungai.index') ? 'active' : '' }}" href="{{ route('airsungai.index') }}">
-                                        {{ __('Input Air Sungai') }}
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
                         @if(auth()->user()->hasAnyRole(['manager','admin','ke','estate_user']) || (auth()->check() && strtolower(auth()->user()->estate ?? '') == 'sedadung' || 'tugang' || 'melamor' || 'mulau' || 'ngaring'))
                             {{-- MENU DATA KEBUN dengan SUBMENU --}}
                             <a class="collapse-item {{ $isKebunActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseKebun" aria-expanded="{{ $isKebunActive ? 'true' : 'false' }}" aria-controls="collapseKebun">
@@ -168,7 +153,9 @@
                                     <a class="collapse-item {{ request()->routeIs('rental.index') ? 'active' : '' }}" href="{{ route('rental.index') }}">{{ __('Input Rental KAB') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('pupukkebun.index') ? 'active' : '' }}" href="{{ route('pupukkebun.index') }}">{{ __('Input Pemupukan') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('rawatkebun.index') ? 'active' : '' }}" href="{{ route('rawatkebun.index') }}">{{ __('Input Perawatan') }}</a>
+                                    <a class="collapse-item {{ request()->routeIs('curah.index') ? 'active' : '' }}" href="{{ route('curah.index') }}">{{ __('Input Curah Hujan') }}</a>
                                     <a class="collapse-item {{ request()->routeIs('aramco.index') ? 'active' : '' }}" href="{{ route('aramco.index') }}">{{ __('Input Aramco') }}</a>
+                                    <a class="collapse-item {{ request()->routeIs('tsa.index') ? 'active' : '' }}" href="{{ route('tsa.index') }}">{{ __('Input TSA') }}</a>
                                 </div>
                             </div>
                         @endif
@@ -217,6 +204,7 @@
                         @if(auth()->user()->hasAnyRole(['manager','admin']))
                             {{-- Menu lain tetap seperti biasa --}}
                             <a class="collapse-item {{ request()->routeIS('awsinput.index') ? 'active' : '' }}" href="{{ route('awsinput.index') }}">{{ __('Weather Station') }}</a>
+                            <a class="collapse-item {{ request()->routeIS('airsungai.index') ? 'active' : '' }}" href="{{ route('airsungai.index') }}">{{ __('Air Sungai') }}</a>
                         @endif
                     </div>
                 </div>

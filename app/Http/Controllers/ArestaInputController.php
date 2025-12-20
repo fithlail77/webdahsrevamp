@@ -11,6 +11,7 @@ use App\Imports\ArestaImport;
 use App\Exports\ArestaPdfExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -64,6 +65,12 @@ class ArestaInputController extends Controller
             'luas'
         ])
         ->orderBy('bulan','desc');
+
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
 
         // Jika ada pencarian global, ambil semua data tanpa filter tanggal
         if (!empty($request->input('search.value'))) {
