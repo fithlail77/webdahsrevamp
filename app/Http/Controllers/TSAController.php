@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TsaExport;
+use App\Exports\TsaExportPdf;
 use App\Models\TSA;
 use App\Models\Company;
+use App\Imports\TsaImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class TSAController extends Controller
@@ -35,6 +40,7 @@ class TSAController extends Controller
     public function data(Request $request)
     {
         $query = TSA::select([
+            'id',
             'tanggal',
             'no_ticket',
             'transportir',
@@ -83,7 +89,7 @@ class TSAController extends Controller
             })
             ->addColumn('aksi', function ($row) {
                 return '
-                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditSptbs"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditTSA"><i class="fa fa-edit"></i></a>
                 ';
             })
             ->rawColumns(['aksi'])
@@ -100,7 +106,27 @@ class TSAController extends Controller
      */
     public function store(Request $request)
     {
-        //
+          $validate = $request->validate([
+            'tanggal' => 'required|date',
+            'no_ticket' => 'required|integer',
+            'transportir' => 'required|string|max:15',
+            'supir' => 'required|string|max:30',
+            'nopol' => 'required|string|max:15',
+            'material' => 'required|string|max:30',
+            'satuan' => 'required|string|max:5',
+            'blok' => 'required|string|max:5',
+            'tt' => 'required|integer',
+            'estate' => 'required|string|max:30',
+            'divisi' => 'required|string|max:5',
+            'lahan' => 'required|string|max:15',
+            'bruto' => 'required|integer',
+            'tara' => 'required|integer',
+            'netto' => 'required|integer',
+          ]);
+
+          TSA::create($validate);
+
+          return response()->json(['message' => 'Data berhasil disimpan.']);
     }
 
     /**
@@ -116,7 +142,13 @@ class TSAController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $tsa = TSA::findOrFail($id);
+            return response()->json($tsa);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -124,7 +156,28 @@ class TSAController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+             'no_ticket' => 'required|integer',
+             'transportir' => 'required|string|max:15',
+             'supir' => 'required|string|max:30',
+             'nopol' => 'required|string|max:15',
+             'material' => 'required|string|max:30',
+             'satuan' => 'required|string|max:5',
+             'blok' => 'required|string|max:5',
+             'tt' => 'required|integer',
+             'estate' => 'required|string|max:30',
+             'divisi' => 'required|string|max:5',
+             'lahan' => 'required|string|max:15',
+             'bruto' => 'required|integer',
+             'tara' => 'required|integer',
+             'netto' => 'required|integer',
+        ]);
+
+        $tsa = TSA::findOrFail($id);
+        $tsa->update($request->all());
+
+        return response()->json(['success' => 'Data berhasil diperbarui.']);
     }
 
     /**
@@ -133,5 +186,34 @@ class TSAController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx,csv',
+        ]);
+
+        Excel::import( new TsaImport, $request->file('file'));
+
+        return redirect()->route('tsa.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+
+        return Excel::download(new TsaExport($minDate, $maxDate), 'monitoring_tankos_solid_abuboiler.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        $pdfExport = new TsaExportPdf($minDate, $maxDate, $search);
+        return $pdfExport->generatePdf();
     }
 }

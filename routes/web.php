@@ -195,4 +195,7 @@ Route::get('/blokkoordinat/export/excel', [BlokKordinatController::class, 'expor
 Route::get('/blokkoordinat/export/pdf', [BlokKordinatController::class, 'exportPdf'])->name('blokkoordinat.export.pdf');
 Route::resource('/blokkoordinat', BlokKordinatController::class);
 Route::get('/tsa/data', [TSAController::class, 'data'])->name('tsa.data');
+Route::post('/tsa/import', [TSAController::class, 'import'])->name('tsa.import');
+Route::get('/tsa/export/excel', [TSAController::class, 'exportExcel'])->name('tsa.export.excel');
+Route::get('/tsa/export/pdf', [TSAController::class, 'exportPdf'])->name('tsa.export.pdf');
 Route::resource('/tsa', TSAController::class);

@@ -45,6 +45,7 @@
         <table id='tsaTable' class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>No</th>
                     <th>Tanggal</th>
                     <th>No Tiket</th>
                     <th>Transportir</th>
@@ -70,6 +71,257 @@
             Tidak ada data yang sesuai dengan filter tanggal.
         </div>
     </div>
+</div>
+<!-- Modal Input Data TSA -->
+<div class="modal fade" id="modal-AddTSA" tabindex="-1" role="dialog" aria-labelledby="modal-AddTSALabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddTSALabel">Tambah Data Tankos Solid Abu Boiler</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="{{ route('tsa.store') }}" method="POST">
+            @csrf
+            <div class="table-responsive">
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Tiket</label>
+                        <input class="form-control" name="no_ticket" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Transportir</label>
+                        <input class="form-control" name="transportir" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Nama Supir</label>
+                        <input class="form-control" name="supir" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Polisi</label>
+                        <input class="form-control" name="nopol" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Material</label>
+                        <select class="form-control" name="material">
+                            <option value="">-- Pilih --</option>
+                            <option value="tankos">Tankos</option></option>
+                            <option value="solid">Solid</option>
+                            <option value="abu boiler">Abu Boiler</option>
+                        </select> 
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label>
+                        <input class="form-control" name="satuan" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tt" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Inti/Plasma</label>
+                        <select class="form-control" name="lahan">
+                            <option value="">-- Pilih --</option>
+                            <option value="Inti">Inti</option></option>
+                            <option value="Plasma">Plasma</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Bruto</label>
+                        <input class="form-control" name="bruto" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tarra</label>
+                        <input class="form-control" name="tara" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Netto</label></label>
+                        <input class="form-control" name="netto" type="number" readonly/>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Edit Data TSA -->
+<div class="modal fade" id="modal-EditTSA" tabindex="-1" role="dialog" aria-labelledby="modal-EditTSALabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-EditTSALabel">Ubah Data Tankos Solid Abu Boiler</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+            @csrf
+            @method('PUT')
+            <input type="hidden" id="editId" name="id">
+            <div class="table-responsive">
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" id="editTanggal" name="tanggal" type="date" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Tiket</label>
+                        <input class="form-control" id="editNoTicket" name="no_ticket" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Transportir</label>
+                        <input class="form-control" id="editTransportir" name="transportir" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Nama Supir</label>
+                        <input class="form-control" id="editSupir" name="supir" type="text" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Polisi</label>
+                        <input class="form-control" id="editNopol" name="nopol" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Material</label>
+                        <select class="form-control" id="editMaterial" name="material" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="tankos">Tankos</option></option>
+                            <option value="solid">Solid</option>
+                            <option value="abu boiler">Abu Boiler</option>
+                        </select> 
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label>
+                        <input class="form-control" id="editSatuan" name="satuan" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" id="editBlok" name="blok" type="text" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" id="editTahunTanam" name="tt" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" id="editEstate" name="estate" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" id="editDivisi" name="divisi" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Inti/Plasma</label>
+                        <select class="form-control" id="editLahan" name="lahan" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Inti">Inti</option></option>
+                            <option value="Plasma">Plasma</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Bruto</label>
+                        <input class="form-control" id="editBruto" name="bruto" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tarra</label>
+                        <input class="form-control" id="editTara" name="tara" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Netto</label></label>
+                        <input class="form-control" id="editNetto" name="netto" type="number" readonly required/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal File Upload -->
+<div class="modal fade" id="modal-UploadTSA" tabindex="-1" role="dialog" aria-labelledby="modal-UploadTSALabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-UploadTSALabel">Unggah Data Monitoring Tankos Solid Abu Boiler</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('tsa.import') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="file">Pilih File Excel</label>
+                <input type="file" class="form-control" name="file" id="file" accept=".xlsx, .csv, .xls" required>
+                <small class="form-text text-muted">Format file yang didukung: .xlsx, .csv, .xls</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection
 
@@ -128,7 +380,7 @@
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
         var search = table.search();
-        var url = "{{ route('sptbs.export.excel') }}";
+        var url = "{{ route('tsa.export.excel') }}";
         var params = [];
         if (minDate) params.push('minDate=' + minDate);
         if (maxDate) params.push('maxDate=' + maxDate);
@@ -143,7 +395,7 @@
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
         var search = table.search();
-        var url = "{{ route('sptbs.export.pdf') }}";
+        var url = "{{ route('tsa.export.pdf') }}";
         var params = [];
         if (minDate) params.push('minDate=' + minDate);
         if (maxDate) params.push('maxDate=' + maxDate);
@@ -163,41 +415,24 @@
             console.error('ID is empty');
             return;
         }
-        $.get('/sptbs/' + id + '/edit', function(data) {
+        $.get('/tsa/' + id + '/edit', function(data) {
             console.log('Edit data received:', data);
             $('#editId').val(data.id);
-            $('#editAngkutan').val(data.angkutan);
-            $('#editNoTiket').val(data.no_tiket);
-            $('#editTanggalTiket').val(data.tanggal_tiket ? data.tanggal_tiket.split(' ')[0] : '');
-            $('#editNoSptbs').val(data.no_sptbs);
-            $('#editTanggalSptbs').val(data.tanggal_sptbs ? data.tanggal_sptbs.split(' ')[0] : '');
-            $('#editTanggalPanen').val(data.tanggal_panen ? data.tanggal_panen.split(' ')[0] : '');
-            $('#editNamaSupir').val(data.nama_supir);
-            $('#editNoPolisi').val(data.no_polisi);
-            $('#editJamMasuk').val(data.jam_masuk);
-            $('#editJamKeluar').val(data.jam_keluar);
+            $('#editTanggal').val(data.tanggal ? data.tanggal.split(' ')[0] : '');
+            $('#editNoTicket').val(data.no_ticket);
+            $('#editTransportir').val(data.transportir);
+            $('#editSupir').val(data.supir);
+            $('#editNopol').val(data.nopol);
+            $('#editMaterial').val(data.material);
+            $('#editSatuan').val(data.satuan);
+            $('#editBlok').val(data.blok);
+            $('#editTahunTanam').val(data.tt);
             $('#editEstate').val(data.estate);
             $('#editDivisi').val(data.divisi);
-            $('#editBlok').val(data.blok);
-            $('#editTahunTanam').val(data.tahun_tanam);
             $('#editLahan').val(data.lahan);
-            $('#editJumlahTandan').val(data.jumlah_tandan);
-            $('#editBerondolan').val(data.berondolan);
-            $('#editBeratBruto').val(data.berat_bruto);
-            $('#editBeratTarra').val(data.berat_tarra);
-            $('#editBeratNetto').val(data.berat_netto);
-            $('#editJumlahGrading').val(data.jumlah_grading);
-            $('#editBeratBersih').val(data.berat_bersih);
-            $('#editBjr').val(data.bjr);
-            $('#editF00').val(data.f00);
-            $('#editF0').val(data.f0);
-            $('#editF14').val(data.f14);
-            $('#editF5').val(data.f5);
-            $('#editF6').val(data.f6);
-            $('#editTKosong').val(data.t_kosong);
-            $('#editSampah').val(data.sampah);
-            $('#editTangkaiPjg').val(data.tangkai_pjg);
-            $('#editKastrasi').val(data.kastrasi);
+            $('#editBruto').val(data.bruto);
+            $('#editTara').val(data.tara);
+            $('#editNetto').val(data.netto);
         }).fail(function(xhr, status, error) {
             console.error('Error fetching edit data:', status, error);
             toastr.error('Gagal memuat data untuk edit.');
@@ -210,11 +445,11 @@
         var id = $('#editId').val();
         var formData = $(this).serialize();
         $.ajax({
-            url: '/sptbs/' + id,
+            url: '/tsa/' + id,
             type: 'PUT',
             data: formData,
             success: function(response) {
-                $('#modal-EditSptbs').modal('hide');
+                $('#modal-EditTSA').modal('hide');
                 table.ajax.reload();
                 toastr.success(response.success);
             },
@@ -235,45 +470,20 @@
         });
     });
 
-    // Auto replace comma with dot for BJR input
-    $('#bjr').on('input', function() {
-        var value = $(this).val();
-        if (value.includes(',')) {
-            $(this).val(value.replace(/,/g, '.'));
-        }
+    // Auto Calculate Netto in add Modal
+    $('input[name="bruto"], input[name="tara"]').on('input', function() {
+        var awal = parseFloat($('input[name="bruto"]').val()) || 0;
+        var akhir = parseFloat($('input[name="tara"]').val()) || 0;
+        var total = awal - akhir;
+        $('input[name="netto"]').val(total);
     });
 
-    // Handle form submission for Add SPTBS modal
-    $('#modal-AddSPTBS form').on('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-
-        $.ajax({
-            url: '{{ route("sptbs.simpan") }}',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                $('#modal-AddSPTBS').modal('hide');
-                table.ajax.reload();
-                toastr.success('Data SPTBS berhasil disimpan.');
-                // Reset form
-                $('#modal-AddSPTBS form')[0].reset();
-            },
-            error: function(xhr) {
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessages = [];
-                    for (var field in errors) {
-                        errorMessages.push(errors[field].join(', '));
-                    }
-                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
-                } else {
-                    toastr.error('Terjadi kesalahan saat menyimpan data.');
-                }
-            }
-        });
+    // Auto calculate HM/KM Total in edit modal
+    $('#editBruto, #editTara').on('input', function() {
+        var awal = parseFloat($('#editBruto').val()) || 0;
+        var akhir = parseFloat($('#editTara').val()) || 0;
+        var total = awal - akhir;
+        $('#editNetto').val(total);
     });
 });
 </script>

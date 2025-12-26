@@ -17,6 +17,7 @@ class TSA extends Model
         'tanggal',
         'no_ticket',
         'transportir',
+        'supir',
         'nopol',
         'material',
         'satuan',
