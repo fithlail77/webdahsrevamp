@@ -73,7 +73,6 @@
     </div>
     </div>
 </div>
-
 <!-- Modal File Upload -->
 <div class="modal fade" id="modal-UploadCCPO" tabindex="-1" role="dialog" aria-labelledby="modal-UploadCCPOLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -101,7 +100,119 @@
     </div>
   </div>
 </div>
-
+<!-- Modal Edit Data Contract CPO -->
+<div class="modal fade" id="modal-EditCcpo" tabindex="-1" role="dialog" aria-labelledby="modal-EditCcpoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-EditCcpoLabel">Ubah Data Kontrak CPO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+            @csrf
+            @method('PUT')
+            <input type="hidden" id="editId" name="id">
+            <div class="table-responsive">
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" id="editTanggal" name="tanggal" type="date" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Tiket</label>
+                        <input class="form-control" id="editNoTicket" name="no_ticket" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Transportir</label>
+                        <input class="form-control" id="editTransportir" name="transportir" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Nama Supir</label>
+                        <input class="form-control" id="editSupir" name="supir" type="text" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Polisi</label>
+                        <input class="form-control" id="editNopol" name="nopol" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Material</label>
+                        <select class="form-control" id="editMaterial" name="material" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="tankos">Tankos</option></option>
+                            <option value="solid">Solid</option>
+                            <option value="abu boiler">Abu Boiler</option>
+                        </select> 
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Satuan</label>
+                        <input class="form-control" id="editSatuan" name="satuan" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" id="editBlok" name="blok" type="text" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" id="editTahunTanam" name="tt" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" id="editEstate" name="estate" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" id="editDivisi" name="divisi" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Inti/Plasma</label>
+                        <select class="form-control" id="editLahan" name="lahan" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Inti">Inti</option></option>
+                            <option value="Plasma">Plasma</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Bruto</label>
+                        <input class="form-control" id="editBruto" name="bruto" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tarra</label>
+                        <input class="form-control" id="editTara" name="tara" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Netto</label></label>
+                        <input class="form-control" id="editNetto" name="netto" type="number" readonly required/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <style>
     .dt-nowrap {
         white-space: nowrap;
