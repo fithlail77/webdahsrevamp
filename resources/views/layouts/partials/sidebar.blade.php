@@ -220,34 +220,30 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('aresta.index') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>{{ __('Areal Statement') }}</span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('produksikebun.index') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>{{ __('Analisa Produksi Kebun') }}</span></a>
-            </li>
-
-            <li class="nav-item">
                 <a class="nav-link" href="{{ route('curahhujan.index') }}">
                     <i class="fas fa-fw fa-cloud-rain"></i>
                     <span>{{ __('Curah Hujan') }}</span></a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('aws.index') }}">
                     <i class="fas fa-fw fa-cloud-rain"></i>
                     <span>{{ __('AWS') }}</span></a>
             </li>
-            
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('aresta.index') }}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>{{ __('Areal Statement') }}</span></a>
+            </li>
             <li class="nav-item ">
                 <a class="nav-link" href="{{ route('produksi.index') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>{{ __('Produksi') }}</span>
                 </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('produksikebun.index') }}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>{{ __('Analisa Produksi Kebun') }}</span></a>
             </li>
 
             <li class="nav-item ">
@@ -270,14 +266,6 @@
                     <span>{{ __('Infrastruktur Jalan') }}</span>
                 </a>
             </li>
-
-            <li class="nav-item ">
-                <a class="nav-link" href="{{ route('legal.index') }}">
-                    <i class="fas fa-fw fa-gavel"></i>
-                    <span>{{ __('Legal') }}</span>
-                </a>
-            </li>
-
             <li class="nav-item ">
                 <a class="nav-link" href="{{ route('lsu.index') }}">
                     <i class="fas fa-fw fa-leaf"></i>
@@ -291,11 +279,16 @@
                     <span>{{ __('Assessmen Blok') }}</span>
                 </a>
             </li>
-
             <li class="nav-item ">
                 <a class="nav-link" href="{{ route('bibit.index') }}">
                     <i class="fas fa-fw fa-seedling"></i>
                     <span>{{ __('Pembibitan') }}</span>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ route('legal.index') }}">
+                    <i class="fas fa-fw fa-gavel"></i>
+                    <span>{{ __('Legal') }}</span>
                 </a>
             </li>
             @endif
