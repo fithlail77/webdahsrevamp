@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class CompanyController extends Controller
 {
@@ -12,10 +15,46 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $Company = Company::All();
-        return view('comp.index', compact('Company'));
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+        return view('comp.index', compact('estate','divisi'));
     }
 
+    public function data(Request $request)
+    {
+        $query = Company::select([
+            'id',
+            'kd_comp',
+            'perusahaan',
+            'kd_est',
+            'estate',
+            'divisi',
+        ])
+        ->orderBy('perusahaan','asc');
+
+        // Filter berdasarkan estate user
+        $userEstate = Auth::user()->estate ?? null;
+        if ($userEstate && $userEstate !== 'all') {
+            $query->where('estate', $userEstate);
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditComp"><i class="fa fa-edit"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -54,7 +93,13 @@ class CompanyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+         try {
+            $company = Company::findOrFail($id);
+            return response()->json($company);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -62,7 +107,17 @@ class CompanyController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'perusahaan'=> 'required|string|max:100',
+            'kd_est' => 'required|string|max:5',
+            'estate' => 'required|string|max:15',
+            'divisi' => 'required|integer',
+        ]);
+
+        $company = Company::findOrFail($id);
+        $company->update($request->all());
+
+        return response()->json(['success' => 'Data berhasil diperbarui.']);
     }
 
     /**

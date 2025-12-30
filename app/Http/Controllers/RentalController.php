@@ -82,7 +82,7 @@ class RentalController extends Controller
                 $query->whereDate('tanggal', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal', '>=', Carbon::now()->subDays(1));
+                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
             }
         }
 
@@ -122,21 +122,21 @@ class RentalController extends Controller
             'hm_awal' => 'required|numeric',
             'hm_akhir' => 'required|numeric',
             'total_hm' => 'required|numeric',
-            'potongan_hm' => 'required|numeric',
-            'pembayaran_hm' => 'required|numeric',
-            'blok' => 'required|string|max:5',
+            'potongan_hm' => 'nullable|numeric',
+            'pembayaran_hm' => 'nullable|numeric',
+            'blok' => 'nullable|string|max:5',
             'tahun_tanam' => 'required|integer',
             'pekerjaan' => 'required|string|max:255',
             'divisi' => 'required|string|max:5',
             'kelompok' => 'required|string|max:255',
-            'coa' => 'integer',
-            'tarif' => 'required|integer',
-            'bjr' => 'required|numeric',
-            'hasil_1' => 'required|integer',
-            'satuan_1' => 'required|string|max:15',
-            'hasil_2' => 'required|integer',
-            'satuan_2' => 'required|string|max:15',
-            'total_biaya' => 'required|integer'
+            'coa' => 'nullable|integer',
+            'tarif' => 'nullable|integer',
+            'bjr' => 'nullable|numeric',
+            'hasil_1' => 'nullable|integer',
+            'satuan_1' => 'nullable|string|max:15',
+            'hasil_2' => 'nullable|integer',
+            'satuan_2' => 'nullable|string|max:15',
+            'total_biaya' => 'nullable|integer'
         ]);
 
         Rental::create([

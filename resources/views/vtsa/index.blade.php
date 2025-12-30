@@ -478,7 +478,7 @@
         $('input[name="netto"]').val(total);
     });
 
-    // Auto calculate HM/KM Total in edit modal
+    // Auto calculate netto Total in edit modal
     $('#editBruto, #editTara').on('input', function() {
         var awal = parseFloat($('#editBruto').val()) || 0;
         var akhir = parseFloat($('#editTara').val()) || 0;

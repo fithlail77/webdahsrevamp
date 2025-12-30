@@ -66,7 +66,7 @@
                         <th>Tarif</th>
                         <th>BJR</th>
                         <th>Hasil 1</th>
-                        <th>SAtuan 1</th>
+                        <th>Satuan 1</th>
                         <th>Hasil 2</th>
                         <th>Satuan 2</th>
                         <th>Total Biaya</th>
@@ -133,7 +133,7 @@
                     </div>
                      <div class="col-md-3">
                         <label class="small mb-1">Total HM</label></label>
-                        <input class="form-control" name="total_hm" type="number" step="0.01"/>
+                        <input class="form-control" name="total_hm" type="number" step="0.01" readonly/>
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
@@ -231,7 +231,7 @@
 </div>
 <!-- Modal Edit Realisasi Panen -->
 <div class="modal fade" id="modal-EditRental" tabindex="-1" role="dialog" aria-labelledby="modal-EditRentalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditRentalLabel">Edit Data  Rental KAB</h5>
@@ -244,97 +244,132 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <!--<input type="text" class="form-control" id="editEstate" name="estate" required>-->
+                    <select class="form-control" name="estate" id="editEstate" name="estate" required >
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJenisAlat">Jenis Alat</label>
+                    <input type="text" class="form-control" id="editJenisAlat" name="jenis_alat" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNoAlat">Nomor Alat</label>
+                    <input type="text" class="form-control" id="editNoAlat" name="no_alat" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editOperator">Operator</label>
+                    <input type="text" class="form-control" id="editOperator" name="operator" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHmAwal">HM Awal</label>
+                    <input type="number" class="form-control" id="editHmAwal" name="hm_awal" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHmAkhir">HM Akhir</label>
+                    <input type="number" step="0.01" class="form-control" id="editHmAkhir" name="hm_akhir" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTotalHm">Total HM</label>
+                    <input type="number" step="0.01" class="form-control" id="editTotalHm" name="total_hm" readonly required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editJenisAlat">Jenis Alat</label>
-                <input type="text" class="form-control" id="editJenisAlat" name="jenis_alat" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editPotonganHm">Potongan HM</label>
+                    <input type="number" step="0.01" class="form-control" id="editPotonganHm" name="potongan_hm" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editPembayaranHm">Pembayaran HM</label>
+                    <input type="number" step="0.01" class="form-control" id="editPembayaranHm" name="pembayaran_hm" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBlok">Blok</label>
+                    <input type="text" class="form-control" id="editBlok" name="blok" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTahunTanam">Tahun Tanam</label>
+                    <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNoAlat">Nomor Alat</label>
-                <input type="text" class="form-control" id="editNoAlat" name="no_alat" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editPekerjaan">Pekerjaan</label>
+                    <input type="text" class="form-control" id="editPekerjaan" name="pekerjaan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <!--<input type="text" class="form-control" id="editDivisi" name="divisi" required> -->
+                    <select class="form-control" name="divisi" id="editDivisi" name="divisi" required >
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editKelompok">Kelompok</label>
+                    <input type="text" class="form-control" id="editKelompok" name="kelompok" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editCoa">COA</label>
+                    <input type="number" class="form-control" id="editCoa" name="coa" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editOperator">Operator</label>
-                <input type="text" class="form-control" id="editOperator" name="operator" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTarif">Tarif</label>
+                    <input type="number" class="form-control" id="editTarif" name="tarif" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBjr">BJR</label>
+                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHasil1">Hasil 1</label>
+                    <input type="number" class="form-control" id="editHasil1" name="hasil_1" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editSatuan1">Satuan 1</label>
+                    <!--<input type="text" class="form-control" id="editSatuan1" name="satuan_1" required> -->
+                    <select class="form-control" name="satuan_1" id="editSatuan1" name="satuan_1" required >
+                            <option value="">-- Pilih --</option>
+                            <option value="Jjg">Janjang</option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Rit">Rit</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editHmAwal">HM Awal</label>
-                <input type="number" class="form-control" id="editHmAwal" name="hm_awal" required>
-            </div>
-            <div class="form-group">
-                <label for="editHmAkhir">HM Akhir</label>
-                <input type="number" step="0.01" class="form-control" id="editHmAkhir" name="hm_akhir" required>
-            </div>
-            <div class="form-group">
-                <label for="editTotalHm">Total HM</label>
-                <input type="number" step="0.01" class="form-control" id="editTotalHm" name="total_hm" required>
-            </div>
-            <div class="form-group">
-                <label for="editPotonganHm">Potongan HM</label>
-                <input type="number" step="0.01" class="form-control" id="editPotonganHm" name="potongan_hm" required>
-            </div>
-            <div class="form-group">
-                <label for="editPembayaranHm">Pembayaran HM</label>
-                <input type="number" step="0.01" class="form-control" id="editPembayaranHm" name="pembayaran_hm" required>
-            </div>
-            <div class="form-group">
-                <label for="editBlok">Blok</label>
-                <input type="text" class="form-control" id="editBlok" name="blok" required>
-            </div>
-            <div class="form-group">
-                <label for="editTahunTanam">Tahun Tanam</label>
-                <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
-            </div>
-            <div class="form-group">
-                <label for="editPekerjaan">Pekerjaan</label>
-                <input type="text" class="form-control" id="editPekerjaan" name="pekerjaan" required>
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editKelompok">Kelompok</label>
-                <input type="text" class="form-control" id="editKelompok" name="kelompok" required>
-            </div>
-            <div class="form-group">
-                <label for="editCoa">COA</label>
-                <input type="number" class="form-control" id="editCoa" name="coa" required>
-            </div>
-            <div class="form-group">
-                <label for="editTarif">Tarif</label>
-                <input type="number" class="form-control" id="editTarif" name="tarif" required>
-            </div>
-            <div class="form-group">
-                <label for="editBjr">BJR</label>
-                <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
-            </div>
-            <div class="form-group">
-                <label for="editHasil1">Hasil 1</label>
-                <input type="number" class="form-control" id="editHasil1" name="hasil_1" required>
-            </div>
-            <div class="form-group">
-                <label for="editSatuan1">Satuan 1</label>
-                <input type="text" class="form-control" id="editSatuan1" name="satuan_1" required>
-            </div>
-            <div class="form-group">
-                <label for="editHasil2">Hasil 2</label>
-                <input type="number" class="form-control" id="editHasil2" name="hasil_2" required>
-            </div>
-            <div class="form-group">
-                <label for="editSatuan2">Satuan 2</label>
-                <input type="text" class="form-control" id="editSatuan2" name="satuan_2" required>
-            </div>
-            <div class="form-group">
-                <label for="editTotalBiaya">Total Biaya</label>
-                <input type="number" class="form-control" id="editTotalBiaya" name="total_biaya" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editHasil2">Hasil 2</label>
+                    <input type="number" class="form-control" id="editHasil2" name="hasil_2" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editSatuan2">Satuan 2</label>
+                    <select class="form-control" name="satuan_2" id="editSatuan2" name="satuan_2" required >
+                            <option value="">-- Pilih --</option>
+                            <option value="Jjg">Janjang</option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Rit">Rit</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTotalBiaya">Total Biaya</label>
+                    <input type="number" class="form-control" id="editTotalBiaya" name="total_biaya" required>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -564,6 +599,22 @@
                 }
             }
         });
+    });
+
+    // Auto Calculate HM/KM Total in add Modal
+    $('input[name="hm_akhir"], input[name="hm_awal"]').on('input', function() {
+        var awal = parseFloat($('input[name="hm_awal"]').val()) || 0;
+        var akhir = parseFloat($('input[name="hm_akhir"]').val()) || 0;
+        var total = akhir - awal;
+        $('input[name="total_hm"]').val(total);
+    });
+
+    // Auto calculate HM/KM Total in edit modal
+    $('#editHmAkhir, #editHmAwal').on('input', function() {
+        var awal = parseFloat($('#editHmAwal').val()) || 0;
+        var akhir = parseFloat($('#editHmAkhir').val()) || 0;
+        var total = akhir - awal;
+        $('#editTotalHm').val(total);
     });
 });
 </script>

@@ -211,8 +211,8 @@
                         <input class="form-control" name="tarra" type="number"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Berat Netto</label></label>
-                        <input class="form-control" name="netto" type="number" />
+                        <label class="small mb-1">Berat Netto</label>
+                        <input class="form-control" name="netto" type="number" readonly/>
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
@@ -222,7 +222,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Berat Bersih</label>
-                        <input class="form-control" name="bersih" type="number"/>
+                        <input class="form-control" name="bersih" type="number" readonly/>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">BJR</label>
@@ -286,7 +286,7 @@
 </div>
 <!-- Modal Edit Data SPTBS -->
 <div class="modal fade" id="modal-EditSptbs" tabindex="-1" role="dialog" aria-labelledby="modal-EditSptbsLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditSptbsLabel">Edit Data SPTBS</h5>
@@ -299,133 +299,149 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editAngkutan">Angkutan</label>
-                <input type="text" class="form-control" id="editAngkutan" name="angkutan" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editAngkutan">Angkutan</label>
+                    <input type="text" class="form-control" id="editAngkutan" name="angkutan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNoTiket">No Tiket</label>
+                    <input type="text" class="form-control" id="editNoTiket" name="no_tiket" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTanggalTiket">Tanggal Tiket</label>
+                    <input type="date" class="form-control" id="editTanggalTiket" name="tanggal_tiket" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNoSptbs">No SPTBS</label>
+                    <input type="text" class="form-control" id="editNoSptbs" name="no_sptbs" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNoTiket">No Tiket</label>
-                <input type="text" class="form-control" id="editNoTiket" name="no_tiket" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggalSptbs">Tanggal SPTBS</label>
+                    <input type="date" class="form-control" id="editTanggalSptbs" name="tanggal_sptbs" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTanggalPanen">Tanggal Panen</label>
+                    <input type="date" class="form-control" id="editTanggalPanen" name="tanggal_panen" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNamaSupir">Nama Supir</label>
+                    <input type="text" class="form-control" id="editNamaSupir" name="nama_supir" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNoPolisi">No Polisi</label>
+                    <input type="text" class="form-control" id="editNoPolisi" name="no_polisi" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTanggalTiket">Tanggal Tiket</label>
-                <input type="date" class="form-control" id="editTanggalTiket" name="tanggal_tiket" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editJamMasuk">Jam Masuk (HH:MM:SS)</label>
+                    <input type="time" step="1" class="form-control" id="editJamMasuk" name="jam_masuk" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJamKeluar">Jam Keluar (HH:MM:SS)</label>
+                    <input type="time" step="1" class="form-control" id="editJamKeluar" name="jam_keluar" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <input type="text" class="form-control" id="editEstate" name="estate" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <input type="text" class="form-control" id="editDivisi" name="divisi" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNoSptbs">No SPTBS</label>
-                <input type="text" class="form-control" id="editNoSptbs" name="no_sptbs" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editBlok">Blok</label>
+                    <input type="text" class="form-control" id="editBlok" name="blok" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTahunTanam">Tahun Tanam</label>
+                    <input type="text" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editLahan">Lahan</label>
+                    <input type="text" class="form-control" id="editLahan" name="lahan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJumlahTandan">Jumlah Tandan</label>
+                    <input type="text" class="form-control" id="editJumlahTandan" name="jumlah_tandan" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTanggalSptbs">Tanggal SPTBS</label>
-                <input type="date" class="form-control" id="editTanggalSptbs" name="tanggal_sptbs" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editBerondolan">Berondolan</label>
+                    <input type="number" step="0.01" class="form-control" id="editBerondolan" name="berondolan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBeratBruto">Berat Bruto</label>
+                    <input type="number" class="form-control" id="editBeratBruto" name="berat_bruto" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBeratTarra">Berat Tarra</label>
+                    <input type="number" class="form-control" id="editBeratTarra" name="berat_tarra" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBeratNetto">Berat Netto</label>
+                    <input type="number" class="form-control" id="editBeratNetto" name="berat_netto" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTanggalPanen">Tanggal Panen</label>
-                <input type="date" class="form-control" id="editTanggalPanen" name="tanggal_panen" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editJumlahGrading">Jumlah Grading</label>
+                    <input type="number" class="form-control" id="editJumlahGrading" name="jumlah_grading" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBeratBersih">Berat Bersih</label>
+                    <input type="number" class="form-control" id="editBeratBersih" name="berat_bersih" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBjr">BJR</label>
+                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="small mb-1">F-O0</label>
+                    <input class="form-control" name="f00" id="editF00" type="number" step="0.01"/>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNamaSupir">Nama Supir</label>
-                <input type="text" class="form-control" id="editNamaSupir" name="nama_supir" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label class="small mb-1">F-0</label>
+                    <input class="form-control" name="f0" id="editF0" type="number" step="0.01"/>
+                </div>
+                <div class="col-md-3">
+                    <label class="small mb-1">F1 s.d F4</label>
+                    <input class="form-control" name="f14" id="editF14" type="number" step="0.01"/>
+                </div>
+                <div class="col-md-3">
+                    <label class="small mb-1">F5</label>
+                    <input class="form-control" name="f5" id="editF5" type="number" step="0.01"/>
+                </div>
+                <div class="col-md-3">
+                    <label class="small mb-1">F6</label>
+                    <input class="form-control" name="f6" id="editF6" type="number" step="0.01"/>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNoPolisi">No Polisi</label>
-                <input type="text" class="form-control" id="editNoPolisi" name="no_polisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editJamMasuk">Jam Masuk (HH:MM:SS)</label>
-                <input type="time" step="1" class="form-control" id="editJamMasuk" name="jam_masuk" required>
-            </div>
-            <div class="form-group">
-                <label for="editJamKeluar">Jam Keluar (HH:MM:SS)</label>
-                <input type="time" step="1" class="form-control" id="editJamKeluar" name="jam_keluar" required>
-            </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate" required>
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editBlok">Blok</label>
-                <input type="text" class="form-control" id="editBlok" name="blok" required>
-            </div>
-            <div class="form-group">
-                <label for="editTahunTanam">Tahun Tanam</label>
-                <input type="text" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
-            </div>
-            <div class="form-group">
-                <label for="editLahan">Lahan</label>
-                <input type="text" class="form-control" id="editLahan" name="lahan" required>
-            </div>
-            <div class="form-group">
-                <label for="editJumlahTandan">Jumlah Tandan</label>
-                <input type="text" class="form-control" id="editJumlahTandan" name="jumlah_tandan" required>
-            </div>
-            <div class="form-group">
-                <label for="editBerondolan">Berondolan</label>
-                <input type="number" step="0.01" class="form-control" id="editBerondolan" name="berondolan" required>
-            </div>
-            <div class="form-group">
-                <label for="editBeratBruto">Berat Bruto</label>
-                <input type="number" class="form-control" id="editBeratBruto" name="berat_bruto" required>
-            </div>
-            <div class="form-group">
-                <label for="editBeratTarra">Berat Tarra</label>
-                <input type="number" class="form-control" id="editBeratTarra" name="berat_tarra" required>
-            </div>
-            <div class="form-group">
-                <label for="editBeratNetto">Berat Netto</label>
-                <input type="number" class="form-control" id="editBeratNetto" name="berat_netto" required>
-            </div>
-            <div class="form-group">
-                <label for="editJumlahGrading">Jumlah Grading</label>
-                <input type="number" class="form-control" id="editJumlahGrading" name="jumlah_grading" required>
-            </div>
-            <div class="form-group">
-                <label for="editBeratBersih">Berat Bersih</label>
-                <input type="number" class="form-control" id="editBeratBersih" name="berat_bersih" required>
-            </div>
-            <div class="form-group">
-                <label for="editBjr">BJR</label>
-                <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">F-O0</label>
-                <input class="form-control" name="f00" id="editF00" type="number" step="0.01"/>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">F-0</label>
-                <input class="form-control" name="f0" id="editF0" type="number" step="0.01"/>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">F1 s.d F4</label>
-                <input class="form-control" name="f14" id="editF14" type="number" step="0.01"/>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">F5</label>
-                <input class="form-control" name="f5" id="editF5" type="number" step="0.01"/>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">F6</label>
-                <input class="form-control" name="f6" id="editF6" type="number" step="0.01"/>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">Tandan Kosong</label>
-                <input class="form-control" name="t_kosong" id="editTKosong" type="number" step="0.01"/>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">Sampah</label>
-                <input class="form-control" name="sampah" id="editSampah" type="number" step="0.01"/>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">Tangkai Pjg</label>
-                <input class="form-control" name="tangkai_pjg" id="editTangkaiPjg" type="number" step="0.01"/>
-            </div>
-            <div class="form-group">
-                <label class="small mb-1">Kastrasi</label>
-                <input class="form-control" name="kastrasi" id="editKastrasi" type="number" step="0.01"/>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label class="small mb-1">Tandan Kosong</label>
+                    <input class="form-control" name="t_kosong" id="editTKosong" type="number" step="0.01"/>
+                </div>
+                <div class="col-md-3">
+                    <label class="small mb-1">Sampah</label>
+                    <input class="form-control" name="sampah" id="editSampah" type="number" step="0.01"/>
+                </div>
+                <div class="col-md-3">
+                    <label class="small mb-1">Tangkai Pjg</label>
+                    <input class="form-control" name="tangkai_pjg" id="editTangkaiPjg" type="number" step="0.01"/>
+                </div>
+                <div class="col-md-3">
+                    <label class="small mb-1">Kastrasi</label>
+                    <input class="form-control" name="kastrasi" id="editKastrasi" type="number" step="0.01"/>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -684,6 +700,33 @@
                 }
             }
         });
+    });
+
+    // Auto Calculate Netto in add Modal
+    $('input[name="bruto"], input[name="tarra"]').on('input', function() {
+        var awal = parseFloat($('input[name="bruto"]').val()) || 0;
+        var akhir = parseFloat($('input[name="tarra"]').val()) || 0;
+        var total = awal - akhir;
+        $('input[name="netto"]').val(total);
+    });
+
+    // Auto Calculate Berat Bersih in add Modal
+    $('input[name="netto"], input[name="grading"]').on('input', function() {
+        var awal = parseFloat($('input[name="netto"]').val()) || 0;
+        var akhir = parseFloat($('input[name="grading"]').val()) || 0;
+        var total = awal - akhir;
+        $('input[name="bersih"]').val(total);
+    });
+
+    // Auto Calculate Berat Bersih in edit Modal
+
+    
+    // Auto calculate netto Total in edit modal
+    $('#editBruto, #editTara').on('input', function() {
+        var awal = parseFloat($('#editBruto').val()) || 0;
+        var akhir = parseFloat($('#editTara').val()) || 0;
+        var total = awal - akhir;
+        $('#editNetto').val(total);
     });
 });
 </script>

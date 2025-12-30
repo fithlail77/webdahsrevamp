@@ -66,6 +66,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::resource('/user', UserController::class);
 Route::get('/user/hapus/{id}', [UserController::class, 'destroy']);
 Route::post('/user/changePassword/{id}', [UserController::class, 'changePassword'])->name('user.changePassword');
+Route::get('/comp/data', [CompanyController::class, 'data'])->name('comp.data');
 Route::resource('/comp', CompanyController::class);
 Route::get('/comp/hapus/{id}', [CompanyController::class, 'destroy']);
 Route::resource('/aresta', ArestaController::class);

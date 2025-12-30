@@ -97,6 +97,12 @@ class BlokKordinatController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Normalize decimal separator for x and y
+        $request->merge([
+            'x' => str_replace(',', '.', $request->x),
+            'y' => str_replace(',', '.', $request->y),
+        ]);
+
         $request->validate([
             'estate' => 'required|string',
             'divisi' => 'required|string',

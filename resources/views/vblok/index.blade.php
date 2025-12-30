@@ -51,13 +51,12 @@
         </div>
     </div>
 </div>
-
 <!-- Modal Edit Blok Koordinat -->
-<div class="modal fade" id="modal-EditAramco" tabindex="-1" role="dialog" aria-labelledby="modal-EditAramcoLabel" aria-hidden="true">
+<div class="modal fade" id="modal-EditBlokKordinat" tabindex="-1" role="dialog" aria-labelledby="modal-EditBlokKordinatLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-EditBlokKoordinatLabel">Ubah Data Koordinat Blok</h5>
+        <h5 class="modal-title" id="modal-EditBlokKordinatLabel">Ubah Data Koordinat Blok</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -68,7 +67,7 @@
             @method('PUT')
             <input type="hidden" id="editId" name="id">
             <div class="form-group">
-                <el for="editEstate">Estateestateel>
+                <label for="editEstate">Estate</label>
                 <input type="text" class="form-control" id="editEstate" name="estate" required>
             </div>
             <div class="form-group">
@@ -76,7 +75,7 @@
                 <input type="text" class="form-control" id="editDivisi" name="divisi" required>
             </div>
             <div class="form-group">
-                <blok for="editBlok">Blok</blok
+                <label for="editBlok">Blok</label>
                 <input type="text" class="form-control" id="editBlok" name="blok" required>
             </div>
             <div class="form-group">
@@ -140,8 +139,9 @@
 
 @push('scripts')
 <script>
+    var table;
     $(document).ready(function() {
-    var table = $('#blokkoordinatTable').DataTable({
+    table = $('#blokkoordinatTable').DataTable({
         processing: true,
         serverSide: true,
         scrollX: true,
@@ -221,12 +221,25 @@
             type: 'PUT',
             data: formData,
             success: function(response) {
-                $('#modal-EditBlokKoordinat').modal('hide');
-                table.ajax.reload();
+                setTimeout(function() {
+                    $('#modal-EditBlokKordinat').modal('hide');
+                }, 100);
                 toastr.success(response.success);
+                table.ajax.reload();
             },
             error: function(xhr) {
-                toastr.error('Terjadi kesalahan saat memperbarui data.');
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else if (xhr.status === 500 && xhr.responseJSON && xhr.responseJSON.error) {
+                    toastr.error('Kesalahan server: ' + xhr.responseJSON.error);
+                } else {
+                    toastr.error('Terjadi kesalahan saat memperbarui data.');
+                }
             }
         });
     });
