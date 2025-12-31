@@ -304,7 +304,12 @@
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editTopografi">Topografi</label>
-                    <input type="text" class="form-control" id="editTopografi" name="topografi" required>
+                    <select name="topografi" class="form-control" id="editTopografi" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Datar">Datar</option>
+                        <option value="Berbukit">Berbukit</option>
+                        <option value="Bergelombang">Bergelombang</option>
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editJenisTanah">Jenis Tanah</label>
