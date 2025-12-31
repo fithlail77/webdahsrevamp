@@ -160,7 +160,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-right mt-3">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
@@ -171,7 +171,7 @@
 </div>
 <!-- Modal Edit Aramco -->
 <div class="modal fade" id="modal-EditAramco" tabindex="-1" role="dialog" aria-labelledby="modal-EditAramcoLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditAramcoLabel">Edit Data Perawatan Harian Kebun</h5>
@@ -184,57 +184,79 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editTanggalRakit">Tanggal Rakit</label>
-                <input type="date" class="form-control" id="editTanggalRakit" name="tanggal_rakit" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggalRakit">Tanggal Rakit</label>
+                    <input type="date" class="form-control" id="editTanggalRakit" name="tanggal_rakit" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTanggalPasang">Tanggal Pasang</label>
+                    <input type="date" class="form-control" id="editTanggalPasang" name="tanggal_pasang" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNoPo">No PO</label>
+                    <input type="text" class="form-control" id="editNoPo" name="no_po">
+                </div>
+                <div class="col-md-3">
+                    <label for="editUkuran">Ukuran</label>
+                    <input type="text" class="form-control" id="editUkuran" name="ukuran" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTanggalPasang">Tanggal Pasang</label>
-                <input type="date" class="form-control" id="editTanggalPasang" name="tanggal_pasang" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editJumlah">Jumlah</label>
+                    <input type="number" class="form-control" id="editJumlah" name="jumlah" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editSatuan">Satuan</label>
+                    <input type="text" class="form-control" id="editSatuan" name="satuan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBlok">Blok</label>
+                    <input type="text" class="form-control" id="editBlok" name="blok" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <select class="form-control" name="estate" id="editEstate" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNoPo">No PO</label>
-                <input type="text" class="form-control" id="editNoPo" name="no_po">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <select class="form-control" name="divisi" id="editDivisi" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($divisi as $item)
+                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTitikKordinat">Titik Kordinat</label>
+                    <input type="text" class="form-control" id="editTitikKordinat" name="kordinat" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTahunTanam">Tahun Tanam</label>
+                    <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editLahan">Lahan</label>
+                    <select class="form-control" name="lahan" id="editLahan" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="TM">TM</option>
+                        <option value="TBM">TBM</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editUkuran">Ukuran</label>
-                <input type="text" class="form-control" id="editUkuran" name="ukuran" required>
-            </div>
-            <div class="form-group">
-                <label for="editJumlah">Jumlah</label>
-                <input type="number" class="form-control" id="editJumlah" name="jumlah" required>
-            </div>
-            <div class="form-group">
-                <label for="editSatuan">Satuan</label>
-                <input type="text" class="form-control" id="editSatuan" name="satuan" required>
-            </div>
-            <div class="form-group">
-                <label for="editBlok">Blok</label>
-                <input type="text" class="form-control" id="editBlok" name="blok" required>
-            </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate" required>
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editTitikKordinat">Titik Kordinat</label>
-                <input type="text" class="form-control" id="editTitikKordinat" name="kordinat" required>
-            </div>
-            <div class="form-group">
-                <label for="editTahunTanam">Tahun Tanam</label>
-                <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
-            </div>
-            <div class="form-group">
-                <label for="editLahan">Lahan</label>
-                <input type="text" class="form-control" id="editLahan" name="lahan">
-            </div>
-            <div class="form-group">
-                <label for="editStatus">Status</label>
-                <input type="text" class="form-control" id="editStatus" name="status">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editStatus">Status</label>
+                    <input type="text" class="form-control" id="editStatus" name="status">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

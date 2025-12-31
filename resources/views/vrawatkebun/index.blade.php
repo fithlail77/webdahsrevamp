@@ -160,13 +160,13 @@
                         <input class="form-control" name="material_1" type="text"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Jumlah</label>
+                        <label class="small mb-1">Jumlah 1</label>
                         <input class="form-control" name="jumlah_1" id="jumlah1" type="number" step="0.01"/>
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">Satuan</label>
+                        <label class="small mb-1">Satuan 1</label>
                         <select class="form-control" name="satuan_1">
                             <option value="">-- Pilih --</option>
                             <option value="Ltr">Liter</option>
@@ -177,11 +177,11 @@
                         <input class="form-control" name="material_2" type="text"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Jumlah</label>
+                        <label class="small mb-1">Jumlah 2</label>
                         <input class="form-control" name="jumlah_2" id="jumlah2" type="number" step="0.01"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Satuan</label>
+                        <label class="small mb-1">Satuan 2</label>
                         <select class="form-control" name="satuan_2">
                             <option value="">-- Pilih --</option>
                             <option value="Ltr">Liter</option>
@@ -194,11 +194,11 @@
                         <input class="form-control" name="material_3" type="text"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Jumlah</label>
+                        <label class="small mb-1">Jumlah 3</label>
                         <input class="form-control" name="jumlah_3" id="jumlah3" type="number" step="0.01"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Satuan</label>
+                        <label class="small mb-1">Satuan 3</label>
                         <select class="form-control" name="satuan_3">
                             <option value="">-- Pilih --</option>
                             <option value="Ltr">Liter</option>
@@ -210,7 +210,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-right mt-3">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
@@ -221,7 +221,7 @@
 </div>
 <!-- Modal Edit Data Perawatan Kebun -->
 <div class="modal fade" id="modal-EditRawatKebun" tabindex="-1" role="dialog" aria-labelledby="modal-EditRawatKebunLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditRawatKebunLabel">Edit Data Perawatan Harian Kebun</h5>
@@ -234,85 +234,122 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJenisPerawatan">Jenis Perawatan</label>
+                    <input type="text" class="form-control" id="editJenisPerawatan" name="jenis_perawatan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBlok">Blok</label>
+                    <input type="text" class="form-control" id="editBlok" name="blok" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTahunTanam">Tahun Tanam</label>
+                    <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editJenisPerawatan">Jenis Perawatan</label>
-                <input type="text" class="form-control" id="editJenisPerawatan" name="jenis_perawatan" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <select class="form-control" name="divisi" id="editDivisi" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($divisi as $item)
+                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <select class="form-control" name="estate" id="editEstate" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editLahan">Lahan</label>
+                    <select class="form-control" name="lahan" id="editLahan" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="TM">TM</option>
+                        <option value="TBM">TBM</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHasil">Hasil</label>
+                    <input type="number" step="0.01" class="form-control" id="editHasil" name="hasil" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editBlok">Blok</label>
-                <input type="text" class="form-control" id="editBlok" name="blok" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editSatuan">Satuan</label>
+                    <select class="form-control" name="satuan" id="editSatuan" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Pkk">Pokok</option>
+                        <option value="Ha">Hektar</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJumlahTenaga">Jumlah Tenaga</label>
+                    <input type="number" class="form-control" id="editJumlahTenaga" name="jml_tenaga" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editMaterial1">Material 1</label>
+                    <input type="text" class="form-control" id="editMaterial1" name="material_1">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJumlah1">Jumlah 1</label>
+                    <input type="number" step="0.01" class="form-control" id="editJumlah1" name="jumlah_1">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTahunTanam">Tahun Tanam</label>
-                <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editSatuan1">Satuan 1</label>
+                    <select class="form-control" name="satuan_1" id="editSatuan1" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Ltr">Liter</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editMaterial2">Material 2</label>
+                    <input type="text" class="form-control" id="editMaterial2" name="material_2">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJumlah2">Jumlah 2</label>
+                    <input type="number" step="0.01" class="form-control" id="editJumlah2" name="jumlah_2">
+                </div>
+                <div class="col-md-3">
+                    <label for="editSatuan2">Satuan 2</label>
+                    <select class="form-control" name="satuan_2" id="editSatuan2" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Ltr">Liter</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate" required>
-            </div>
-            <div class="form-group">
-                <label for="editLahan">Lahan</label>
-                <input type="text" class="form-control" id="editLahan" name="lahan" required>
-            </div>
-            <div class="form-group">
-                <label for="editHasil">Hasil</label>
-                <input type="number" step="0.01" class="form-control" id="editHasil" name="hasil" required>
-            </div>
-            <div class="form-group">
-                <label for="editSatuan">Satuan</label>
-                <input type="text" class="form-control" id="editSatuan" name="satuan" required>
-            </div>
-            <div class="form-group">
-                <label for="editJumlahTenaga">Jumlah Tenaga</label>
-                <input type="number" class="form-control" id="editJumlahTenaga" name="jml_tenaga" required>
-            </div>
-            <div class="form-group">
-                <label for="editMaterial1">Material 1</label>
-                <input type="text" class="form-control" id="editMaterial1" name="material_1">
-            </div>
-            <div class="form-group">
-                <label for="editJumlah1">Jumlah 1</label>
-                <input type="number" step="0.01" class="form-control" id="editJumlah1" name="jumlah_1">
-            </div>
-            <div class="form-group">
-                <label for="editSatuan1">Satuan 1</label>
-                <input type="text" class="form-control" id="editSatuan1" name="satuan_1">
-            </div>
-            <div class="form-group">
-                <label for="editMaterial2">Material 2</label>
-                <input type="text" class="form-control" id="editMaterial2" name="material_2">
-            </div>
-            <div class="form-group">
-                <label for="editJumlah2">Jumlah 2</label>
-                <input type="number" step="0.01" class="form-control" id="editJumlah2" name="jumlah_2">
-            </div>
-            <div class="form-group">
-                <label for="editSatuan2">Satuan 2</label>
-                <input type="text" class="form-control" id="editSatuan2" name="satuan_2">
-            </div>
-            <div class="form-group">
-                <label for="editMaterial3">Material 3</label>
-                <input type="text" class="form-control" id="editMaterial3" name="material_3">
-            </div>
-            <div class="form-group">
-                <label for="editJumlah3">Jumlah 3</label>
-                <input type="number" step="0.01" class="form-control" id="editJumlah3" name="jumlah_3">
-            </div>
-            <div class="form-group">
-                <label for="editSatuan3">Satuan 3</label>
-                <input type="text" class="form-control" id="editSatuan3" name="satuan_3">
-            </div>
-            <div class="form-group">
-                <label for="editKeterangan">Keterangan</label>
-                <input type="text" class="form-control" id="editKeterangan" name="keterangan">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editMaterial3">Material 3</label>
+                    <input type="text" class="form-control" id="editMaterial3" name="material_3">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJumlah3">Jumlah 3</label>
+                    <input type="number" step="0.01" class="form-control" id="editJumlah3" name="jumlah_3">
+                </div>
+                <div class="col-md-3">
+                    <label for="editSatuan3">Satuan 3</label>
+                    <select class="form-control" name="satuan_3" id="editSatuan3" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Ltr">Liter</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editKeterangan">Keterangan</label>
+                    <input type="text" class="form-control" id="editKeterangan" name="keterangan">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

@@ -85,7 +85,6 @@
       <div class="modal-body">
             <form action="{{ route('tsa.store') }}" method="POST">
             @csrf
-            <div class="table-responsive">
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Tanggal</label>
@@ -173,8 +172,7 @@
                         <input class="form-control" name="netto" type="number" readonly/>
                     </div>
                 </div>
-            </div>
-            <div class="text-right mt-3">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
@@ -198,7 +196,6 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="table-responsive">
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Tanggal</label>
@@ -286,7 +283,6 @@
                         <input class="form-control" id="editNetto" name="netto" type="number" readonly required/>
                     </div>
                 </div>
-            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

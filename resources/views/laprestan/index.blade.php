@@ -128,7 +128,7 @@
 </div>
 <!-- Modal Edit Realisasi Panen -->
 <div class="modal fade" id="modal-EditRestan" tabindex="-1" role="dialog" aria-labelledby="modal-EditRestanLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditRestanLabel">Edit Data Realisasi Panen</h5>
@@ -141,29 +141,43 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <select class="form-control" name="estate" id="editEstate" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <select class="form-control" name="divisi" id="editDivisi" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($divisi as $item)
+                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBlok">Blok</label>
+                    <input type="text" class="form-control" id="editBlok" name="blok" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate" required>
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editBlok">Blok</label>
-                <input type="text" class="form-control" id="editBlok" name="blok" required>
-            </div>
-            <div class="form-group">
-                <label for="editTonase">Tonase (Ton)</label>
-                <input type="numeric" class="form-control" id="editTonase" name="tonase" required>
-            </div>
-            <div class="form-group">
-                <label for="editKeterangan">Keterangan</label>
-                <input type="text" class="form-control" id="editKeterangan" name="keterangan" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTonase">Tonase (Ton)</label>
+                    <input type="numeric" class="form-control" id="editTonase" name="tonase" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editKeterangan">Keterangan</label>
+                    <input type="text" class="form-control" id="editKeterangan" name="keterangan" required>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

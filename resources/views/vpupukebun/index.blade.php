@@ -149,7 +149,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-right mt-3">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
@@ -160,7 +160,7 @@
 </div>
 <!-- Modal Edit Pemupukan Kebun -->
 <div class="modal fade" id="modal-EditPupukKebun" tabindex="-1" role="dialog" aria-labelledby="modal-EditPupukKebunLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditPupukKebunLabel">Edit Data Pemupukan Harian Kebun</h5>
@@ -173,53 +173,69 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJenisPupuk">Jenis Pupuk</label>
+                    <input type="text" class="form-control" id="editJenisPupuk" name="jenis_pupuk" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBlok">Blok</label>
+                    <input type="text" class="form-control" id="editBlok" name="blok" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTahunTanam">Tahun Tanam</label>
+                    <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editJenisPupuk">Jenis Pupuk</label>
-                <input type="text" class="form-control" id="editJenisPupuk" name="jenis_pupuk" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <select class="form-control" name="divisi" id="editDivisi" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <select class="form-control" name="estate" id="editEstate" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editLahan">Lahan</label>
+                    <input type="text" class="form-control" id="editLahan" name="lahan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHasil">Hasil</label>
+                    <input type="number" step="0.01" class="form-control" id="editHasil" name="hasil" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editBlok">Blok</label>
-                <input type="text" class="form-control" id="editBlok" name="blok" required>
-            </div>
-            <div class="form-group">
-                <label for="editTahunTanam">Tahun Tanam</label>
-                <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate" required>
-            </div>
-            <div class="form-group">
-                <label for="editLahan">Lahan</label>
-                <input type="text" class="form-control" id="editLahan" name="lahan" required>
-            </div>
-            <div class="form-group">
-                <label for="editHasil">Hasil</label>
-                <input type="number" step="0.01" class="form-control" id="editHasil" name="hasil" required>
-            </div>
-            <div class="form-group">
-                <label for="editPokok">Pokok</label>
-                <input type="number" class="form-control" id="editPokok" name="pokok" required>
-            </div>
-            <div class="form-group">
-                <label for="editDosis">Dosis</label>
-                <input type="number" step="0.01" class="form-control" id="editDosis" name="dosis" required>
-            </div>
-            <div class="form-group">
-                <label for="editJumlahTenaga">Jumlah Tenaga</label>
-                <input type="number" class="form-control" id="editJumlahTenaga" name="jml_tenaga" required>
-            </div>
-            <div class="form-group">
-                <label for="editKeterangan">Keterangan</label>
-                <input type="text" class="form-control" id="editKeterangan" name="keterangan" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editPokok">Pokok</label>
+                    <input type="number" class="form-control" id="editPokok" name="pokok" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editDosis">Dosis</label>
+                    <input type="number" step="0.01" class="form-control" id="editDosis" name="dosis" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJumlahTenaga">Jumlah Tenaga</label>
+                    <input type="number" class="form-control" id="editJumlahTenaga" name="jml_tenaga" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editKeterangan">Keterangan</label>
+                    <input type="text" class="form-control" id="editKeterangan" name="keterangan" required>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

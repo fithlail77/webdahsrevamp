@@ -126,122 +126,115 @@
 <div class="modal fade" id="modal-AddAresta" tabindex="-1" role="dialog" aria-labelledby="modal-AddArestaLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-AddArestaLabel">Unggah Data Areal Statement</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-                <form action="{{ route('areal.store') }}" method="POST">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal-AddArestaLabel">Unggah Data Areal Statement</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="{{ route('areal.store') }}" method="POST">
             @csrf
-            <div class="table-responsive">
-                <table class="table table-borderless" width="100%" cellspacing="0">
-                    <thead>
-                        <tr align="left">
-                            <th width="10%">Tanggal</th>
-                            <th width="10%">Estate</th>
-                            <th width="10%">Divisi</th>
-                            <th width="10%">Blok</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="date" name="bulan" class="form-control" value="{{ date('Y-m-d') }}" required></td>
-                            <td><select name="estate" class="form-control" required>
-                                    <option value="">--Pilih Estate--</option>
-                                    <option value="Sedadung">Sedadung</option>
-                                    <option value="Melamor">Melamor</option>
-                                    <option value="Tugang">Tugang</option>
-                                    <option value="Mulau">Mulau</option>
-                                    <option value="Ngaring">Ngaring</option>
-                                </select></td>
-                            <td><select name="divisi" class="form-control" required>
-                                    <option value="">--Pilih Divisi--</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                </select></td>
-                            <td><input type="text" name="blok" class="form-control" required></td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr align="left">
-                            <th width="10%">Tahun Tanam</th>
-                            <th width="10%">Status Tanaman</th>
-                            <th width="10%">Status Lahan</th>
-                            <th width="10%">Jenis Bibit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="text" name="tahun_tanam" class="form-control" required></td>
-                            <td><select name="status_tanaman" class="form-control" required>
-                                    <option value="">--Pilih Estate--</option>
-                                    <option value="TM">TM</option>
-                                    <option value="TBM">TBM</option>
-                                </select></td>
-                            <td><select name="status_lahan" class="form-control" required>
-                                    <option value="">--Pilih Divisi--</option>
-                                    <option value="Inti">Inti</option>
-                                    <option value="Plasma">Plasma</option>
-                                </select></td>
-                            <td><input type="text" name="jenis_bibit" class="form-control" required></td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr align="left">
-                            <th width="10%">Topografi</th>
-                            <th width="10%">Jenis Tanah</th>
-                            <th width="10%">Pokok</th>
-                            <th width="10%">Luas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><select name="topografi" class="form-control" required>
-                                    <option value="">--Pilih Estate--</option>
-                                    <option value="Datar">Datar</option>
-                                    <option value="Berbukit">Berbukit</option>
-                                    <option value="Bergelombang">Bergelombang</option>
-                                </select></td>
-                            <td><input type="text" name="jenis_tanah" class="form-control" required></td>
-                            <td><input type="text" name="pokok" class="form-control" required></td>
-                            <td><input type="text" name="luas" class="form-control" required></td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr align="left">
-                            <th width="10%">Jenis Input</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><select name="jenis_input" class="form-control" required>
-                                    <option value="">--Pilih Estate--</option>
-                                    <option value="Penambahan">Penambahan</option>
-                                    <option value="Pengurangan">Pengurangan</option>
-                                </select></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="text-right mt-3">
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="bulan" type="date" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($estate as $item)
+                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <input class="form-control" name="blok" type="text" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <input class="form-control" name="tahun_tanam" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Status Tanaman</label>
+                        <select name="status_tanaman" class="form-control" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="TM">TM</option>
+                            <option value="TBM">TBM</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Status Lahan</label>
+                        <select name="status_lahan" class="form-control" required>
+                            <option value="">--Pilih Divisi--</option>
+                            <option value="Inti">Inti</option>
+                            <option value="Plasma">Plasma</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jenis Bibit</label>
+                        <input class="form-control" name="jenis_bibit" type="text" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Topografi</label>
+                        <select name="topografi" class="form-control" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Datar">Datar</option>
+                            <option value="Berbukit">Berbukit</option>
+                            <option value="Bergelombang">Bergelombang</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jenis Tanah</label>
+                        <input class="form-control" name="jenis_tanah" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Pokok</label>
+                        <input class="form-control" name="pokok" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Luasan (Ha)</label>
+                        <input class="form-control" name="luas" type="number" step="0.01" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jenis Input</label>
+                        <select name="jenis_input" class="form-control" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Penambahan">Penambahan</option>
+                            <option value="Pengurangan">Pengurangan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
-            </div>
-        </form>
-      </div>
+            </form>
+        </div>
     </div>
   </div>
 </div>
 
 <!-- Modal Edit Areal Statement -->
 <div class="modal fade" id="modal-EditAresta" tabindex="-1" role="dialog" aria-labelledby="modal-EditArestaLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditArestaLabel">Edit Data Areal Statement</h5>
@@ -254,53 +247,77 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="bulan" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="bulan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <select class="form-control" name="estate" id="editEstate" name="estate" required >
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <select class="form-control" name="divisi" id="editDivisi" name="divisi" required >
+                        <option value="">-- Pilih --</option>
+                        @foreach($divisi as $item)
+                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editBlok">Blok</label>
+                    <input type="text" class="form-control" id="editBlok" name="blok" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTahunTanam">Tahun Tanam</label>
+                    <input type="numeric" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editStatusTanaman">Status Tanaman</label>
+                    <select name="status_tanaman" class="form-control" id="editStatusTanaman" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="TM">TM</option>
+                        <option value="TBM">TBM</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="ediStatusLahann">Status Lahan</label>
+                    <select name="status_lahan" class="form-control" id="editStatusLahan" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Inti">Inti</option>
+                        <option value="Plasma">Plasma</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJenisBibit">Jenis Bibit</label>
+                    <input type="text" class="form-control" id="editJenisBibit" name="jenis_bibit" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editBlok">Blok</label>
-                <input type="text" class="form-control" id="editBlok" name="blok" required>
-            </div>
-            <div class="form-group">
-                <label for="editTahunTanam">Tahun Tanam</label>
-                <input type="numeric" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
-            </div>
-            <div class="form-group">
-                <label for="editStatusTanaman">Status Tanaman</label>
-                <input type="text" class="form-control" id="editStatusTanaman" name="status_tanaman" required>
-            </div>
-            <div class="form-group">
-                <label for="ediStatusLahann">Status Lahan</label>
-                <input type="text" class="form-control" id="editStatusLahan" name="status_lahan" required>
-            </div>
-            <div class="form-group">
-                <label for="editJenisBibit">Jenis Bibit</label>
-                <input type="text" class="form-control" id="editJenisBibit" name="jenis_bibit" required>
-            </div>
-            <div class="form-group">
-                <label for="editTopografi">Topografi</label>
-                <input type="text" class="form-control" id="editTopografi" name="topografi" required>
-            </div>
-            <div class="form-group">
-                <label for="editJenisTanah">Jenis Tanah</label>
-                <input type="text" class="form-control" id="editJenisTanah" name="jenis_tanah" required>
-            </div>
-            <div class="form-group">
-                <label for="editPokok">Pokok</label>
-                <input type="numeric" class="form-control" id="editPokok" name="pokok" required>
-            </div>
-            <div class="form-group">
-                <label for="editLuasan">Luasan (Ha)</label>
-                <input type="numeric" step="0.01" class="form-control" id="editLuasan" name="luas" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTopografi">Topografi</label>
+                    <input type="text" class="form-control" id="editTopografi" name="topografi" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJenisTanah">Jenis Tanah</label>
+                    <input type="text" class="form-control" id="editJenisTanah" name="jenis_tanah" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editPokok">Pokok</label>
+                    <input type="numeric" class="form-control" id="editPokok" name="pokok" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editLuasan">Luasan (Ha)</label>
+                    <input type="numeric" step="0.01" class="form-control" id="editLuasan" name="luas" required>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

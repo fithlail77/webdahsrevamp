@@ -131,10 +131,9 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+        <div class="modal-body">
             <form action="{{ route('ffbinternal.simpan') }}" method="POST">
             @csrf
-            <div class="table-responsive">
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">No PO</label>
@@ -155,30 +154,84 @@
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">Tanggal SPTBS</label>
-                        <input class="form-control" name="tglsptbs" type="date"/>
+                        <label class="small mb-1">Tgl</label>
+                        <input class="form-control" name="tgl" type="number"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Tanggal Panen</label>
-                        <input class="form-control" name="tglpanen" type="date"/>
+                        <label class="small mb-1">Bln</label>
+                        <input class="form-control" name="bln" type="number"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Nama Supir</label>
-                        <input class="form-control" name="supir" type="text"/>
+                        <label class="small mb-1">Thn</label>
+                        <input class="form-control" name="thn" type="number"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">No Polisi</label></label>
-                        <input class="form-control" name="nopol" type="text" />
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date" />
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Jam Masuk</label>
-                        <input class="form-control" name="timein" type="time" step="1"/>
+                        <input class="form-control" name="time_in" type="time" step="1"/>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Jam Keluar</label>
-                        <input class="form-control" name="timeout" type="time" step="1"/>
+                        <input class="form-control" name="time_out" type="time" step="1"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Plat</label>
+                        <input class="form-control" name="no_plat" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Supir</label>
+                        <input class="form-control" name="driver" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Bruto</label>
+                        <input class="form-control" name="bruto_awal" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Tarra</label>
+                        <input class="form-control" name="tarra" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Netto</label>
+                        <input class="form-control" name="ton_bruto" type="number" readonly/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Grading</label>
+                        <input class="form-control" name="grading" type="number"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Bersih</label>
+                        <input class="form-control" name="netto" type="number" readonly/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Tandan</label>
+                        <input class="form-control" name="jml_tandan" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">BJR</label>
+                        <input class="form-control" name="bjr" id="bjr" type="number" step="0.01" readonly/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Area</label>
+                        <input class="form-control" name="area" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Umur Tanaman (Thn)</label>
+                        <input class="form-control" name="umur_tanaman" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Bulan</label>
+                        <input class="form-control" name="bulan"  type="date" />
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
@@ -201,105 +254,15 @@
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">Blok</label>
-                        <input class="form-control" name="blok" type="text"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Tahun Tanam</label>
-                        <input class="form-control" name="tahuntanam" type="number"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Inti/Plasma</label>
-                        <select class="form-control" name="lahan">
+                        <label class="small mb-1">Status Lahan</label>
+                        <select class="form-control" name="asal_tbs" required>
                             <option value="">-- Pilih --</option>
-                            <option value="Inti">Inti</option></option>
+                            <option value="Inti">Inti</option>
                             <option value="Plasma">Plasma</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Jumlah Tandan</label></label>
-                        <input class="form-control" name="jmltandan" type="number" />
-                    </div>
                 </div>
-                <div class="row gx-3 mb-3">
-                    <div class="col-md-3">
-                        <label class="small mb-1">Berondolan</label>
-                        <input class="form-control" name="berondolan" type="number"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Berat Bruto</label>
-                        <input class="form-control" name="bruto" type="number"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Berat Tarra</label>
-                        <input class="form-control" name="tarra" type="number"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Berat Netto</label></label>
-                        <input class="form-control" name="netto" type="number" />
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                    <div class="col-md-3">
-                        <label class="small mb-1">Jumlah Grading</label>
-                        <input class="form-control" name="grading" type="number"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Berat Bersih</label>
-                        <input class="form-control" name="bersih" type="number"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">BJR</label>
-                        <input class="form-control" name="bjr" id="bjr" type="number" step="0.01"/>
-                    </div>
-                </div>
-                <hr>
-                <label class="small mb-1">Grading (Kg)</label>
-                <hr>
-                <div class="row gx-3 mb-3">
-                    <div class="col-md-3">
-                        <label class="small mb-1">F-O0</label>
-                        <input class="form-control" name="f00" id="f00" type="number" step="0.01"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">F-0</label>
-                        <input class="form-control" name="f0" id="f0" type="number" step="0.01"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">F1 s.d F4</label>
-                        <input class="form-control" name="f14" id="f14" type="number" step="0.01"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">F5</label>
-                        <input class="form-control" name="f5" id="f5" type="number" step="0.01"/>
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                    <div class="col-md-3">
-                        <label class="small mb-1">F6</label>
-                        <input class="form-control" name="f6" id="f6" type="number" step="0.01"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Tandan Kosong</label>
-                        <input class="form-control" name="tankos" id="t_kosong" type="number" step="0.01"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Sampah</label>
-                        <input class="form-control" name="sampah" id="sampah" type="number" step="0.01"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Tangkai Pjg</label>
-                        <input class="form-control" name="tangkai_pjg" id="tangkai_pjg" type="number" step="0.01"/>
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                    <div class="col-md-3">
-                        <label class="small mb-1">Kastrasi</label>
-                        <input class="form-control" name="kastrasi" id="kastrasi" type="number" step="0.01"/>
-                    </div>
-                </div>
-            </div>
-            <div class="text-right mt-3">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
@@ -310,7 +273,7 @@
 </div>
 <!-- Modal Edit FFB Internal -->
 <div class="modal fade" id="modal-EditFfbInternal" tabindex="-1" role="dialog" aria-labelledby="modal-EditFfbInternalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditFfbInternalLabel">Ubah Data Tiket Timbangan TBS Internal</h5>
@@ -323,105 +286,119 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editNoTiket">No Tiket</label>
-                <input type="number" class="form-control" id="editNoTiket" name="no_po">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editNoTiket">No Tiket</label>
+                    <input type="number" class="form-control" id="editNoTiket" name="no_po">
+                </div>
+                <div class="col-md-3">
+                    <label for="editVendor">Vendor Detail</label>
+                    <input type="text" class="form-control" id="editVendor" name="vendor_detail">
+                </div>
+                <div class="col-md-3">
+                    <label for="editVendorGroup">Vendor Group</label>
+                    <input type="text" class="form-control" id="editVendorGroup" name="vendor_group" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editVendorTransportir">Vendor Transportir</label>
+                    <input type="text" class="form-control" id="editVendorTransportir" name="vendor_transportir" >
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editVendor">Vendor Detail</label>
-                <input type="text" class="form-control" id="editVendor" name="vendor_detail">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTgl">Tgl</label>
+                    <input type="number" class="form-control" id="editTgl" name="tgl" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editBln">Bln</label>
+                    <input type="number" class="form-control" id="editBln" name="bln" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editThn">Thn</label>
+                    <input type="number" class="form-control" id="editThn" name="thn" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="tanggal">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editVendorGroup">Vendor Group</label>
-                <input type="text" class="form-control" id="editVendorGroup" name="vendor_group" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editJamMasuk">Jam Masuk (HH:MM:SS)</label>
+                    <input type="time" step="1" class="form-control" id="editJamMasuk" name="time_in">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJamKeluar">Jam Keluar (HH:MM:SS)</label>
+                    <input type="time" step="1" class="form-control" id="editJamKeluar" name="time_out">
+                </div>
+                <div class="col-md-3">
+                    <label for="editPlat">Plat Kenderaan</label>
+                    <input type="text" class="form-control" id="editPlat" name="no_plat">
+                </div>
+                <div class="col-md-3">
+                    <label for="editDriver">Nama Supir</label>
+                    <input type="text" class="form-control" id="editDriver" name="driver">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editVendorTransportir">Vendor Transportir</label>
-                <input type="text" class="form-control" id="editVendorTransportir" name="vendor_transportir" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editBruto">Bruto</label>
+                    <input type="number" class="form-control" id="editBruto" name="bruto_awal">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTarra">Tarra</label>
+                    <input type="number" class="form-control" id="editTarra" name="tarra">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTonBruto">Ton Bruto</label>
+                    <input type="number" class="form-control" id="editTonBruto" name="ton_bruto">
+                </div>
+                <div class="col-md-3">
+                    <label for="editGrading">Grading</label>
+                    <input type="number" class="form-control" id="editGrading" name="grading">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTgl">Tgl</label>
-                <input type="number" class="form-control" id="editTgl" name="tgl" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editNetto">Ton Netto</label>
+                    <input type="number" class="form-control" id="editNetto" name="netto">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJanjang">Janjang</label>
+                    <input type="number" class="form-control" id="editJanjang" name="jml_tandan">
+                </div>
+                <div class="col-md-3">
+                    <label for="editBjr">BJR</label>
+                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr">
+                </div>
+                <div class="col-md-3">
+                    <label for="editArea">Area</label>
+                    <input type="text" class="form-control" id="editArea" name="area">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editBln">Bln</label>
-                <input type="number" class="form-control" id="editBln" name="bln" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editUmurTanaman">Umur Tanaman</label>
+                    <input type="number" class="form-control" id="editUmurTanaman" name="umur_tanaman">
+                </div>
+                <div class="col-md-3">
+                    <label for="editBulan">Bulan</label>
+                    <input type="date" class="form-control" id="editBulan" name="bulan">
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <input type="text" class="form-control" id="editEstate" name="estate">
+                </div>
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <input type="number" class="form-control" id="editDivisi" name="divisi">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editThn">Thn</label>
-                <input type="number" class="form-control" id="editThn" name="thn" >
-            </div>
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="tanggal">
-            </div>
-            <div class="form-group">
-                <label for="editJamMasuk">Jam Masuk (HH:MM:SS)</label>
-                <input type="time" step="1" class="form-control" id="editJamMasuk" name="time_in">
-            </div>
-            <div class="form-group">
-                <label for="editJamKeluar">Jam Keluar (HH:MM:SS)</label>
-                <input type="time" step="1" class="form-control" id="editJamKeluar" name="time_out">
-            </div>
-            <div class="form-group">
-                <label for="editPlat">Plat Kenderaan</label>
-                <input type="text" class="form-control" id="editPlat" name="no_plat">
-            </div>
-            <div class="form-group">
-                <label for="editDriver">Nama Supir</label>
-                <input type="text" class="form-control" id="editDriver" name="driver">
-            </div>
-            <div class="form-group">
-                <label for="editBruto">Bruto</label>
-                <input type="number" class="form-control" id="editBruto" name="bruto_awal">
-            </div>
-            <div class="form-group">
-                <label for="editTarra">Tarra</label>
-                <input type="number" class="form-control" id="editTarra" name="tarra">
-            </div>
-            <div class="form-group">
-                <label for="editTonBruto">Ton Bruto</label>
-                <input type="number" class="form-control" id="editTonBruto" name="ton_bruto">
-            </div>
-            <div class="form-group">
-                <label for="editGrading">Grading</label>
-                <input type="number" class="form-control" id="editGrading" name="grading">
-            </div>
-            <div class="form-group">
-                <label for="editNetto">Ton Netto</label>
-                <input type="number" class="form-control" id="editNetto" name="netto">
-            </div>
-            <div class="form-group">
-                <label for="editJanjang">Janjang</label>
-                <input type="number" class="form-control" id="editJanjang" name="jml_tandan">
-            </div>
-            <div class="form-group">
-                <label for="editBjr">BJR</label>
-                <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr">
-            </div>
-            <div class="form-group">
-                <label for="editArea">Area</label>
-                <input type="text" class="form-control" id="editArea" name="area">
-            </div>
-            <div class="form-group">
-                <label for="editUmurTanaman">Umur Tanaman</label>
-                <input type="number" class="form-control" id="editUmurTanaman" name="umur_tanaman">
-            </div>
-            <div class="form-group">
-                <label for="editBulan">Bulan</label>
-                <input type="date" class="form-control" id="editBulan" name="bulan">
-            </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate">
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="number" class="form-control" id="editDivisi" name="divisi">
-            </div>
-            <div class="form-group">
-                <label for="editAsalTbs">Asal TBS</label>
-                <input type="text" class="form-control" id="editAsalTbs" name="asal_tbs">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editAsalTbs">Asal TBS</label>
+                    <input type="text" class="form-control" id="editAsalTbs" name="asal_tbs">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -592,151 +569,28 @@
             }
         });
     });
+
+    // Function to calculate all values in add modal
+    function calculateAddModal() {
+        // Hitung ton_bruto: Bruto - Tarra
+        var bruto = parseFloat($('input[name="bruto_awal"]').val()) || 0;
+        var tarra = parseFloat($('input[name="tarra"]').val()) || 0;
+        var netto = bruto - tarra;
+        $('input[name="ton_bruto"]').val(netto);
+
+        // Hitung netto: Netto - Grading
+        var grading = parseFloat($('input[name="grading"]').val()) || 0;
+        var bersih = netto - grading;
+        $('input[name="netto"]').val(bersih);
+
+        // Hitung BJR: netto / Jumlah Tandan
+        var tandan = parseFloat($('input[name="jml_tandan"]').val()) || 0;
+        var bjr = tandan !== 0 ? (bersih / tandan).toFixed(2) : 0;
+        $('#bjr').val(bjr);
+    }
+
+    // Event listeners for add modal
+    $('input[name="bruto_awal"], input[name="tarra"], input[name="grading"], input[name="jml_tandan"]').on('input', calculateAddModal);
 });
 </script>
-<!--<script>
-        const ctx1 = document.getElementById('FfbIntChart').getContext('2d');
-        const FfbIntChart = new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: @json($labels),
-                datasets: [{
-                    label: 'Ton Bruto',
-                    data:,
-                     backgroundColor: 'rgba(154, 200, 243, 1)',
-                    borderColor: 'rgba(154, 200, 243, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                        formatter: function(value) {
-                            return value.toLocaleString('en-US');
-                        },
-                        font: {
-                            weight: 'bold'
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision:0,
-                            callback: function(value) {
-                              return value.toLocaleString('en-US'); // Format ribuan untuk sumbu Y
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Ton Bruto'
-                        }
-                    }
-                },
-                responsive: true,
-                maintainAspectRatio: false,
-            },
-            plugins: [ChartDataLabels]
-        });
-</script>-->
-<!--<script>
-const ctx1 = document.getElementById('FfbIntChart').getContext('2d');
-const grading = @json($grading);
-
-const FfbIntChart = new Chart(ctx1, {
-    type: 'bar',
-    data: {
-        labels: @json($labels),
-        datasets: [
-            {
-                label: 'Ton Bruto',
-                data: @json($bruto),
-                backgroundColor: @json(array_map(fn($val) => $val >= $target ? '#B0E6B2' : '#F38383', $bruto)),
-                borderColor: 'rgba(0,0,0,0.2)',
-                borderWidth: 1,
-                barThickness: 25, // Menambah lebar batang
-                datalabels: {
-                    align: 'start',
-                    anchor: 'end',
-                    offset: 2,
-                    padding: {
-                        top: 2
-                    },
-                    formatter: (value, context) => {
-                        const idx = context.dataIndex;
-                        const percent = grading[idx] ?? 0;
-                        return value > 0 ? `${value.toLocaleString()}\n(${percent}%)` : '';
-                    },
-                    color: '#880E4F',
-                    font: { weight: 'bold', size: 9 }
-                }
-            },
-            {
-                label: 'Ton Netto (Grading %)',
-                data: @json($grading),
-                type: 'bar',
-                backgroundColor: 'rgba(0,0,0,0)',
-                barThickness: 20,
-                datalabels: {
-                    display: false // disembunyikan karena sudah ditampilkan di batang Ton Bruto
-                }
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            datalabels: {
-                clip: true
-            },
-            legend: {
-                position: 'bottom'
-            },
-            title: {
-                display: true,
-                text: 'Ton Bruto Bulan Ini'
-            },
-            annotation: {
-                annotations: {
-                    line1: {
-                        type: 'line',
-                        yMin: {{ $target }},
-                        yMax: {{ $target }},
-                        borderColor: 'rgba(0, 180, 216, 0.8)',
-                        borderWidth: 2,
-                        borderDash: [6, 6],
-                        label: {
-                            content: 'Target/Hari: {{ $target }}',
-                            enabled: true,
-                            position: 'end',
-                            color: '#008CBA',
-                            font: { weight: 'bold' }
-                        }
-                    }
-                }
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: value => value.toLocaleString(undefined, {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                        })
-                    },
-                title: {
-                    display: true,
-                    text: 'Ton Bruto'
-                }
-            }
-        }
-    },
-    plugins: [ChartDataLabels]
-});
-</script>-->
 @endpush

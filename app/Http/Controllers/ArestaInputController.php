@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Aresta;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Termwind\Components\Raw;
 use App\Exports\ArestaExport;
@@ -44,7 +45,16 @@ class ArestaInputController extends Controller
         $labels2 = $chart2->pluck('estate');
         $values2 = $chart2->pluck('tot_luas');
 
-        return view('aresta.index', compact('labels1', 'values1', 'labels2', 'values2'));
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('aresta.index', compact('labels1', 'values1', 'labels2', 'values2', 'estate', 'divisi'));
     }
 
     public function data(Request $request)

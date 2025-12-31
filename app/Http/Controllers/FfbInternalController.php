@@ -56,45 +56,45 @@ class FfbInternalController extends Controller
 
         //return view('ffbint.index', compact('ffbint','labels', 'data'));
 
-        $start = Carbon::now()->startOfMonth();
-        $end = Carbon::now()->endOfMonth();
-        $target = 445000;
+        //$start = Carbon::now()->startOfMonth();
+        //$end = Carbon::now()->endOfMonth();
+        //$target = 445000;
 
-        $tanggalLengkap = [];
-        $current = $start->copy();
-        while ($current <= $end) {
-            $tanggalLengkap[$current->format('d')] = 0;
-            $current->addDay();
-        }
+        //$tanggalLengkap = [];
+        //$current = $start->copy();
+        //while ($current <= $end) {
+        //    $tanggalLengkap[$current->format('d')] = 0;
+        //    $current->addDay();
+        //}
 
-        $dataTonBruto = DB::table('ffb_internal')
-            ->selectRaw('DATE(tanggal) as tanggal, SUM(ton_bruto) as bruto, SUM(netto) as netto, SUM(grading) as grading')
-            ->whereBetween('tanggal', [$start, $end])
-            ->groupByRaw('DATE(tanggal)')
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [
-                    Carbon::parse($item->tanggal)->format('d') => [
-                        'bruto' => (int) $item->bruto,
-                        'netto' => (int) $item->netto,
-                        'grading' => (int) $item->grading
-                    ]
-                ];
-            })->toArray();
+        //$dataTonBruto = DB::table('ffb_internal')
+        //    ->selectRaw('DATE(tanggal) as tanggal, SUM(ton_bruto) as bruto, SUM(netto) as netto, SUM(grading) as grading')
+        //    ->whereBetween('tanggal', [$start, $end])
+        //    ->groupByRaw('DATE(tanggal)')
+        //    ->get()
+        //    ->mapWithKeys(function ($item) {
+        //        return [
+        //            Carbon::parse($item->tanggal)->format('d') => [
+        //                'bruto' => (int) $item->bruto,
+        //                'netto' => (int) $item->netto,
+        //                'grading' => (int) $item->grading
+        //            ]
+        //        ];
+        //    })->toArray();
 
-        $labels = array_keys($tanggalLengkap);
-        $bruto = [];
-        $netto = [];
-        $grading = [];
+        //$labels = array_keys($tanggalLengkap);
+        //$bruto = [];
+        //$netto = [];
+        //$grading = [];
 
-        foreach ($labels as $tgl) {
-            $brutoVal = $dataTonBruto[$tgl]['bruto'] ?? 0;
-            $nettoVal = $dataTonBruto[$tgl]['netto'] ?? 0;
-            $gradingVal = $dataTonBruto[$tgl]['grading'] ?? 0;
-            $bruto[] = $brutoVal;
-            $netto[] = $nettoVal;
-            $grading[] = ($brutoVal > 0) ? round(($gradingVal / $brutoVal) * 100, 2) : 0;
-        }
+        //foreach ($labels as $tgl) {
+        //    $brutoVal = $dataTonBruto[$tgl]['bruto'] ?? 0;
+        //    $nettoVal = $dataTonBruto[$tgl]['netto'] ?? 0;
+        //    $gradingVal = $dataTonBruto[$tgl]['grading'] ?? 0;
+        //    $bruto[] = $brutoVal;
+        //   $netto[] = $nettoVal;
+        //    $grading[] = ($brutoVal > 0) ? round(($gradingVal / $brutoVal) * 100, 2) : 0;
+        //}
 
         $estate = Company::select('estate')
             ->distinct()
@@ -105,7 +105,7 @@ class FfbInternalController extends Controller
             ->orderBy('divisi','asc')
             ->get();
 
-        return view('ffbint.index', compact('labels', 'bruto', 'netto', 'grading', 'target','estate','divisi'));
+        return view('ffbint.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)
@@ -185,9 +185,66 @@ class FfbInternalController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function simpan(Request $request)
     {
-        //
+        $request->validate([
+            'no_po' => 'required|numeric',
+            'vendor_detail' => 'required|string',
+            'vendor_group' => 'required|string',
+            'vendor_transportir' => 'required|string',
+            'tgl' => 'required|integer',
+            'bln' => 'required|integer',
+            'thn' => 'required|integer',
+            'tanggal' => 'required|date',
+            'time_in' => 'nullable|string',
+            'time_out' => 'nullable|string',
+            'no_plat' => 'required|string',
+            'driver' => 'required|string',
+            'bruto_awal' => 'required|numeric',
+            'tarra' => 'required|numeric',
+            'ton_bruto' => 'required|numeric',
+            'grading' => 'required|numeric',
+            'netto' => 'required|numeric',
+            'jml_tandan' => 'required|numeric',
+            'bjr' => 'required|numeric',
+            'area' => 'required|string',
+            'umur_tanaman' => 'required|numeric',
+            'bulan' => 'required|date',
+            'estate' => 'required|string',
+            'divisi' => 'required|numeric',
+            'asal_tbs' => 'required|string'
+        ]);
+
+        Ffbinternal::create([
+            'no_po' => $request->no_po,
+            'vendor_detail' => $request->vendor_detail,
+            'vendor_group' => $request->vendor_group,
+            'vendor_transportir' => $request->vendor_transportir,
+            'tgl' => $request->tgl,
+            'bln' => $request->bln,
+            'thn' => $request->thn,
+            'tanggal' => $request->tanggal,
+            'time_in' => $request->time_in,
+            'time_out' => $request->time_out,
+            'no_plat' => $request->no_plat,
+            'driver' => $request->driver,
+            'bruto_awal' => $request->bruto_awal,
+            'tarra' => $request->tarra,
+            'ton_bruto' => $request->ton_bruto,
+            'grading' => $request->grading,
+            'netto' => $request->netto,
+            'jml_tandan' => $request->jml_tandan,
+            'bjr' => $request->bjr,
+            'area' => $request->area,
+            'umur_tanaman' => $request->umur_tanaman,
+            'bulan' => $request->bulan,
+            'estate' => $request->estate,
+            'divisi' => $request->divisi,
+            'asal_tbs' => $request->asal_tbs
+        ]);
+
+        return redirect()->route('ffbinternal.index')->with('success', 'Data SPTBS berhasil disimpan.');
+
     }
 
     /**

@@ -226,7 +226,9 @@ class SptbsInputController extends Controller
             ]);
 
             $sptbs = SptbsInput::findOrFail($id);
-            $sptbs->update($request->all());
+            $data = $request->all();
+            $data['bjr'] = $data['jumlah_tandan'] > 0 ? round($data['berat_bersih'] / $data['jumlah_tandan'], 2) : 0;
+            $sptbs->update($data);
 
             return response()->json(['success' => 'Data berhasil diperbarui.']);
         } catch (\Exception $e) {
@@ -310,6 +312,10 @@ class SptbsInputController extends Controller
             'kastrasi' => 'nullable|numeric',
         ]);
 
+        $bersih = $request->bersih;
+        $tandan = $request->jmltandan;
+        $bjr = $tandan > 0 ? round($bersih / $tandan, 2) : 0;
+
         SptbsInput::create([
             'angkutan' => $request->angkutan,
             'no_tiket' => $request->notiket,
@@ -333,7 +339,7 @@ class SptbsInputController extends Controller
             'berat_netto' => $request->netto,
             'jumlah_grading' => $request->grading,
             'berat_bersih' => $request->bersih,
-            'bjr' => $request->bjr,
+            'bjr' => $bjr,
             'f00' => $request->f00,
             'f0' => $request->f0,
             'f14' => $request->f14,

@@ -220,7 +220,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-right mt-3">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
@@ -253,11 +253,11 @@
                     <label for="editEstate">Estate</label>
                     <!--<input type="text" class="form-control" id="editEstate" name="estate" required>-->
                     <select class="form-control" name="estate" id="editEstate" name="estate" required >
-                            <option value="">-- Pilih --</option>
-                            @foreach($estate as $item)
-                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
-                            @endforeach
-                        </select>
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editJenisAlat">Jenis Alat</label>
@@ -313,11 +313,11 @@
                     <label for="editDivisi">Divisi</label>
                     <!--<input type="text" class="form-control" id="editDivisi" name="divisi" required> -->
                     <select class="form-control" name="divisi" id="editDivisi" name="divisi" required >
-                            <option value="">-- Pilih --</option>
-                            @foreach($divisi as $item)
-                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
-                            @endforeach
-                        </select>
+                        <option value="">-- Pilih --</option>
+                        @foreach($divisi as $item)
+                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editKelompok">Kelompok</label>

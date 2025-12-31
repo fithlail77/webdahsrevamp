@@ -108,7 +108,6 @@
       <div class="modal-body">
             <form action="{{ route('sptbs.simpan') }}" method="POST">
             @csrf
-            <div class="table-responsive">
                 <div class="row gx-3 mb-3">
                     <!-- Form Group (first name)-->
                     <div class="col-md-3">
@@ -188,7 +187,7 @@
                         <label class="small mb-1">Inti/Plasma</label>
                         <select class="form-control" name="lahan">
                             <option value="">-- Pilih --</option>
-                            <option value="Inti">Inti</option></option>
+                            <option value="Inti">Inti</option>
                             <option value="Plasma">Plasma</option>
                         </select>
                     </div>
@@ -226,7 +225,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">BJR</label>
-                        <input class="form-control" name="bjr" id="bjr" type="number" step="0.01"/>
+                        <input class="form-control" name="bjr" id="bjr" type="number" step="0.01" readonly/>
                     </div>
                 </div>
                 <hr>
@@ -274,8 +273,7 @@
                         <input class="form-control" name="kastrasi" id="kastrasi" type="number" step="0.01"/>
                     </div>
                 </div>
-            </div>
-            <div class="text-right mt-3">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
@@ -346,11 +344,21 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <input type="text" class="form-control" id="editEstate" name="estate" required>
+                    <select class="form-control" name="estate" id="editEstate" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editDivisi">Divisi</label>
-                    <input type="text" class="form-control" id="editDivisi" name="divisi" required>
+                    <select class="form-control" name="divisi" id="editDivisi" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($divisi as $item)
+                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="row gx-3 mb-3">
@@ -363,8 +371,12 @@
                     <input type="text" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
                 </div>
                 <div class="col-md-3">
-                    <label for="editLahan">Lahan</label>
-                    <input type="text" class="form-control" id="editLahan" name="lahan" required>
+                    <label for="editLahan">Inti/Plasma</label>
+                    <select class="form-control" name="lahan" id="editLahan" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Inti">Inti</option>
+                            <option value="Plasma">Plasma</option>
+                        </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editJumlahTandan">Jumlah Tandan</label>
@@ -386,7 +398,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editBeratNetto">Berat Netto</label>
-                    <input type="number" class="form-control" id="editBeratNetto" name="berat_netto" required>
+                    <input type="number" class="form-control" id="editBeratNetto" name="berat_netto" readonly required>
                 </div>
             </div>
             <div class="row gx-3 mb-3">
@@ -396,11 +408,11 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editBeratBersih">Berat Bersih</label>
-                    <input type="number" class="form-control" id="editBeratBersih" name="berat_bersih" required>
+                    <input type="number" class="form-control" id="editBeratBersih" name="berat_bersih" readonly required>
                 </div>
                 <div class="col-md-3">
                     <label for="editBjr">BJR</label>
-                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
+                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" readonly required>
                 </div>
                 <div class="col-md-3">
                     <label class="small mb-1">F-O0</label>
@@ -702,32 +714,49 @@
         });
     });
 
-    // Auto Calculate Netto in add Modal
-    $('input[name="bruto"], input[name="tarra"]').on('input', function() {
-        var awal = parseFloat($('input[name="bruto"]').val()) || 0;
-        var akhir = parseFloat($('input[name="tarra"]').val()) || 0;
-        var total = awal - akhir;
-        $('input[name="netto"]').val(total);
-    });
+    // Function to calculate all values in add modal
+    function calculateAddModal() {
+        // Hitung Netto: Bruto - Tarra
+        var bruto = parseFloat($('input[name="bruto"]').val()) || 0;
+        var tarra = parseFloat($('input[name="tarra"]').val()) || 0;
+        var netto = bruto - tarra;
+        $('input[name="netto"]').val(netto);
 
-    // Auto Calculate Berat Bersih in add Modal
-    $('input[name="netto"], input[name="grading"]').on('input', function() {
-        var awal = parseFloat($('input[name="netto"]').val()) || 0;
-        var akhir = parseFloat($('input[name="grading"]').val()) || 0;
-        var total = awal - akhir;
-        $('input[name="bersih"]').val(total);
-    });
+        // Hitung Berat Bersih: Netto - Grading
+        var grading = parseFloat($('input[name="grading"]').val()) || 0;
+        var bersih = netto - grading;
+        $('input[name="bersih"]').val(bersih);
 
-    // Auto Calculate Berat Bersih in edit Modal
+        // Hitung BJR: Berat Bersih / Jumlah Tandan
+        var tandan = parseFloat($('input[name="jmltandan"]').val()) || 0;
+        var bjr = tandan !== 0 ? (bersih / tandan).toFixed(2) : 0;
+        $('#bjr').val(bjr);
+    }
 
-    
-    // Auto calculate netto Total in edit modal
-    $('#editBruto, #editTara').on('input', function() {
-        var awal = parseFloat($('#editBruto').val()) || 0;
-        var akhir = parseFloat($('#editTara').val()) || 0;
-        var total = awal - akhir;
-        $('#editNetto').val(total);
-    });
+    // Function to calculate all values in edit modal
+    function calculateEditModal() {
+        // Hitung Netto: Bruto - Tarra
+        var bruto = parseFloat($('#editBeratBruto').val()) || 0;
+        var tarra = parseFloat($('#editBeratTarra').val()) || 0;
+        var netto = bruto - tarra;
+        $('#editBeratNetto').val(netto);
+
+        // Hitung Berat Bersih: Netto - Grading
+        var grading = parseFloat($('#editJumlahGrading').val()) || 0;
+        var bersih = netto - grading;
+        $('#editBeratBersih').val(bersih);
+
+        // Hitung BJR: Berat Bersih / Jumlah Tandan
+        var tandan = parseFloat($('#editJumlahTandan').val()) || 0;
+        var bjr = tandan !== 0 ? (bersih / tandan).toFixed(2) : 0;
+        $('#editBjr').val(bjr);
+    }
+
+    // Event listeners for add modal
+    $('input[name="bruto"], input[name="tarra"], input[name="grading"], input[name="jmltandan"]').on('input', calculateAddModal);
+
+    // Event listeners for edit modal
+    $('#editBeratBruto, #editBeratTarra, #editJumlahGrading, #editJumlahTandan').on('input', calculateEditModal);
 });
 </script>
 @endpush

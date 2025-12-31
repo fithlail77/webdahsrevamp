@@ -89,7 +89,6 @@
       <div class="modal-body">
             <form action="{{ route('premi.store') }}" method="POST">
             @csrf
-            <div class="table-responsive">
                 <div class="row gx-3 mb-3">
                     <!-- Form Group (first name)-->
                     <div class="col-md-3">
@@ -167,7 +166,12 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Satuan 1</label>
-                        <input class="form-control" name="satuan_1" type="text"/>
+                        <select class="form-control" name="satuan_1">
+                            <option value="">-- Pilih --</option>
+                            <option value="Jam">Jam</option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Rit">Rit</option>
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Hasil 2</label></label>
@@ -177,15 +181,19 @@
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Satuan 2</label>
-                        <input class="form-control" name="satuan_2" type="text"/>
+                        <select class="form-control" name="satuan_2">
+                            <option value="">-- Pilih --</option>
+                            <option value="Jam">Jam</option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Rit">Rit</option>
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Total Premi</label>
                         <input class="form-control" name="total_premi" type="number" step="0.01"/>
                     </div>
                 </div>
-            </div>
-            <div class="text-right mt-3">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
@@ -196,7 +204,7 @@
 </div>
 <!-- Modal Edit Realisasi Panen -->
 <div class="modal fade" id="modal-EditPremi" tabindex="-1" role="dialog" aria-labelledby="modal-EditPremiLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditPremiLabel">Edit Data Premi</h5>
@@ -209,77 +217,97 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNoKab">No KAB</label>
+                    <input type="text" class="form-control" id="editNoKab" name="no_kab" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNamaKab">Nama KAB</label>
+                    <input type="text" class="form-control" id="editNamaKab" name="nama_kab" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editNik">NIK</label>
+                    <input type="text" class="form-control" id="editNik" name="nik" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNoKab">No KAB</label>
-                <input type="text" class="form-control" id="editNoKab" name="no_kab" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editNamaKaryawan">Nama Karyawan</label>
+                    <input type="text" class="form-control" id="editNamaKaryawan" name="nama_karyawan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <input type="text" class="form-control" id="editEstate" name="estate" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHmkmAwal">HM/KM Awal</label>
+                    <input type="text" class="form-control" id="editHmkmAwal" name="hmkm_awal" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHmkmAkhir">HM/KM Akhir</label>
+                    <input type="text" class="form-control" id="editHmkmAkhir" name="hmkm_akhir" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNamaKab">Nama KAB</label>
-                <input type="text" class="form-control" id="editNamaKab" name="nama_kab" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTotalHmkm">Total HM/KM</label>
+                    <input type="number" class="form-control" id="editTotalHmkm" name="total_hmkm" required readonly>
+                </div>
+                <div class="col-md-3">
+                    <label for="editLokasi">Lokasi</label>
+                    <input type="test" class="form-control" id="editLokasi" name="lokasi" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <input type="text" class="form-control" id="editDivisi" name="divisi" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editJenisPekerjaan">Jenis pekerjaan</label>
+                    <input type="text" class="form-control" id="editJenisPekerjaan" name="jenis_pekerjaan" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNik">NIK</label>
-                <input type="text" class="form-control" id="editNik" name="nik" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTarifSatuan">Tarif</label>
+                    <input type="text" class="form-control" id="editTarifSatuan" name="tarif_satuan" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHasil1">Hasil 1</label>
+                    <input type="number" class="form-control" id="editHasil1" name="hasil_1" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="editSatuan1">Satuan 1</label>
+                    <select class="form-control" name="satuan_1" id="editSatuan1" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Jam">Jam</option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Rit">Rit</option>
+                        </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editHasil2">Hasil 2</label>
+                    <input type="number" class="form-control" id="editHasil2" name="hasil_2" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editNamaKaryawan">Nama Karyawan</label>
-                <input type="text" class="form-control" id="editNamaKaryawan" name="nama_karyawan" required>
-            </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate" required>
-            </div>
-            <div class="form-group">
-                <label for="editHmkmAwal">HM/KM Awal</label>
-                <input type="text" class="form-control" id="editHmkmAwal" name="hmkm_awal" required>
-            </div>
-            <div class="form-group">
-                <label for="editHmkmAkhir">HM/KM Akhir</label>
-                <input type="text" class="form-control" id="editHmkmAkhir" name="hmkm_akhir" required>
-            </div>
-            <div class="form-group">
-                <label for="editTotalHmkm">Total HM/KM</label>
-                <input type="number" class="form-control" id="editTotalHmkm" name="total_hmkm" required readonly>
-            </div>
-            <div class="form-group">
-                <label for="editLokasi">Lokasi</label>
-                <input type="test" class="form-control" id="editLokasi" name="lokasi" required>
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi" required>
-            </div>
-            <div class="form-group">
-                <label for="editJenisPekerjaan">Jenis pekerjaan</label>
-                <input type="text" class="form-control" id="editJenisPekerjaan" name="jenis_pekerjaan" required>
-            </div>
-            <div class="form-group">
-                <label for="editTarifSatuan">Tarif</label>
-                <input type="text" class="form-control" id="editTarifSatuan" name="tarif_satuan" required>
-            </div>
-            <div class="form-group">
-                <label for="editHasil1">Hasil 1</label>
-                <input type="number" class="form-control" id="editHasil1" name="hasil_1" required>
-            </div>
-            <div class="form-group">
-                <label for="editSatuan1">Satuan 1</label>
-                <input type="text" class="form-control" id="editSatuan1" name="satuan_1" required>
-            </div>
-            <div class="form-group">
-                <label for="editHasil2">Hasil 2</label>
-                <input type="number" class="form-control" id="editHasil2" name="hasil_2" required>
-            </div>
-            <div class="form-group">
-                <label for="editSatuan2">Satuan 2</label>
-                <input type="text" class="form-control" id="editSatuan2" name="satuan_2" required>
-            </div>
-            <div class="form-group">
-                <label for="editTotalPremi">Total Premi</label>
-                <input type="number" class="form-control" id="editTotalPremi" name="total_premi" required>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editSatuan2">Satuan 2</label>
+                    <select class="form-control" name="satuan_2" id="editSatuan2" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Jam">Jam</option>
+                            <option value="Kg">Kilogram</option>
+                            <option value="Rit">Rit</option>
+                        </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTotalPremi">Total Premi</label>
+                    <input type="number" class="form-control" id="editTotalPremi" name="total_premi" required>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
