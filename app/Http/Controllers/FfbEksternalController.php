@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Company;
 use App\Models\Ffbeksternal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,35 +25,44 @@ class FfbEksternalController extends Controller
         //    ->orderBy('tanggal', 'desc')
         //    ->get();
 
-        $start = Carbon::now()->startOfMonth();
-        $end = Carbon::now()->endOfMonth();
+        //$start = Carbon::now()->startOfMonth();
+        //$end = Carbon::now()->endOfMonth();
 
-        $tanggalLengkap = [];
-        $current = $start->copy();
-        while ($current <= $end) {
-            $tanggalLengkap[$current->format('d')] = 0; // default value 0
-            $current->addDay();
-        }
+        //$tanggalLengkap = [];
+        //$current = $start->copy();
+        //while ($current <= $end) {
+        //    $tanggalLengkap[$current->format('d')] = 0; // default value 0
+        //    $current->addDay();
+        //}
 
-        $data = DB::table('ffb_eksternal')
-            ->selectRaw('DATE(tanggal) as tanggal, SUM(ton_bruto) AS netto_awal')
-            ->whereBetween('tanggal', [$start, $end])
-            ->groupByRaw('DATE(tanggal)')
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [Carbon::parse($item->tanggal)->format('d') => (int) $item->netto_awal];
-                    })
-            ->toArray();
+        //$data = DB::table('ffb_eksternal')
+        //    ->selectRaw('DATE(tanggal) as tanggal, SUM(ton_bruto) AS netto_awal')
+        //    ->whereBetween('tanggal', [$start, $end])
+        //    ->groupByRaw('DATE(tanggal)')
+        //    ->get()
+        //    ->mapWithKeys(function ($item) {
+        //        return [Carbon::parse($item->tanggal)->format('d') => (int) $item->netto_awal];
+        //            })
+        //    ->toArray();
         
-        $result = [];
-            foreach ($tanggalLengkap as $tgl => $value) {
-                $result[] = $data[$tgl] ?? 0;
-        }
+        //$result = [];
+        //    foreach ($tanggalLengkap as $tgl => $value) {
+        //        $result[] = $data[$tgl] ?? 0;
+        //}
         
-        $labels1 = array_keys($tanggalLengkap);
-        $data = $result;
+        //$labels1 = array_keys($tanggalLengkap);
+        //$data = $result;
 
-        return view('ffbeks.index', compact('labels1','data'));
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
+
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+
+        return view('ffbeks.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)

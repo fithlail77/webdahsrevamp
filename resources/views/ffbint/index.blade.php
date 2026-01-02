@@ -254,7 +254,7 @@
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">Status Lahan</label>
+                        <label class="small mb-1">Inti/Plasma</label>
                         <select class="form-control" name="asal_tbs" required>
                             <option value="">-- Pilih --</option>
                             <option value="Inti">Inti</option>
@@ -387,17 +387,31 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <input type="text" class="form-control" id="editEstate" name="estate">
+                    <select class="form-control" name="estate" id="editEstate">
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editDivisi">Divisi</label>
-                    <input type="number" class="form-control" id="editDivisi" name="divisi">
+                    <select class="form-control" name="divisi" id="editDivisi">
+                        <option value="">-- Pilih --</option>
+                        @foreach($divisi as $item)
+                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
-                    <label for="editAsalTbs">Asal TBS</label>
-                    <input type="text" class="form-control" id="editAsalTbs" name="asal_tbs">
+                    <label for="editAsalTbs">Inti/Plasma</label>
+                    <select class="form-control" name="asal_tbs" id="editAsalTbs" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="Inti">Inti</option>
+                            <option value="Plasma">Plasma</option>
+                        </select>
                 </div>
             </div>
             <div class="modal-footer">

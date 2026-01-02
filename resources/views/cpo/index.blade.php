@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddCPO" align="right">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadCPO" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>

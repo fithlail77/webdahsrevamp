@@ -143,3 +143,52 @@ const FfbIntChart = new Chart(ctx1, {
     plugins: [ChartDataLabels]
 });
 </script>-->
+
+<!--<script>
+        const ctx1 = document.getElementById('FfbEksChart').getContext('2d');
+        const FfbEksChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: @json($labels1),
+                datasets: [{
+                    label: 'FFB Eksternal',
+                    data: @json($data),
+                    backgroundColor: 'rgba(58, 172, 74, 1)',
+                    borderColor: 'rgba(58, 172, 74, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: function(value) {
+                            return value.toLocaleString('en-US');
+                        },
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision:0,
+                            callback: function(value) {
+                              return value.toLocaleString('en-US'); // Format ribuan untuk sumbu Y
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Ton Bruto'
+                        }
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+            },
+            plugins: [ChartDataLabels]
+        });
+    </script>-->

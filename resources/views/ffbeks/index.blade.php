@@ -7,9 +7,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddFfbEks" align="right">
                 <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadFfbEks" align="right">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -92,7 +92,157 @@
         </div>
     </div>
 </div>
-
+<!-- Modal Tambah Data Penerimaan FFB Eks PKS -->
+<div class="modal fade" id="modal-AddFfbEks" tabindex="-1" role="dialog" aria-labelledby="modal-AddFfbEksLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddFfbEksLabel">Tambah Data Penerimaan FFB Eksternal PKS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <form action="{{ route('ffbinternal.simpan') }}" method="POST">
+            @csrf
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">No PO</label>
+                        <input class="form-control" name="no_po" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Vendor Detail</label>
+                        <input class="form-control" name="vendor_detail" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Vendor Group</label>
+                        <input class="form-control" name="vendor_group" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Vendor Transportir</label>
+                        <input class="form-control" name="vendor_transportir" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tgl</label>
+                        <input class="form-control" name="tgl" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Bln</label>
+                        <input class="form-control" name="bln" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Thn</label>
+                        <input class="form-control" name="thn" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal</label>
+                        <input class="form-control" name="tanggal" type="date" />
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jam Masuk</label>
+                        <input class="form-control" name="time_in" type="time" step="1"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jam Keluar</label>
+                        <input class="form-control" name="time_out" type="time" step="1"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">No Plat</label>
+                        <input class="form-control" name="no_plat" type="text"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Supir</label>
+                        <input class="form-control" name="driver" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Bruto</label>
+                        <input class="form-control" name="bruto_awal" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Tarra</label>
+                        <input class="form-control" name="tarra" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Netto</label>
+                        <input class="form-control" name="ton_bruto" type="number" readonly/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Grading</label>
+                        <input class="form-control" name="grading" type="number"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Berat Bersih</label>
+                        <input class="form-control" name="netto" type="number" readonly/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Jumlah Tandan</label>
+                        <input class="form-control" name="jml_tandan" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">BJR</label>
+                        <input class="form-control" name="bjr" id="bjr" type="number" step="0.01" readonly/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Area</label>
+                        <input class="form-control" name="area" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Umur Tanaman (Thn)</label>
+                        <input class="form-control" name="umur_tanaman" type="number"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Bulan</label>
+                        <input class="form-control" name="bulan"  type="date" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Estate</label>
+                        <select class="form-control" name="estate">
+                            <option value="">-- Pilih --</option>
+                            <option value="TBS Luar">TBS Luar</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi">
+                            <option value="">-- Pilih --</option>
+                            <option value="CV. BMB">CV. BMB</option>
+                            <option value="CV. PJ">CV. PJ</option>
+                            <option value="PT. CDS">PT. CDS</option>
+                            <option value="PT. PML">PT. PML</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Asal TBS</label>
+                        <select class="form-control" name="asal_tbs" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="CV. BMB">CV. BMB</option>
+                            <option value="CV. PJ">CV. PJ</option>
+                            <option value="PT. CDS">PT. CDS</option>
+                            <option value="PT. PML">PT. PML</option>
+                        </select>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal File Upload -->
 <div class="modal fade" id="modal-UploadFfbEks" tabindex="-1" role="dialog" aria-labelledby="modal-UploadFfbEksLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -122,10 +272,10 @@
 </div>
 <!-- Modal Edit FFB Eksternal -->
 <div class="modal fade" id="modal-EditFfbEksternal" tabindex="-1" role="dialog" aria-labelledby="modal-EditFfbEksternalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-EditFfbEksternalLabel">Ubah Data Tiket Timbangan TBS Internal</h5>
+        <h5 class="modal-title" id="modal-EditFfbEksternalLabel">Ubah Data Tiket Timbangan TBS Eksternal</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -135,105 +285,134 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editNoTiket">No Tiket</label>
-                <input type="number" class="form-control" id="editNoTiket" name="no_po">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editNoTiket">No Tiket</label>
+                    <input type="number" class="form-control" id="editNoTiket" name="no_po">
+                </div>
+                <div class="col-md-3">
+                    <label for="editVendor">Vendor Detail</label>
+                    <input type="text" class="form-control" id="editVendor" name="vendor_detail">
+                </div>
+                <div class="col-md-3">
+                    <label for="editVendorGroup">Vendor Group</label>
+                    <input type="text" class="form-control" id="editVendorGroup" name="vendor_group" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editVendorTransportir">Vendor Transportir</label>
+                    <input type="text" class="form-control" id="editVendorTransportir" name="vendor_transportir" >
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editVendor">Vendor Detail</label>
-                <input type="text" class="form-control" id="editVendor" name="vendor_detail">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTgl">Tgl</label>
+                    <input type="number" class="form-control" id="editTgl" name="tgl" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editBln">Bln</label>
+                    <input type="number" class="form-control" id="editBln" name="bln" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editThn">Thn</label>
+                    <input type="number" class="form-control" id="editThn" name="thn" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="tanggal">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editVendorGroup">Vendor Group</label>
-                <input type="text" class="form-control" id="editVendorGroup" name="vendor_group" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editJamMasuk">Jam Masuk (HH:MM:SS)</label>
+                    <input type="time" step="1" class="form-control" id="editJamMasuk" name="time_in">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJamKeluar">Jam Keluar (HH:MM:SS)</label>
+                    <input type="time" step="1" class="form-control" id="editJamKeluar" name="time_out">
+                </div>
+                <div class="col-md-3">
+                    <label for="editPlat">Plat Kenderaan</label>
+                    <input type="text" class="form-control" id="editPlat" name="no_plat">
+                </div>
+                <div class="col-md-3">
+                    <label for="editDriver">Nama Supir</label>
+                    <input type="text" class="form-control" id="editDriver" name="driver">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editVendorTransportir">Vendor Transportir</label>
-                <input type="text" class="form-control" id="editVendorTransportir" name="vendor_transportir" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editBruto">Bruto</label>
+                    <input type="number" class="form-control" id="editBruto" name="bruto_awal">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTarra">Tarra</label>
+                    <input type="number" class="form-control" id="editTarra" name="tarra">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTonBruto">Ton Bruto</label>
+                    <input type="number" class="form-control" id="editTonBruto" name="ton_bruto">
+                </div>
+                <div class="col-md-3">
+                    <label for="editGrading">Grading</label>
+                    <input type="number" class="form-control" id="editGrading" name="grading">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTgl">Tgl</label>
-                <input type="number" class="form-control" id="editTgl" name="tgl" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editNetto">Ton Netto</label>
+                    <input type="number" class="form-control" id="editNetto" name="netto">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJanjang">Janjang</label>
+                    <input type="number" class="form-control" id="editJanjang" name="jml_tandan">
+                </div>
+                <div class="col-md-3">
+                    <label for="editBjr">BJR</label>
+                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr">
+                </div>
+                <div class="col-md-3">
+                    <label for="editArea">Area</label>
+                    <input type="text" class="form-control" id="editArea" name="area">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editBln">Bln</label>
-                <input type="number" class="form-control" id="editBln" name="bln" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editUmurTanaman">Umur Tanaman</label>
+                    <input type="number" class="form-control" id="editUmurTanaman" name="umur_tanaman">
+                </div>
+                <div class="col-md-3">
+                    <label for="editBulan">Bulan</label>
+                    <input type="date" class="form-control" id="editBulan" name="bulan">
+                </div>
+                <div class="col-md-3">
+                    <label for="editEstate">Estate</label>
+                    <select class="form-control" name="estate" id="editEstate">
+                        <option value="">-- Pilih --</option>
+                        <option value="TBS Luar">TBS Luar</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <select class="form-control" name="divisi" id="editDivisi">
+                        <option value="">-- Pilih --</option>
+                        <option value="CV. BMB">CV. BMB</option>
+                        <option value="CV. PJ">CV. PJ</option>
+                        <option value="PT. CDS">PT. CDS</option>
+                        <option value="PT. PML">PT. PML</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editThn">Thn</label>
-                <input type="number" class="form-control" id="editThn" name="thn" >
-            </div>
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="tanggal">
-            </div>
-            <div class="form-group">
-                <label for="editJamMasuk">Jam Masuk (HH:MM:SS)</label>
-                <input type="time" step="1" class="form-control" id="editJamMasuk" name="time_in">
-            </div>
-            <div class="form-group">
-                <label for="editJamKeluar">Jam Keluar (HH:MM:SS)</label>
-                <input type="time" step="1" class="form-control" id="editJamKeluar" name="time_out">
-            </div>
-            <div class="form-group">
-                <label for="editPlat">Plat Kenderaan</label>
-                <input type="text" class="form-control" id="editPlat" name="no_plat">
-            </div>
-            <div class="form-group">
-                <label for="editDriver">Nama Supir</label>
-                <input type="text" class="form-control" id="editDriver" name="driver">
-            </div>
-            <div class="form-group">
-                <label for="editBruto">Bruto</label>
-                <input type="number" class="form-control" id="editBruto" name="bruto_awal">
-            </div>
-            <div class="form-group">
-                <label for="editTarra">Tarra</label>
-                <input type="number" class="form-control" id="editTarra" name="tarra">
-            </div>
-            <div class="form-group">
-                <label for="editTonBruto">Ton Bruto</label>
-                <input type="number" class="form-control" id="editTonBruto" name="ton_bruto">
-            </div>
-            <div class="form-group">
-                <label for="editGrading">Grading</label>
-                <input type="number" class="form-control" id="editGrading" name="grading">
-            </div>
-            <div class="form-group">
-                <label for="editNetto">Ton Netto</label>
-                <input type="number" class="form-control" id="editNetto" name="netto">
-            </div>
-            <div class="form-group">
-                <label for="editJanjang">Janjang</label>
-                <input type="number" class="form-control" id="editJanjang" name="jml_tandan">
-            </div>
-            <div class="form-group">
-                <label for="editBjr">BJR</label>
-                <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr">
-            </div>
-            <div class="form-group">
-                <label for="editArea">Area</label>
-                <input type="text" class="form-control" id="editArea" name="area">
-            </div>
-            <div class="form-group">
-                <label for="editUmurTanaman">Umur Tanaman</label>
-                <input type="number" class="form-control" id="editUmurTanaman" name="umur_tanaman">
-            </div>
-            <div class="form-group">
-                <label for="editBulan">Bulan</label>
-                <input type="date" class="form-control" id="editBulan" name="bulan">
-            </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate">
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi">
-            </div>
-            <div class="form-group">
-                <label for="editAsalTbs">Asal TBS</label>
-                <input type="text" class="form-control" id="editAsalTbs" name="asal_tbs">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editAsalTbs">Asal TBS</label>
+                    <select class="form-control" name="asal_tbs" id="editAsalTbs" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="CV. BMB">CV. BMB</option>
+                        <option value="CV. PJ">CV. PJ</option>
+                        <option value="PT. CDS">PT. CDS</option>
+                        <option value="PT. PML">PT. PML</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -406,52 +585,4 @@
     });
 });
 </script>
-<!--<script>
-        const ctx1 = document.getElementById('FfbEksChart').getContext('2d');
-        const FfbEksChart = new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: @json($labels1),
-                datasets: [{
-                    label: 'FFB Eksternal',
-                    data: @json($data),
-                    backgroundColor: 'rgba(58, 172, 74, 1)',
-                    borderColor: 'rgba(58, 172, 74, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                        formatter: function(value) {
-                            return value.toLocaleString('en-US');
-                        },
-                        font: {
-                            weight: 'bold'
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision:0,
-                            callback: function(value) {
-                              return value.toLocaleString('en-US'); // Format ribuan untuk sumbu Y
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Ton Bruto'
-                        }
-                    }
-                },
-                responsive: true,
-                maintainAspectRatio: false,
-            },
-            plugins: [ChartDataLabels]
-        });
-    </script>-->
 @endpush
