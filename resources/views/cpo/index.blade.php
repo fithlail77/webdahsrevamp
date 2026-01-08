@@ -95,6 +95,9 @@
                     <th>Stok Kernel Total</th>
                     <th>Despatch Kernel</th>
                     <th>Cangkang</th>
+                    <th>TBS Olah After Grading</th>
+                    <th>OER After Grading</th>
+                    <th>KER After Grading</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -136,7 +139,7 @@
 </div>
 <!-- Modal Edit Contract CPO -->
 <div class="modal fade" id="modal-EditProduksiCpo" tabindex="-1" role="dialog" aria-labelledby="modal-EditFProduksiCpoLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal-EditProduksiCpoLabel">Ubah Data Produksi Harian PKS</h5>
@@ -149,105 +152,155 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="form-group">
-                <label for="editTanggal">Tanggal</label>
-                <input type="date" class="form-control" id="editTanggal" name="tanggal" disabled>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" id="editTanggal" name="tanggal" disabled>
+                </div>
+                <div class="col-md-3">
+                    <label for="editTbsInt">TBS Internal</label>
+                    <input type="number" class="form-control" id="editTbsInt" name="tbs_terima_internal">
+                </div>
+                <div class="col-md-3">
+                    <label for="editPersenInt">Persen TBS Internal</label>
+                    <input type="number" step="0.01" class="form-control" id="editPersenInt" name="persen_terima_internal" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editTbsEks">TBS Eksternal</label>
+                <input type="number" class="form-control" id="editTbsEks" name="tbs_terima_eksternal" >
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTbsInt">TBS Internal</label>
-                <input type="number" class="form-control" id="editTbsInt" name="tbs_terima_internal">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="PersenEks">Persen TBS Eksternal</label>
+                    <input type="number" step='0.01' class="form-control" id="editPersenEks" name="persen_terima_eksternal" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editTotalTbs">Total TBS</label>
+                    <input type="number" class="form-control" id="editTotalTbs" name="total_terima_tbs" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editTbsOlah">Total TBS Olah</label>
+                    <input type="number" class="form-control" id="editTbsOlah" name="tbs_olah" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editSisa">Sisa</label>
+                    <input type="date" class="form-control" id="editSisa" name="sisa">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editPersenInt">Persen TBS Internal</label>
-                <input type="number" step="0.01" class="form-control" id="editPersenInt" name="persen_terima_internal" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editCpoToday">CPO Today</label>
+                    <input type="number" class="form-control" id="editCpoToday" name="cpo_produksi_today">
+                </div>
+                <div class="col-md-3">
+                    <label for="editCpoTodate">CPO Todate</label>
+                    <input type="number" class="form-control" id="editCpoTodate" name="cpo_produksi_todate">
+                </div>
+                <div class="col-md-3">
+                    <label for="editKernel">Kernel</label>
+                    <input type="number" class="form-control" id="editKernel" name="kernel_produksi">
+                </div>
+                <div class="col-md-3">
+                    <label for="editOer">OER</label>
+                    <input type="number" step="0.01" class="form-control" id="editOer" name="oer">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTbsEks">TBS Eksternal</label>
-              <input type="number" class="form-control" id="editTbsEks" name="tbs_terima_eksternal" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editKer">KER</label>
+                    <input type="number" step="0.01" class="form-control" id="editKer" name="ker">
+                </div>
+                <div class="col-md-3">
+                    <label for="editOilLoss">Oil Loss</label>
+                    <input type="number" step="0.01" class="form-control" id="editOilLoss" name="oil_loss">
+                </div>
+                <div class="col-md-3">
+                    <label for="editKernelLoss">Kernel Loss</label>
+                    <input type="number" step="0.01" class="form-control" id="editKernelLoss" name="kernel_loss">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTangki1">Stok Tangki 1 CPO</label>
+                    <input type="number" class="form-control" id="editTangki1" name="stok_cpo_pks_1">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="PersenEks">Persen TBS Eksternal</label>
-                <input type="number" step='0.01' class="form-control" id="PersenEks" name="" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTangki2">Stok Tangki 2 CPO</label>
+                    <input type="number" class="form-control" id="editTangki2" name="stok_cpo_pks_2">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJetty">Stok Jetty CPO</label>
+                    <input type="number" class="form-control" id="editJetty" name="stok_cpo_jetty_1">
+                </div>
+                <div class="col-md-3">
+                    <label for="editDespatchJetty">Despatch Jetty</label>
+                    <input type="number" class="form-control" id="editDespatchJetty" name="cpo_despatch_jetty">
+                </div>
+                <div class="col-md-3">
+                    <label for="editDespatchTongkang">Despatch Tongkang</label>
+                    <input type="number" class="form-control" id="editDespatchTongkang" name="cpo_despatch_tongkang">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTotalTbs">Total TBS</label>
-                <input type="number" class="form-control" id="editTotalTbs" name="total_terima_tbs" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editSilo1">Kernel Silo 1</label>
+                    <input type="number" class="form-control" id="editSilo1" name="stok_kernel_sistem_proses_silo_1">
+                </div>
+                <div class="col-md-3">
+                    <label for="editSilo2">Kernel Silo 2</label>
+                    <input type="number" class="form-control" id="editSilo2" name="stok_kernel_sistem_proses_silo_2">
+                </div>
+                <div class="col-md-3">
+                    <label for="editGudang">Kernel Gudang</label>
+                    <input type="number" class="form-control" id="editGudang" name="stok_kernel_gudang">
+                </div>
+                <div class="col-md-3">
+                    <label for="editStKernel">Kernel St Kernel</label>
+                    <input type="number" class="form-control" id="editStKernel" name="stok_kernel_st_kernel">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editTbsOlah">Total TBS Olah</label>
-                <input type="number" class="form-control" id="editTbsOlah" name="tbs_olah" >
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editDpnWks">Kernel Depan Workshop</label>
+                    <input type="number" class="form-control" id="editDpnWks" name="stok_kernel_depan_workshop">
+                </div>
+                <div class="col-md-3">
+                    <label for="editStDespatch">Kernel St Despatch</label>
+                    <input type="number" class="form-control" id="editStDespatch" name="stok_kernel_st_despatch">
+                </div>
+                <div class="col-md-3">
+                    <label for="editBulkingSilo">Kernel Bulking Silo</label>
+                    <input type="number" class="form-control" id="editBulkingSilo" name="stok_kernel_bulking_silo">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTotalKernel">Total Stok Kernel</label>
+                    <input type="number" class="form-control" id="editTotalKernel" name="stok_kernel_total">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editSisa">Sisa</label>
-                <input type="date" class="form-control" id="editSisa" name="sisa">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editDespatchKernel">Despatch Kernel</label>
+                    <input type="number" class="form-control" id="editDespatchKernel" name="despatch_kernel">
+                </div>
+                <div class="col-md-3">
+                    <label for="editCangkang">Stok Cangkang</label>
+                    <input type="number" class="form-control" id="editCangkang" name="stok_cangkang">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTbsOlahAG">TBS Olah AG</label>
+                    <input type="number" class="form-control" id="editTbsOlahAG" name="tbs_olah_netto">
+                </div>
+                <div class="col-md-3">
+                    <label for="editOerAG">OER After Grading</label>
+                    <input type="number" class="form-control" id="editOerAG" name="oer_after_grading">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="editCpoToday">CPO Today</label>
-                <input type="number" class="form-control" id="editCpoToday" name="cpo_produksi_today">
-            </div>
-            <div class="form-group">
-                <label for="editCpoTodate">CPO Todate</label>
-                <input type="number" class="form-control" id="editCpoTodate" name="cpo_produksi_todate">
-            </div>
-            <div class="form-group">
-                <label for="editKernel">Kernel</label>
-                <input type="number" class="form-control" id="editKernel" name="kernel_produksi">
-            </div>
-            <div class="form-group">
-                <label for="editOer">OER</label>
-                <input type="number" step="0.01" class="form-control" id="editOer" name="oer">
-            </div>
-            <div class="form-group">
-                <label for="editKer">KER</label>
-                <input type="number" step="0.01" class="form-control" id="editKer" name="ker">
-            </div>
-            <div class="form-group">
-                <label for="editOilLoss">Oil Loss</label>
-                <input type="number" step="0.01" class="form-control" id="editOilLoss" name="oil_loss">
-            </div>
-            <div class="form-group">
-                <label for="editKernelLoss">Kernel Loss</label>
-                <input type="number" step="0.01" class="form-control" id="editKernelLoss" name="kernel_loss">
-            </div>
-            <div class="form-group">
-                <label for="editTangki1">Stok Tangki 1 CPO</label>
-                <input type="number" class="form-control" id="editTangki1" name="stok_cpo_pks_1">
-            </div>
-            <div class="form-group">
-                <label for="editTangki2">Stok Tangki 2 CPO</label>
-                <input type="number" class="form-control" id="editTangki2" name="stok_cpo_pks_2">
-            </div>
-            <div class="form-group">
-                <label for="editJetty">Stok Jetty CPO</label>
-                <input type="number" class="form-control" id="editJetty" name="stok_cpo_jetty_1">
-            </div>
-            <div class="form-group">
-                <label for="editDespatchJetty">Despatch Jetty</label>
-                <input type="number" class="form-control" id="editDespatchJetty" name="cpo_despatch_jetty">
-            </div>
-            <div class="form-group">
-                <label for="editDespatchTongkang">Despatch Tongkang</label>
-                <input type="number" class="form-control" id="editDespatchTongkang" name="cpo_despatch_tongkang">
-            </div>
-            <div class="form-group">
-                <label for="editSilo1">Kernel Silo 1</label>
-                <input type="number" class="form-control" id="editSilo1" name="stok_kernel_sistem_proses_silo_1">
-            </div>
-            <div class="form-group">
-                <label for="editSilo2">Kernel Silo 2</label>
-                <input type="number" class="form-control" id="editSilo2" name="stok_kernel_sistem_proses_silo_2">
-            </div>
-            <div class="form-group">
-                <label for="editEstate">Estate</label>
-                <input type="text" class="form-control" id="editEstate" name="estate">
-            </div>
-            <div class="form-group">
-                <label for="editDivisi">Divisi</label>
-                <input type="text" class="form-control" id="editDivisi" name="divisi">
-            </div>
-            <div class="form-group">
-                <label for="editAsalTbs">Asal TBS</label>
-                <input type="text" class="form-control" id="editAsalTbs" name="asal_tbs">
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editKerAG">KER After Grading</label>
+                    <input type="number" class="form-control" id="editKerAG" name="ker_after_grading">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -323,6 +376,9 @@
             { data: 'stok_kernel_total', name: 'stok_kernel_total' },
             { data: 'despatch_kernel', name: 'despatch_kernel' },
             { data: 'stok_cangkang', name: 'stok_cangkang' },
+            { data: 'tbs_olah_netto', name: 'tbs_olah_netto' },
+            { data: 'oer_after_grading', name: 'oer_after_grading' },
+            { data: 'ker_after_grading', name: 'ker_after_grading' },
             { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
         ]
     });
@@ -371,34 +427,42 @@
             console.error('ID is empty');
             return;
         }
-        $.get('/ffbeksternal/' + id + '/edit', function(data) {
+        $.get('/produksicpo/' + id + '/edit', function(data) {
             console.log('Edit data received:', data);
             $('#editId').val(data.id);
-            $('#editNoTiket').val(data.no_po);
-            $('#editVendor').val(data.vendor_detail);
-            $('#editVendorGroup').val(data.vendor_group);
-            $('#editVendorTransportir').val(data.vendor_transportir);
-            $('#editTgl').val(data.tgl);
-            $('#editBln').val(data.bln);
-            $('#editThn').val(data.thn);
             $('#editTanggal').val(data.tanggal ? data.tanggal.split(' ')[0] : '');
-            $('#editJamMasuk').val(data.time_in);
-            $('#editJamKeluar').val(data.time_out);
-            $('#editPlat').val(data.no_plat);
-            $('#editDriver').val(data.driver);
-            $('#editBruto').val(data.bruto_awal);
-            $('#editTarra').val(data.tarra);
-            $('#editTonBruto').val(data.ton_bruto);
-            $('#editGrading').val(data.grading);
-            $('#editNetto').val(data.netto);
-            $('#editJanjang').val(data.jml_tandan);
-            $('#editBjr').val(data.bjr);
-            $('#editArea').val(data.area);
-            $('#editUmurTanaman').val(data.umur_tanaman);
-            $('#editBulan').val(data.bulan ? data.bulan.split(' ')[0] : '');
-            $('#editEstate').val(data.estate);
-            $('#editDivisi').val(data.divisi);
-            $('#editAsalTbs').val(data.asal_tbs);
+            $('#editTbsInt').val(data.tbs_terima_internal);
+            $('#editPersenInt').val(data.persen_terima_internal);
+            $('#editTbsEks').val(data.tbs_terima_eksternal);
+            $('#editPersenEks').val(data.persen_terima_eksternal);
+            $('#editTotalTbs').val(data.total_tbs_terima);
+            $('#editTbsOlah').val(data.tbs_olah);
+            $('#editSisa').val(data.sisa);
+            $('#editCpoToday').val(data.cpo_produksi_today);
+            $('#editCpoTodate').val(data.cpo_produksi_todate);
+            $('#editKernel').val(data.kernel_produksi);
+            $('#editOer').val(data.oer);
+            $('#editKer').val(data.ker);
+            $('#editOilLoss').val(data.oil_loss);
+            $('#editKernelLoss').val(data.kernel_loss);
+            $('#editTangki1').val(data.stok_cpo_pks_1);
+            $('#editTangki2').val(data.stok_cpo_pks_2);
+            $('#editJetty').val(data.stok_cpo_jetty_1);
+            $('#editDespatchJetty').val(data.cpo_despatch_jetty);
+            $('#editDespatchTongkang').val(data.cpo_despatch_tongkang);
+            $('#editSilo1').val(data.stok_kernel_sistem_proses_silo_1);
+            $('#editSilo2').val(data.stok_kernel_sistem_proses_silo_2);
+            $('#editGudang').val(data.stok_kernel_gudang);
+            $('#editStKernel').val(data.stok_kernel_st_kernel);
+            $('#editDpnWks').val(data.stok_kernel_depan_workshop);
+            $('#editStDespatch').val(data.stok_kernel_st_despatch);
+            $('#editBulkingSilo').val(data.stok_kernel_bulking_silo);
+            $('#editTotalKernel').val(data.stok_kernel_total);
+            $('#editDespatchKernel').val(data.despatch_kernel);
+            $('#editCangkang').val(data.stok_cangkang);
+            $('#editTbsOlahAG').val(data.tbs_olah_netto);
+            $('#editOerAG').val(data.oer_after_grading);
+            $('#editKerAG').val(data.ker_after_grading);
         }).fail(function(xhr, status, error) {
             console.error('Error fetching edit data:', status, error);
             toastr.error('Gagal memuat data untuk edit.');

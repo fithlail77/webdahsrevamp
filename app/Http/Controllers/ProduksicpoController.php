@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ProduksiCpoExport;
-use App\Exports\ProduksiCpoPdfExport;
 use Carbon\Carbon;
 use App\Models\Produksicpo;
 use Illuminate\Http\Request;
+use App\Exports\ProduksiCpoExport;
 use App\Imports\ProduksicpoImport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProduksiCpoPdfExport;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProduksicpoController extends Controller
@@ -146,6 +147,20 @@ class ProduksicpoController extends Controller
              ->addColumn('tanggal_formatted1', function ($row) {
                 return \Carbon\Carbon::parse($row['bulan'])->format('d-m-Y');
             })
+             // FORMAT OER AFTER GRADING → PERSEN 2 DESIMAL
+            ->editColumn('oer_after_grading', function ($row) {
+                if ($row->oer_after_grading === null) {
+                    return '-';
+                }
+                return number_format($row->oer_after_grading * 100, 2) . '%';
+            })
+            // FORMAT KER AFTER GRADING → PERSEN 2 DESIMAL
+            ->editColumn('ker_after_grading', function ($row) {
+                if ($row->ker_after_grading === null) {
+                    return '-';
+                }
+                return number_format($row->ker_after_grading * 100, 2) . '%';
+            })
             ->addColumn('aksi', function ($row) {
                 return '
                     <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditProduksiCpo"><i class="fa fa-edit"></i></a>
@@ -184,7 +199,13 @@ class ProduksicpoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $produksicpo = Produksicpo::findOrFail($id);
+            return response()->json($produksicpo);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -192,7 +213,52 @@ class ProduksicpoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'tbs_terima_internal' => 'nullable|numeric',
+            'persen_terima_internal' => 'nullable|numeric',
+            'tbs_terima_eksternal' => 'nullable|numeric',
+            'persen_terima_eksternal' => 'nullable|numeric',
+            'total_tbs_terima' => 'nullable|numeric',
+            'tbs_olah' => 'nullable|numeric',
+            'sisa' => 'nullable|numeric',
+            'cpo_produksi_today' => 'nullable|numeric',
+            'cpo_produksi_todate' => 'nullable|numeric',
+            'kernel_produksi' => 'nullable|numeric',
+            'oer' => 'nullable|numeric',
+            'ker' => 'nullable|numeric',
+            'oil_loss' => 'nullable|numeric',
+            'kernel_loss' => 'nullable|numeric',
+            'stok_cpo_pks_1' => 'nullable|numeric',
+            'stok_cpo_pks_2' => 'nullable|numeric',
+            'stok_cpo_jetty_1' => 'nullable|numeric',
+            'stok_cpo_jetty_2' => 'nullable|numeric',
+            'cpo_despatch_jetty' => 'nullable|numeric',
+            'cpo_despatch_tongkang' => 'nullable|numeric',
+            'stock_nut_produksi' => 'nullable|numeric',
+            'stok_kernel_sistem_proses_silo_1' => 'nullable|numeric',
+            'stok_kernel_sistem_proses_silo_2' => 'nullable|numeric',
+            'stok_kernel_gudang' => 'nullable|numeric',
+            'stok_kernel_st_kernel' => 'nullable|numeric',
+            'stok_kernel_depan_workshop' => 'nullable|numeric',
+            'stok_kernel_st_despatch' => 'nullable|numeric',
+            'stok_kernel_bulking_silo' => 'nullable|numeric',
+            'stok_kernel_total' => 'nullable|numeric',
+            'despatch_kernel' => 'nullable|numeric',
+            'stok_cangkang' => 'nullable|numeric',
+            'tbs_olah_netto' => 'nullable|numeric',
+            'oer_after_grading' => 'nullable|numeric',
+            'ker_after_grading' => 'nullable|numeric',
+        ]);
+
+        try {
+            $produksicpo = Produksicpo::findOrFail($id);
+            $produksicpo->update($request->all());
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            Log::error('Error in update Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Gagal memperbarui data: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
