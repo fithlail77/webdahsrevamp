@@ -76,7 +76,7 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-AddAramcoLabel">Tambah Data Pemupukan</h5>
+        <h5 class="modal-title" id="modal-AddAramcoLabel">Tambah Data Pemasangan Aramco</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -174,7 +174,7 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-EditAramcoLabel">Edit Data Perawatan Harian Kebun</h5>
+        <h5 class="modal-title" id="modal-EditAramcoLabel">Edit Data Pemasangan Aramco</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -273,7 +273,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-UploadAramcoLabel">Unggah Data Monitoring Aramco</h5>
+        <h5 class="modal-title" id="modal-UploadAramcoLabel">Unggah Data Pemasangan Aramco</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

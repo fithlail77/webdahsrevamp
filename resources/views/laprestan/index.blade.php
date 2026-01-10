@@ -69,7 +69,7 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-AddRestanLabel">Tambah Laporan Restan</h5>
+        <h5 class="modal-title" id="modal-AddRestanLabel">Tambah Data Restan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -131,7 +131,7 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-EditRestanLabel">Edit Data Realisasi Panen</h5>
+        <h5 class="modal-title" id="modal-EditRestanLabel">Edit Data Restan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -193,7 +193,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-UploadRestanLabel">Unggah Data Realisasi Panen</h5>
+        <h5 class="modal-title" id="modal-UploadRestanLabel">Unggah Data Restan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
