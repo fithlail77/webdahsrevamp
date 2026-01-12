@@ -41,24 +41,6 @@
         </div>
     </div>
 </div>
-<!--<div class="card shadow mb-4">
-    <div class="card mb-2">
-      <div class="card-header">Grafik Produksi CPO -  Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</div>
-        <div class="card-body">
-            <div class="chart-area"><canvas id="CPOChart" width="100%" height="25"></canvas></div>
-        </div>
-        <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
-    </div>
-</div>
-<div class="card shadow mb-4">
-    <div class="card mb-2">
-      <div class="card-header">Grafik Produksi Kernel -  Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</div>
-        <div class="card-body">
-            <div class="chart-area"><canvas id="PKChart" width="100%" height="25"></canvas></div>
-        </div>
-        <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
-    </div>
-</div>-->
 <div class="card shadow mb-4">
     <div class="card-body">
         <table id="produksicpoTable" class="table table-bordered table-striped">

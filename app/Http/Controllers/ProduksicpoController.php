@@ -20,56 +20,9 @@ class ProduksicpoController extends Controller
      */
     public function index()
     {
-        //$cpo = Produksicpo::where('tanggal', '>=', Carbon::now()->subDays(30))
-        //->orderBy('tanggal', 'desc')
-        //->get();
-
-        $start = Carbon::now()->startOfMonth();
-        $end = Carbon::now()->endOfMonth();
-
-        $tanggalLengkap = [];
-        $current = $start->copy();
-        while ($current <= $end) {
-            $tanggalLengkap[$current->format('d')] = 0; // default value 0
-            $current->addDay();
-        }
-
-        $chart1 = DB::table('produksi_cpo')
-            ->selectRaw('DATE(tanggal) as tanggal, cpo_produksi_today')
-            ->whereBetween('tanggal', [$start, $end])
-            ->orderByRaw('DATE(tanggal)')
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [Carbon::parse($item->tanggal)->format('d') => (int) $item->cpo_produksi_today];
-                    })
-            ->toArray();
         
-        $result = [];
-            foreach ($tanggalLengkap as $tgl => $value) {
-                $result[] = $chart1[$tgl] ?? 0;
-        }
-        
-        $labels1 = array_keys($tanggalLengkap);
-        $chart1 = $result;
 
-        $chart2 = DB::table('produksi_cpo')
-            ->selectRaw('DATE(tanggal) as tanggal, kernel_produksi')
-            ->whereBetween('tanggal', [$start, $end])
-            ->orderByRaw('DATE(tanggal)')
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [Carbon::parse($item->tanggal)->format('d') => (int) $item->kernel_produksi];
-                    })
-            ->toArray();
-        
-        $result2 = [];
-            foreach ($tanggalLengkap as $tgl => $value) {
-                $result2[] = $chart2[$tgl] ?? 0;
-        }
-        
-        $chart2 = $result2;
-
-        return view('cpo.index', compact('labels1','chart1','chart2'));
+        return view('cpo.index');
     }
 
     public function data(Request $request)
@@ -143,9 +96,6 @@ class ProduksicpoController extends Controller
             ->addIndexColumn()
             ->addColumn('tanggal_formatted', function ($row) {
                 return \Carbon\Carbon::parse($row['tanggal'])->format('d-m-Y');
-            })
-             ->addColumn('tanggal_formatted1', function ($row) {
-                return \Carbon\Carbon::parse($row['bulan'])->format('d-m-Y');
             })
              // FORMAT OER AFTER GRADING → PERSEN 2 DESIMAL
             ->editColumn('oer_after_grading', function ($row) {
