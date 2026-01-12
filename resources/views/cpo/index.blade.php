@@ -330,6 +330,7 @@
         autoWidth: false,
         ajax: {
             url: "{{ route('produksicpo.data') }}",
+            type: 'GET',
             data: function(d) {
                 d.minDate = $('#minDate').val();
                 d.maxDate = $('#maxDate').val();
@@ -475,11 +476,11 @@
         var id = $('#editId').val();
         var formData = $(this).serialize();
         $.ajax({
-            url: '/ffbeksternal/' + id,
+            url: '/produksicpo/' + id,
             type: 'PUT',
             data: formData,
             success: function(response) {
-                $('#modal-EditFfbEksternal').modal('hide');
+                $('#modal-EditProduksiCpo').modal('hide');
                 table.ajax.reload();
                 toastr.success(response.success);
             },
@@ -490,101 +491,4 @@
     });
 });
 </script>
-<!--<script>
-        const ctx1 = document.getElementById('CPOChart').getContext('2d');
-        const CPOChart = new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: @json($labels1),
-                datasets: [{
-                    label: 'Produksi CPO Bulan Ini',
-                    data: @json($chart1),
-                    backgroundColor: 'rgba(254, 114, 67, 1)',
-                    borderColor: 'rgba(254, 114, 67, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                        formatter: function(value) {
-                            return value != null ? value.toLocaleString() : '';
-                        },
-                        font: {
-                            weight: 'bold'
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision:0,
-                            callback: function(value) {
-                              return value != null ? value.toLocaleString() : ''; // Format ribuan untuk sumbu Y
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Ton'
-                        }
-                    }
-                },
-                responsive: true,
-                maintainAspectRatio: false,
-            },
-            plugins: [ChartDataLabels]
-        });
-</script>
-
-<script>
-        const ctx2 = document.getElementById('PKChart').getContext('2d');
-        const PKChart = new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: @json($labels1),
-                datasets: [{
-                    label: 'Produksi CPO Bulan Ini',
-                    data: @json($chart2),
-                    backgroundColor: 'rgba(0, 0, 0, 1)',
-                    borderColor: 'rgba(0, 0, 0, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    datalabels: {
-                        anchor: 'end',
-                        align: 'top',
-                        formatter: function(value) {
-                            return value != null ? value.toLocaleString() : '';
-                        },
-                        font: {
-                            weight: 'bold'
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision:0,
-                            callback: function(value) {
-                              return value != null ? value.toLocaleString() : ''; // Format ribuan untuk sumbu Y
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Ton'
-                        }
-                    }
-                },
-                responsive: true,
-                maintainAspectRatio: false,
-            },
-            plugins: [ChartDataLabels]
-        });
-</script> -->
 @endpush
