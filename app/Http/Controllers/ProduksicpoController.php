@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Company;
 use App\Models\Produksicpo;
 use Illuminate\Http\Request;
 use App\Exports\ProduksiCpoExport;
@@ -20,9 +21,16 @@ class ProduksicpoController extends Controller
      */
     public function index()
     {
-        
+        $estate = Company::select('estate')
+            ->distinct()
+            ->get();
 
-        return view('cpo.index');
+        $divisi = Company::select('divisi')
+            ->distinct()
+            ->orderBy('divisi','asc')
+            ->get();
+            
+        return view('cpo.index', compact('estate','divisi'));
     }
 
     public function data(Request $request)

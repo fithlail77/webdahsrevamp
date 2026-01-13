@@ -70,8 +70,6 @@
                     <th>Kernel Silo 1</th>
                     <th>Kernel Silo 2</th>
                     <th>Kernel Gudang</th>
-                    <th>Kernel Station</th>
-                    <th>Kernel Workshop</th>
                     <th>Kernel St Despatch</th>
                     <th>Kernel Bulking Silo</th>
                     <th>Stok Kernel Total</th>
@@ -312,7 +310,6 @@
         autoWidth: false,
         ajax: {
             url: "{{ route('produksicpo.data') }}",
-            type: 'GET',
             data: function(d) {
                 d.minDate = $('#minDate').val();
                 d.maxDate = $('#maxDate').val();
@@ -352,8 +349,6 @@
             { data: 'stok_kernel_sistem_proses_silo_1', name: 'stok_kernel_sistem_proses_silo_1' },
             { data: 'stok_kernel_sistem_proses_silo_2', name: 'stok_kernel_sistem_proses_silo_2' },
             { data: 'stok_kernel_gudang', name: 'stok_kernel_gudang' },
-            { data: 'stok_kernel_st_kernel', name: 'stok_kernel_st_kernel' },
-            { data: 'stok_kernel_depan_workshop', name: 'stok_kernel_depan_workshop' },
             { data: 'stok_kernel_st_despatch', name: 'stok_kernel_st_despatch' },
             { data: 'stok_kernel_bulking_silo', name: 'stok_kernel_bulking_silo' },
             { data: 'stok_kernel_total', name: 'stok_kernel_total' },
