@@ -256,4 +256,49 @@ class ProduksicpoController extends Controller
         $pdfExport = new ProduksiCpoPdfExport($minDate, $maxDate, $search);
         return $pdfExport->generatePdf();
     }
+
+    public function simpan(Request $request)
+    {
+        $validate = $request->validate([
+            'tanggal' => 'required|date',
+            'tbs_terima_internal' => 'nullable|numeric',
+            'persen_terima_internal' => 'nullable|numeric',
+            'tbs_terima_eksternal' => 'nullable|numeric',
+            'persen_terima_eksternal' => 'nullable|numeric',
+            'total_tbs_terima' => 'nullable|numeric',
+            'tbs_olah' => 'nullable|numeric',
+            'sisa' => 'nullable|numeric',
+            'cpo_produksi_today' => 'nullable|numeric',
+            'cpo_produksi_todate' => 'nullable|numeric',
+            'kernel_produksi' => 'nullable|numeric',
+            'oer' => 'nullable|numeric',
+            'ker' => 'nullable|numeric',
+            'oil_loss' => 'nullable|numeric',
+            'kernel_loss' => 'nullable|numeric',
+            'stok_cpo_pks_1' => 'nullable|numeric',
+            'stok_cpo_pks_2' => 'nullable|numeric',
+            'stok_cpo_jetty_1' => 'nullable|numeric',
+            'stok_cpo_jetty_2' => 'nullable|numeric',
+            'cpo_despatch_jetty' => 'nullable|numeric',
+            'cpo_despatch_tongkang' => 'nullable|numeric',
+            'stock_nut_produksi' => 'nullable|numeric',
+            'stok_kernel_sistem_proses_silo_1' => 'nullable|numeric',
+            'stok_kernel_sistem_proses_silo_2' => 'nullable|numeric',
+            'stok_kernel_gudang' => 'nullable|numeric',
+            'stok_kernel_st_kernel' => 'nullable|numeric',
+            'stok_kernel_depan_workshop' => 'nullable|numeric',
+            'stok_kernel_st_despatch' => 'nullable|numeric',
+            'stok_kernel_bulking_silo' => 'nullable|numeric',
+            'stok_kernel_total' => 'nullable|numeric',
+            'despatch_kernel' => 'nullable|numeric',
+            'stok_cangkang' => 'nullable|numeric',
+            'tbs_olah_netto' => 'nullable|numeric',
+            'oer_after_grading' => 'nullable|numeric',
+            'ker_after_grading' => 'nullable|numeric',
+        ]);
+
+        Produksicpo::create($validate);
+
+         return redirect()->route('produksicpo.index')->with('success', 'Data berhasil diupload.');
+    }
 }

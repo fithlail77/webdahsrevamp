@@ -110,6 +110,7 @@ Route::post('/ffbeksternal', [FfbEksternalController::class, 'import'])->name('f
 Route::get('/produksicpo/data', [ProduksicpoController::class, 'data'])->name('produksicpo.data');
 Route::get('/produksicpo/export/excel', [ProduksicpoController::class, 'exportExcel'])->name('produksicpo.export.excel');
 Route::get('/produksicpo/export/pdf', [ProduksicpoController::class, 'exportPdf'])->name('produksicpo.export.pdf');
+Route::post('/produksicpo/simpan', [ProduksicpoController::class, 'simpan'])->name('produksicpo.simpan');
 Route::resource('/produksicpo', ProduksicpoController::class);
 Route::post('/produksicpo', [ProduksicpoController::class, 'import'])->name('produksicpo.import');
 Route::get('/contractcpo/data', [ContractcpoController::class, 'data'])->name('contractcpo.data');

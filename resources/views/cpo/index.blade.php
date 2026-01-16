@@ -117,7 +117,179 @@
     </div>
   </div>
 </div>
-<!-- Modal Edit Contract CPO -->
+<!-- Modal Add Produksi PKS -->
+<div class="modal fade" id="modal-AddCPO" tabindex="-1" role="dialog" aria-labelledby="modal-EAddCPOLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddCPOLabel">Tambah Data Produksi PKS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('produksicpo.simpan') }}" method="POST>
+            @csrf
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTanggal">Tanggal</label>
+                    <input type="date" class="form-control" name="tanggal">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTbsInt">TBS Internal</label>
+                    <input type="number" class="form-control" name="tbs_terima_internal">
+                </div>
+                <div class="col-md-3">
+                    <label for="editPersenInt">Persen TBS Internal</label>
+                    <input type="number" step="0.01" class="form-control" name="persen_terima_internal" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editTbsEks">TBS Eksternal</label>
+                <input type="number" class="form-control" name="tbs_terima_eksternal" >
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="PersenEks">Persen TBS Eksternal</label>
+                    <input type="number" step='0.01' class="form-control" name="persen_terima_eksternal" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editTotalTbs">Total TBS</label>
+                    <input type="number" class="form-control" name="total_terima_tbs" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editTbsOlah">Total TBS Olah</label>
+                    <input type="number" class="form-control" name="tbs_olah" >
+                </div>
+                <div class="col-md-3">
+                    <label for="editSisa">Sisa</label>
+                    <input type="number" class="form-control" name="sisa">
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editCpoToday">CPO Today</label>
+                    <input type="number" class="form-control" name="cpo_produksi_today">
+                </div>
+                <div class="col-md-3">
+                    <label for="editCpoTodate">CPO Todate</label>
+                    <input type="number" class="form-control" name="cpo_produksi_todate">
+                </div>
+                <div class="col-md-3">
+                    <label for="editKernel">Kernel</label>
+                    <input type="number" class="form-control" name="kernel_produksi">
+                </div>
+                <div class="col-md-3">
+                    <label for="editOer">OER</label>
+                    <input type="number" step="0.01" class="form-control" name="oer">
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editKer">KER</label>
+                    <input type="number" step="0.01" class="form-control" name="ker">
+                </div>
+                <div class="col-md-3">
+                    <label for="editOilLoss">Oil Loss</label>
+                    <input type="number" step="0.01" class="form-control" name="oil_loss">
+                </div>
+                <div class="col-md-3">
+                    <label for="editKernelLoss">Kernel Loss</label>
+                    <input type="number" step="0.01" class="form-control" name="kernel_loss">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTangki1">Stok Tangki 1 CPO</label>
+                    <input type="number" class="form-control" name="stok_cpo_pks_1">
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTangki2">Stok Tangki 2 CPO</label>
+                    <input type="number" class="form-control" name="stok_cpo_pks_2">
+                </div>
+                <div class="col-md-3">
+                    <label for="editJetty">Stok Jetty CPO</label>
+                    <input type="number" class="form-control" name="stok_cpo_jetty_1">
+                </div>
+                <div class="col-md-3">
+                    <label for="editDespatchJetty">Despatch Jetty</label>
+                    <input type="number" class="form-control" name="cpo_despatch_jetty">
+                </div>
+                <div class="col-md-3">
+                    <label for="editDespatchTongkang">Despatch Tongkang</label>
+                    <input type="number" class="form-control" name="cpo_despatch_tongkang">
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editSilo1">Kernel Silo 1</label>
+                    <input type="number" class="form-control" name="stok_kernel_sistem_proses_silo_1">
+                </div>
+                <div class="col-md-3">
+                    <label for="editSilo2">Kernel Silo 2</label>
+                    <input type="number" class="form-control" name="stok_kernel_sistem_proses_silo_2">
+                </div>
+                <div class="col-md-3">
+                    <label for="editGudang">Kernel Gudang</label>
+                    <input type="number" class="form-control" name="stok_kernel_gudang">
+                </div>
+                <div class="col-md-3">
+                    <label for="editStKernel">Kernel St Kernel</label>
+                    <input type="number" class="form-control" name="stok_kernel_st_kernel">
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editDpnWks">Kernel Depan Workshop</label>
+                    <input type="number" class="form-control" name="stok_kernel_depan_workshop">
+                </div>
+                <div class="col-md-3">
+                    <label for="editStDespatch">Kernel St Despatch</label>
+                    <input type="number" class="form-control" name="stok_kernel_st_despatch">
+                </div>
+                <div class="col-md-3">
+                    <label for="editBulkingSilo">Kernel Bulking Silo</label>
+                    <input type="number" class="form-control" name="stok_kernel_bulking_silo">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTotalKernel">Total Stok Kernel</label>
+                    <input type="number" class="form-control" name="stok_kernel_total">
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editDespatchKernel">Despatch Kernel</label>
+                    <input type="number" class="form-control" name="despatch_kernel">
+                </div>
+                <div class="col-md-3">
+                    <label for="editCangkang">Stok Cangkang</label>
+                    <input type="number" class="form-control" name="stok_cangkang">
+                </div>
+                <div class="col-md-3">
+                    <label for="editTbsOlahAG">TBS Olah AG</label>
+                    <input type="number" class="form-control" name="tbs_olah_netto">
+                </div>
+                <div class="col-md-3">
+                    <label for="editOerAG">OER After Grading</label>
+                    <input type="number" class="form-control" name="oer_after_grading">
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editKerAG">KER After Grading</label>
+                    <input type="number" class="form-control" name="ker_after_grading">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Edit Produksi PKS -->
 <div class="modal fade" id="modal-EditProduksiCpo" tabindex="-1" role="dialog" aria-labelledby="modal-EditFProduksiCpoLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -165,7 +337,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editSisa">Sisa</label>
-                    <input type="date" class="form-control" id="editSisa" name="sisa">
+                    <input type="number" class="form-control" id="editSisa" name="sisa">
                 </div>
             </div>
             <div class="row gx-3 mb-3">
