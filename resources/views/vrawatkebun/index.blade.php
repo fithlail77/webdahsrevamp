@@ -99,7 +99,12 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Jenis Perawatan</label>
-                        <input class="form-control" name="jenis_perawatan" type="text"/>
+                        <select class="form-control" name="jenis_perawatan">
+                            <option value="">-- Pilih --</option>
+                            @foreach($pupuk as $item)
+                                <option value="{{ $item->rawat }}">{{ $item->rawat }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Blok</label>
@@ -130,7 +135,7 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Lahan</label>
+                        <label class="small mb-1">TM/TBM</label>
                         <select class="form-control" name="lahan">
                             <option value="">-- Pilih --</option>
                             <option value="TM">TM</option>

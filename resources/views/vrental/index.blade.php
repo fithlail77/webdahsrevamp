@@ -197,6 +197,8 @@
                             <option value="Jjg">Janjang</option>
                             <option value="Kg">Kilogram</option>
                             <option value="Rit">Rit</option>
+                            <option value="KM">KM</option>
+                            <option value="HM">HM</option>
                         </select>
                     </div>
                 </div>
@@ -212,6 +214,8 @@
                             <option value="Jjg">Janjang</option>
                             <option value="Kg">Kilogram</option>
                             <option value="Rit">Rit</option>
+                            <option value="KM">KM</option>
+                            <option value="HM">HM</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -349,6 +353,8 @@
                             <option value="Jjg">Janjang</option>
                             <option value="Kg">Kilogram</option>
                             <option value="Rit">Rit</option>
+                            <option value="KM">KM</option>
+                            <option value="HM">HM</option>
                     </select>
                 </div>
             </div>
@@ -364,6 +370,8 @@
                             <option value="Jjg">Janjang</option>
                             <option value="Kg">Kilogram</option>
                             <option value="Rit">Rit</option>
+                            <option value="KM">KM</option>
+                            <option value="HM">HM</option>
                     </select>
                 </div>
                 <div class="col-md-3">

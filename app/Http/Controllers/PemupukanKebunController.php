@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PemupukanKebunExport;
 use App\Imports\PemupukanKebunImport;
 use App\Exports\PemupukanKebunPdfExport;
+use App\Models\JenisPupukRawat;
 use Yajra\DataTables\Facades\DataTables;
 
 class PemupukanKebunController extends Controller
@@ -30,7 +31,13 @@ class PemupukanKebunController extends Controller
             ->orderBy('divisi','asc')
             ->get();
 
-        return view('vpupukebun.index', compact('estate','divisi'));
+        $pupuk = JenisPupukRawat::select('pupuk')
+            ->whereNotNull('pupuk')
+            ->distinct()
+            ->orderBY('pupuk','asc')
+            ->get();
+
+        return view('vpupukebun.index', compact('estate','divisi','pupuk'));
     }
 
     public function data(Request $request)
@@ -71,7 +78,7 @@ class PemupukanKebunController extends Controller
                 $query->whereDate('tanggal', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal', '>=', Carbon::now()->subDays(1));
+                $query->where('tanggal', '>=', Carbon::now()->subDays(7));
             }
         }
 

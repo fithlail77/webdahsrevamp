@@ -91,7 +91,7 @@ class SptbsInputController extends Controller
                 $query->whereDate('tanggal_tiket', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal_tiket', '>=', Carbon::now()->subDays(1));
+                $query->where('tanggal_tiket', '>=', Carbon::now()->subDays(7));
             }
         }
 

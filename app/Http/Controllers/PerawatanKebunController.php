@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\PerawatanKebun;
+use App\Models\JenisPupukRawat;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,8 +30,14 @@ class PerawatanKebunController extends Controller
             ->distinct()
             ->orderBy('divisi','asc')
             ->get();
+        
+        $pupuk = JenisPupukRawat::select('rawat')
+            ->whereNotNull('rawat')
+            ->distinct()
+            ->orderBY('rawat','asc')
+            ->get();
 
-        return view('vrawatkebun.index', compact('estate','divisi'));
+        return view('vrawatkebun.index', compact('estate','divisi','pupuk'));
     }
 
     public function data(Request $request)
@@ -79,7 +86,7 @@ class PerawatanKebunController extends Controller
                 $query->whereDate('tanggal', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal', '>=', Carbon::now()->subDays(1));
+                $query->where('tanggal', '>=', Carbon::now()->subDays(7));
             }
         }
 
