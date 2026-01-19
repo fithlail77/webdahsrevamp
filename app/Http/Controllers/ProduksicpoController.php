@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProduksiCpoPdfExport;
+use App\Models\JenisPupukRawat;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProduksicpoController extends Controller
@@ -297,7 +298,43 @@ class ProduksicpoController extends Controller
             'ker_after_grading' => 'nullable|numeric',
         ]);
 
-        Produksicpo::create($validate);
+        Produksicpo::create([
+            'tanggal' => $request->tanggal,
+            'tbs_terima_internal' => $request->tbs_terima_internal,
+            'persen_terima_internal' => $request->persen_terima_internal,
+            'tbs_terima_eksternal' => $request->tbs_terima_eksternal,
+            'persen_terima_eksternal' => $request->persen_terima_eksternal,
+            'total_tbs_terima' => $request->total_tbs_terima,
+            'tbs_olah' => $request->tbs_olah,
+            'sisa' => $request->sisa,
+            'cpo_produksi_today' => $request->cpo_produksi_today,
+            'cpo_produksi_todate' => $request->cpo_produksi_todate,
+            'kernel_produksi' => $request->kernel_produksi,
+            'oer' => $request->oer,
+            'ker' => $request->ker,
+            'oil_loss' => $request->oil_loss,
+            'kernel_loss' => $request->kernel_loss,
+            'stok_cpo_pks_1' => $request->stok_cpo_pks_1,
+            'stok_cpo_pks_2' => $request->stok_cpo_pks_2,
+            'stok_cpo_jetty_1' => $request->stok_cpo_jetty_1,
+            'stok_cpo_jetty_2' => $request->stok_cpo_jetty_2,
+            'cpo_despatch_jetty' => $request->cpo_despatch_jetty,
+            'cpo_despatch_tongkang' => $request->cpo_despatch_tongkang,
+            'stock_nut_produksi' => $request->stock_nut_produksi,
+            'stok_kernel_sistem_proses_silo_1' => $request->stok_kernel_sistem_proses_silo_1,
+            'stok_kernel_sistem_proses_silo_2' => $request->stok_kernel_sistem_proses_silo_2,
+            'stok_kernel_gudang' => $request->stok_kernel_gudang,
+            'stok_kernel_st_kernel' => $request->stok_kernel_st_kernel,
+            'stok_kernel_depan_workshop' => $request->stok_kernel_depan_workshop,
+            'stok_kernel_st_despatch' => $request->stok_kernel_st_despatch,
+            'stok_kernel_bulking_silo' => $request->stok_kernel_bulking_silo,
+            'stok_kernel_total' => $request->stok_kernel_total,
+            'despatch_kernel' => $request->despatch_kernel,
+            'stok_cangkang' => $request->stok_cangkang,
+            'tbs_olah_netto' => $request->tbs_olah_netto,
+            'oer_after_grading' => $request->oer_after_grading,
+            'ker_after_grading' => $request->ker_after_grading,
+        ]);
 
          return redirect()->route('produksicpo.index')->with('success', 'Data berhasil diupload.');
     }

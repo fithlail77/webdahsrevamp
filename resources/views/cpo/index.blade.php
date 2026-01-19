@@ -128,7 +128,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('produksicpo.simpan') }}" method="POST>
+        <form action="{{ route('produksicpo.simpan') }}" method="POST">
             @csrf
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
@@ -155,7 +155,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editTotalTbs">Total TBS</label>
-                    <input type="number" class="form-control" name="total_terima_tbs" >
+                    <input type="number" class="form-control" name="total_tbs_terima" >
                 </div>
                 <div class="col-md-3">
                     <label for="editTbsOlah">Total TBS Olah</label>
@@ -329,7 +329,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editTotalTbs">Total TBS</label>
-                    <input type="number" class="form-control" id="editTotalTbs" name="total_terima_tbs" >
+                    <input type="number" class="form-control" id="editTotalTbs" name="total_tbs_terima" >
                 </div>
                 <div class="col-md-3">
                     <label for="editTbsOlah">Total TBS Olah</label>
@@ -445,13 +445,13 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editOerAG">OER After Grading</label>
-                    <input type="number" class="form-control" id="editOerAG" name="oer_after_grading">
+                    <input type="number" step="0.01" class="form-control" id="editOerAG" name="oer_after_grading">
                 </div>
             </div>
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editKerAG">KER After Grading</label>
-                    <input type="number" class="form-control" id="editKerAG" name="ker_after_grading">
+                    <input type="number" step="0.01" class="form-control" id="editKerAG" name="ker_after_grading">
                 </div>
             </div>
             <div class="modal-footer">
@@ -623,7 +623,7 @@
     $('#editForm').on('submit', function(e) {
         e.preventDefault();
         var id = $('#editId').val();
-        var formData = $(this).serialize();
+        var formData = $(this).serialize() + '&tanggal=' + $('#editTanggal').val();
         $.ajax({
             url: '/produksicpo/' + id,
             type: 'PUT',

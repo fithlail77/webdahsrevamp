@@ -205,8 +205,8 @@ class RentalController extends Controller
                 'hm_awal' => 'required|numeric',
                 'hm_akhir' => 'required|numeric',
                 'total_hm' => 'required|numeric',
-                'potongan_hm' => 'required|numeric',
-                'pembayaran_hm' => 'required|numeric',
+                'potongan_hm' => 'nullable|numeric',
+                'pembayaran_hm' => 'nullable|numeric',
                 'blok' => 'required|string|max:10',
                 'tahun_tanam' => 'required|integer',
                 'pekerjaan' => 'required|string|max:255',
@@ -216,9 +216,9 @@ class RentalController extends Controller
                 'tarif' => 'required|integer',
                 'bjr' => 'required|numeric',
                 'hasil_1' => 'required|integer',
-                'satuan_1' => 'required|string:max:10',
-                'hasil_2'=> 'required|integer',
-                'satuan_2' => 'required|string|max:10',
+                'satuan_1' => 'required|string|max:10',
+                'hasil_2'=> 'nullable|integer',
+                'satuan_2' => 'nullable|string|max:10',
                 'total_biaya' => 'required|integer',
             ]);
 

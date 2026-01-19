@@ -287,17 +287,17 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editTotalHm">Total HM</label>
-                    <input type="number" step="0.01" class="form-control" id="editTotalHm" name="total_hm" readonly required>
+                    <input type="number" step="0.01" class="form-control" id="editTotalHm" name="total_hm" readonly>
                 </div>
             </div>
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editPotonganHm">Potongan HM</label>
-                    <input type="number" step="0.01" class="form-control" id="editPotonganHm" name="potongan_hm" required>
+                    <input type="number" step="0.01" class="form-control" id="editPotonganHm" name="potongan_hm">
                 </div>
                 <div class="col-md-3">
                     <label for="editPembayaranHm">Pembayaran HM</label>
-                    <input type="number" step="0.01" class="form-control" id="editPembayaranHm" name="pembayaran_hm" required>
+                    <input type="number" step="0.01" class="form-control" id="editPembayaranHm" name="pembayaran_hm">
                 </div>
                 <div class="col-md-3">
                     <label for="editBlok">Blok</label>
@@ -335,11 +335,11 @@
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editTarif">Tarif</label>
-                    <input type="number" class="form-control" id="editTarif" name="tarif" required>
+                    <input type="number" class="form-control" id="editTarif" name="tarif">
                 </div>
                 <div class="col-md-3">
                     <label for="editBjr">BJR</label>
-                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" required>
+                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr">
                 </div>
                 <div class="col-md-3">
                     <label for="editHasil1">Hasil 1</label>
@@ -361,11 +361,11 @@
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editHasil2">Hasil 2</label>
-                    <input type="number" class="form-control" id="editHasil2" name="hasil_2" required>
+                    <input type="number" class="form-control" id="editHasil2" name="hasil_2">
                 </div>
                 <div class="col-md-3">
                     <label for="editSatuan2">Satuan 2</label>
-                    <select class="form-control" name="satuan_2" id="editSatuan2" name="satuan_2" required >
+                    <select class="form-control" name="satuan_2" id="editSatuan2" name="satuan_2">
                             <option value="">-- Pilih --</option>
                             <option value="Jjg">Janjang</option>
                             <option value="Kg">Kilogram</option>
@@ -376,7 +376,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editTotalBiaya">Total Biaya</label>
-                    <input type="number" class="form-control" id="editTotalBiaya" name="total_biaya" required>
+                    <input type="number" class="form-control" id="editTotalBiaya" name="total_biaya">
                 </div>
             </div>
             <div class="modal-footer">
