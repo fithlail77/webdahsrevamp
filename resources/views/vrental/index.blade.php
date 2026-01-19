@@ -563,7 +563,16 @@
                 toastr.success(response.success);
             },
             error: function(xhr) {
-                toastr.error('Terjadi kesalahan saat memperbarui data.');
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat memperbarui data.');
+                }
             }
         });
     });

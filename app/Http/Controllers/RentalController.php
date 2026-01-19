@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Validation\ValidationException;
 
 class RentalController extends Controller
 {
@@ -198,36 +199,38 @@ class RentalController extends Controller
         try {
             $request->validate([
                 'tanggal' => 'required|date',
-                'estate' => 'required|string|max:30',
+                'estate' => 'required|string|max:35',
                 'jenis_alat' => 'required|string|max:255',
                 'no_alat' => 'required|string|max:255',
-                'operator' => 'required|string|max:255',
+                'operator' => 'required|string|max:150',
                 'hm_awal' => 'required|numeric',
                 'hm_akhir' => 'required|numeric',
                 'total_hm' => 'required|numeric',
                 'potongan_hm' => 'nullable|numeric',
                 'pembayaran_hm' => 'nullable|numeric',
-                'blok' => 'required|string|max:10',
+                'blok' => 'nullable|string|max:5',
                 'tahun_tanam' => 'required|integer',
                 'pekerjaan' => 'required|string|max:255',
-                'divisi' => 'required|string|max:15',
+                'divisi' => 'required|string|max:5',
                 'kelompok' => 'required|string|max:255',
-                'coa' => 'required|integer',
-                'tarif' => 'required|integer',
-                'bjr' => 'required|numeric',
-                'hasil_1' => 'required|integer',
-                'satuan_1' => 'required|string|max:10',
-                'hasil_2'=> 'nullable|integer',
-                'satuan_2' => 'nullable|string|max:10',
-                'total_biaya' => 'required|integer',
+                'coa' => 'nullable|integer',
+                'tarif' => 'nullable|integer',
+                'bjr' => 'nullable|numeric',
+                'hasil_1' => 'nullable|integer',
+                'satuan_1' => 'nullable|string|max:15',
+                'hasil_2' => 'nullable|integer',
+                'satuan_2' => 'nullable|string|max:15',
+                'total_biaya' => 'nullable|integer',
             ]);
 
             $rental = Rental::findOrFail($id);
             $rental->update($request->all());
 
             return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => 'Validasi gagal: ' . implode(', ', $e->errors())], 422);
         } catch (\Throwable $e) {
-            Log::error('Error updating SPTBS: ' . $e->getMessage());
+            Log::error('Error updating Rental: ' . $e->getMessage());
             return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
