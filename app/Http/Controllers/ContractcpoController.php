@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Contractcpo;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
+use App\Exports\ContrackCpoExport;
 use App\Imports\ContractcpoImport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ContrackCpoPdfExport;
 use Yajra\DataTables\Facades\DataTables;
 
 class ContractcpoController extends Controller
@@ -17,32 +21,6 @@ class ContractcpoController extends Controller
      */
     public function index()
     {
-        //$ccpo = Contractcpo::orderBy('real_loading_tk', 'desc')->get();
-
-        //$chart1 = DB::table('contract_cpo')
-        //            ->select('real_loading_tk', 'real_price')
-        //            ->whereBetween('real_loading_tk', [
-        //                DB::raw("DATE_TRUNC('month', CURRENT_DATE - INTERVAL '2 month')"),
-        //                DB::raw("DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 day'")
-        //                ])
-        //            ->orderBy('real_loading_tk')
-        //            ->get();
-        
-        //$labels1 = $chart1->pluck('real_loading_tk')->map(fn($date) => Carbon::parse($date)->format('d M Y'))->toArray(); // contoh: "01"
-        //$values1 = $chart1->pluck('real_price')->toArray();
-
-        //$chart2 = DB::table('contract_cpo')
-        //            ->select('real_loading_tk', 'real_qty_kg')
-        //            ->whereBetween('real_loading_tk', [
-        //                DB::raw("DATE_TRUNC('month', CURRENT_DATE - INTERVAL '2 month')"),
-        //                DB::raw("DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 day'")
-        //                ])
-        //            ->orderBy('real_loading_tk')
-        //            ->get();
-        
-        //$labels2 = $chart2->pluck('real_loading_tk')->map(fn($date) => Carbon::parse($date)->format('d M Y'))->toArray(); // contoh: "01"
-        //$values2 = $chart2->pluck('real_qty_kg')->toArray();
-
         return view('ccpo.index');
     }
 
@@ -78,14 +56,14 @@ class ContractcpoController extends Controller
         } else {
             // Jika ada filter tanggal, gunakan itu
             if($request->minDate && $request->maxDate) {
-                $query->whereBetween('plan_loading_tk', [$request->minDate, $request->maxDate]);
+                $query->whereBetween('real_loading_tk', [$request->minDate, $request->maxDate]);
             } elseif ($request->minDate) {
-                $query->whereDate('plan_loading_tk', '>=', $request->minDate);
+                $query->whereDate('real_loading_tk', '>=', $request->minDate);
             } elseif ($request->maxDate) {
-                $query->whereDate('plan_loading_tk', '<=', $request->maxDate);
+                $query->whereDate('real_loading_tk', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('plan_loading_tk', '>=', Carbon::now()->subDays(30));
+                $query->where('real_loading_tk', '>=', Carbon::now()->subDays(30));
             }
         }
 
@@ -128,9 +106,71 @@ class ContractcpoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function simpan(Request $request)
     {
-        //
+        $request->validate([
+            'ggu_sc' => 'required|string',
+            'gum_sc' => 'required|integer',
+            'plan_loading_tk' => 'required|date',
+            'real_loading_tk' => 'required|date',
+            'tgl_ba_loading_tk' => 'required|date',
+            'tgl_pricing' => 'required|date',
+            'real_price' => 'required|numeric',
+            'nilai_penjualan' => 'required|numeric',
+            'kontrak_qty_ton' => 'required|numeric',
+            'real_qty_kg' => 'required|numeric',
+            'kapal_tongkang' => 'required|string',
+            'suhu' => 'required|numeric',
+            'buyer' => 'required|string',
+            'status' => 'required|string',
+            'lama_loading_hari' => 'required|integer',
+        ]);
+
+        // =========================
+        // Hitung tanggal real loading
+        // =========================
+        $tanggalRencana = Carbon::parse($request->plan_loading_tk);
+        $tanggalReal = $tanggalRencana
+            ->copy()
+            ->addDays($request->lama_loading_hari - 1);
+        
+        // =========================
+        // Set periode bulan otomatis
+        // (tanggal terakhir bulan berjalan)
+        // =========================
+        $periodeBulan = Carbon::now()->endOfMonth();
+
+        // =========================
+        // Nama bulan otomatis (Jan, Feb, dst)
+        // =========================
+        Carbon::setLocale('id');
+        $bulan = Carbon::now()->translatedFormat('M');
+
+        // Simpan data ke database
+        Contractcpo::create([
+            'ggu_sc' => $request->ggu_sc,
+            'gum_sc' => $request->gum_sc,
+            'plan_loading_tk' => $request->plan_loading_tk,
+            'real_loading_tk' => $request->real_loading_tk,
+            'tgl_ba_loading_tk' => $request->tgl_ba_loading_tk,
+            'tgl_pricing' => $request->tgl_pricing,
+            'real_price' => $request->real_price,
+            'nilai_penjualan' => $request->nilai_penjualan,
+            'kontrak_qty_ton' => $request->kontrak_qty_ton,
+            'real_qty_kg' => $request->real_qty_kg,
+            'kapal_tongkang' => $request->kapal_tongkang,
+            'suhu' => $request->suhu,
+            'buyer' => $request->buyer,
+            'status' => $request->status,
+            'lama_loading_hari' => $request->lama_loading_hari,
+            'real_loading' => $tanggalReal->format('Y-m-d'),
+            'bulan' => $periodeBulan->format('Y-m-d'),
+            'bln_name' => $bulan,
+            'plan_bln_name' => $bulan,
+        ]);
+
+        return redirect()->route('contractcpo.index')->with('success', 'Data SPTBS berhasil disimpan.');
+       
     }
 
     /**
@@ -146,7 +186,13 @@ class ContractcpoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $contractcpo = Contractcpo::findOrFail($id);
+            return response()->json($contractcpo);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -154,7 +200,33 @@ class ContractcpoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $request->validate([
+                'ggu_sc' => 'required|string',
+                'gum_sc' => 'required|integer',
+                'plan_loading_tk' => 'required|date',
+                'real_loading_tk' => 'required|date',
+                'tgl_ba_loading_tk' => 'required|date',
+                'tgl_pricing' => 'required|date',
+                'real_price' => 'required|numeric',
+                'nilai_penjualan' => 'required|numeric',
+                'kontrak_qty_ton' => 'required|numeric',
+                'real_qty_kg' => 'required|numeric',
+                'kapal_tongkang' => 'required|string',
+                'suhu' => 'required|numeric',
+                'buyer' => 'required|string',
+                'status' => 'required|string',
+                'lama_loading_hari' => 'required|integer',
+            ]);
+
+            $contractcpo = Contractcpo::findOrFail($id);
+            $contractcpo->update($request->all());
+
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            Log::error('Error updating FFB Internal Data ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -174,5 +246,24 @@ class ContractcpoController extends Controller
         Excel::import(new ContractcpoImport, $request->file('file'));
 
         return redirect()->route('contractcpo.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        return Excel::download(new ContrackCpoExport($minDate, $maxDate, $search), 'Contract_CPO_Data.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        $pdfExport = new ContrackCpoPdfExport($minDate, $maxDate, $search);
+        return $pdfExport->generatePdf();
     }
 }

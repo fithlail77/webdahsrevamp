@@ -7,7 +7,7 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right">
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddCCPO" align="right">
                 <i class="fa fa-plus"></i> Tambah
             </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadCCPO" align="right">
@@ -100,6 +100,96 @@
     </div>
   </div>
 </div>
+<!-- Modal Tambah Data Contract CPO -->
+<div class="modal fade" id="modal-AddCCPO" tabindex="-1" role="dialog" aria-labelledby="modal-AddCCPOLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddCCPOLabel">Tambah Data Kontrak CPO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('contractcpo.simpan') }}" method="POST">
+            @csrf
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">GGU SC</label>
+                        <input class="form-control" name="ggu_sc" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">GUM SC</label>
+                        <input class="form-control" name="gum_sc" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal Plan Loading</label>
+                        <input class="form-control"  name="plan_loading_tk" type="date" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal Real Loading</label>
+                        <input class="form-control" name="real_loading_tk" type="date" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal BA Loading</label>
+                        <input class="form-control" name="tgl_ba_loading_tk" type="date" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tanggal Pricing</label>
+                        <input class="form-control" name="tgl_pricing" type="date" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Harga</label>
+                        <input class="form-control"  name="real_price" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Nilai Penjualan</label>
+                        <input class="form-control" name="nilai_penjualan" type="number" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Kuantiti Kontrak (Ton)</label>
+                        <input class="form-control" name="kontrak_qty_ton" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Kuantiti Real (Kg)</label>
+                        <input class="form-control" name="real_qty_kg" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Armada</label>
+                        <input class="form-control" name="kapal_tongkang" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Suhu</label>
+                        <input class="form-control" name="suhu" type="number" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Pembeli</label>
+                        <input class="form-control" name="buyer" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Status</label>
+                        <input class="form-control" name="status" type="text" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Lama Loading (Hari)</label>
+                        <input class="form-control" name="lama_loading_hari" type="number" required/>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal Edit Data Contract CPO -->
 <div class="modal fade" id="modal-EditCcpo" tabindex="-1" role="dialog" aria-labelledby="modal-EditCcpoLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
@@ -115,98 +205,77 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="editId" name="id">
-            <div class="table-responsive">
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">Tanggal</label>
-                        <input class="form-control" id="editTanggal" name="tanggal" type="date" required/>
+                        <label class="small mb-1">GGU SC</label>
+                        <input class="form-control" id="editGguSc" name="ggu_sc" type="text" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">No Tiket</label>
-                        <input class="form-control" id="editNoTicket" name="no_ticket" type="number" required/>
+                        <label class="small mb-1">GUM SC</label>
+                        <input class="form-control" id="editGumSc" name="gum_sc" type="number" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Transportir</label>
-                        <input class="form-control" id="editTransportir" name="transportir" type="text" required/>
+                        <label class="small mb-1">Tanggal Plan Loading</label>
+                        <input class="form-control" id="editPlanLoadingTk" name="plan_loading_tk" type="date" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Nama Supir</label>
-                        <input class="form-control" id="editSupir" name="supir" type="text" required/>
+                        <label class="small mb-1">Tanggal Real Loading</label>
+                        <input class="form-control" id="editRealLoadingTk" name="real_loading_tk" type="date" required/>
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">No Polisi</label>
-                        <input class="form-control" id="editNopol" name="nopol" type="text" required/>
+                        <label class="small mb-1">Tanggal BA Loading</label>
+                        <input class="form-control" id="editTglBaLoadingTk" name="tgl_ba_loading_tk" type="date" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Material</label>
-                        <select class="form-control" id="editMaterial" name="material" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="tankos">Tankos</option></option>
-                            <option value="solid">Solid</option>
-                            <option value="abu boiler">Abu Boiler</option>
-                        </select> 
+                        <label class="small mb-1">Tanggal Pricing</label>
+                        <input class="form-control" id="editTglPricing" name="tgl_pricing" type="date" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Satuan</label>
-                        <input class="form-control" id="editSatuan" name="satuan" type="text" required/>
+                        <label class="small mb-1">Harga</label>
+                        <input class="form-control" id="editRealPrice" name="real_price" type="number" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Blok</label>
-                        <input class="form-control" id="editBlok" name="blok" type="text" required/>
+                        <label class="small mb-1">Nilai Penjualan</label>
+                        <input class="form-control" id="editNilaiPenjualan" name="nilai_penjualan" type="number" required/>
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">Tahun Tanam</label>
-                        <input class="form-control" id="editTahunTanam" name="tt" type="number" required/>
+                        <label class="small mb-1">Kuantiti Kontrak (Ton)</label>
+                        <input class="form-control" id="editKontrakQtyTon" name="kontrak_qty_ton" type="number" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Estate</label>
-                        <select class="form-control" id="editEstate" name="estate" required>
-                            <option value="">-- Pilih --</option>
-                            @foreach($estate as $item)
-                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
-                            @endforeach
-                        </select>
+                        <label class="small mb-1">Kuantiti Real (Kg)</label>
+                        <input class="form-control" id="editRealQtyKg" name="real_qty_kg" type="number" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Divisi</label>
-                        <select class="form-control" id="editDivisi" name="divisi" required>
-                            <option value="">-- Pilih --</option>
-                            @foreach($divisi as $item)
-                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
-                            @endforeach
-                        </select>
+                        <label class="small mb-1">Armada</label>
+                        <input class="form-control" id="editKapalTongkang" name="kapal_tongkang" type="text" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Inti/Plasma</label>
-                        <select class="form-control" id="editLahan" name="lahan" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="Inti">Inti</option></option>
-                            <option value="Plasma">Plasma</option>
-                        </select>
+                        <label class="small mb-1">Suhu</label>
+                        <input class="form-control" id="editSuhu" name="suhu" type="number" required/>
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">Bruto</label>
-                        <input class="form-control" id="editBruto" name="bruto" type="number" required/>
+                        <label class="small mb-1">Pembeli</label>
+                        <input class="form-control" id="editBuyer" name="buyer" type="text" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Tarra</label>
-                        <input class="form-control" id="editTara" name="tara" type="number" required/>
+                        <label class="small mb-1">Status</label>
+                        <input class="form-control" id="editStatus" name="status" type="text" required/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Netto</label></label>
-                        <input class="form-control" id="editNetto" name="netto" type="number" readonly required/>
+                        <label class="small mb-1">Lama Loading (Hari)</label>
+                        <input class="form-control" id="editLamaLoadingHari" name="lama_loading_hari" type="number" required/>
                     </div>
                 </div>
-            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
       </div>
@@ -275,7 +344,7 @@
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
         var search = table.search();
-        var url = "{{ route('rawatkebun.export.excel') }}";
+        var url = "{{ route('contractcpo.export.excel') }}";
         var params = [];
         if (minDate) params.push('minDate=' + minDate);
         if (maxDate) params.push('maxDate=' + maxDate);
@@ -290,7 +359,7 @@
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
         var search = table.search();
-        var url = "{{ route('rawatkebun.export.pdf') }}";
+        var url = "{{ route('contractcpo.export.pdf') }}";
         var params = [];
         if (minDate) params.push('minDate=' + minDate);
         if (maxDate) params.push('maxDate=' + maxDate);
@@ -310,29 +379,24 @@
             console.error('ID is empty');
             return;
         }
-        $.get('/rawatkebun/' + id + '/edit', function(data) {
+        $.get('/contractcpo/' + id + '/edit', function(data) {
             console.log('Edit data received:', data);
             $('#editId').val(data.id);
-            $('#editTanggal').val(data.tanggal ? data.tanggal.split(' ')[0] : '');
-            $('#editJenisPerawatan').val(data.jenis_perawatan);
-            $('#editBlok').val(data.blok);
-            $('#editTahunTanam').val(data.tahun_tanam);
-            $('#editDivisi').val(data.divisi);
-            $('#editEstate').val(data.estate);
-            $('#editLahan').val(data.lahan);
-            $('#editHasil').val(data.hasil);
-            $('#editSatuan').val(data.satuan);
-            $('#editJumlahTenaga').val(data.jml_tenaga);
-            $('#editMaterial1').val(data.material_1);
-            $('#editJumlah1').val(data.jumlah_1);
-            $('#editSatuan1').val(data.satuan_1);
-            $('#editMaterial2').val(data.material_2);
-            $('#editJumlah2').val(data.jumlah_2);
-            $('#editSatuan2').val(data.satuan_2);
-            $('#editMaterial3').val(data.material_3);
-            $('#editJumlah3').val(data.jumlah_3);
-            $('#editSatuan3').val(data.satuan_3);
-            $('#editKeterangan').val(data.keterangan);
+            $('#editGguSc').val(data.ggu_sc);
+            $('#editGumSc').val(data.gum_sc);
+            $('#editPlanLoadingTk').val(data.plan_loading_tk);
+            $('#editRealLoadingTk').val(data.real_loading_tk);
+            $('#editTglBaLoadingTk').val(data.tgl_ba_loading_tk);
+            $('#editTglPricing').val(data.tgl_pricing);
+            $('#editRealPrice').val(data.real_price);
+            $('#editNilaiPenjualan').val(data.nilai_penjualan);
+            $('#editKontrakQtyTon').val(data.kontrak_qty_ton);
+            $('#editRealQtyKg').val(data.real_qty_kg);
+            $('#editKapalTongkang').val(data.kapal_tongkang);
+            $('#editSuhu').val(data.suhu);
+            $('#editBuyer').val(data.buyer);
+            $('#editStatus').val(data.status);
+            $('#editLamaLoadingHari').val(data.lama_loading_hari);
         }).fail(function(xhr, status, error) {
             console.error('Error fetching edit data:', status, error);
             toastr.error('Gagal memuat data untuk edit.');
@@ -345,81 +409,16 @@
         var id = $('#editId').val();
         var formData = $(this).serialize();
         $.ajax({
-            url: '/rawatkebun/' + id,
+            url: '/contractcpo/' + id,
             type: 'PUT',
             data: formData,
             success: function(response) {
-                $('#modal-EditRawatKebun').modal('hide');
+                $('#modal-EditCcpo').modal('hide');
                 table.ajax.reload();
                 toastr.success(response.success);
             },
             error: function(xhr) {
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
-            }
-        });
-    });
-
-    // Auto replace comma with dot for Hasil Input
-    $('#hasil').on('input', function() {
-        var value = $(this).val();
-        if (value.includes(',')) {
-            $(this).val(value.replace(/,/g, '.'));
-        }
-    });
-
-    // Auto replace comma with dot for Jumlah 1 Input
-    $('#jumlah1').on('input', function() {
-        var value = $(this).val();
-        if (value.includes(',')) {
-            $(this).val(value.replace(/,/g, '.'));
-        }
-    });
-
-    // Auto replace comma with dot for Jumlah 2 Input
-    $('#jumlah2').on('input', function() {
-        var value = $(this).val();
-        if (value.includes(',')) {
-            $(this).val(value.replace(/,/g, '.'));
-        }
-    });
-
-    // Auto replace comma with dot for Jumlah 3 Input
-    $('#jumlah3').on('input', function() {
-        var value = $(this).val();
-        if (value.includes(',')) {
-            $(this).val(value.replace(/,/g, '.'));
-        }
-    });
-
-    // Handle form submission for Add Perawatan
-    $('#modal-AddRawat form').on('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-
-        $.ajax({
-            url: '{{ route("rawatkebun.store") }}',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                $('#modal-AddRawat').modal('hide');
-                table.ajax.reload();
-                toastr.success('Data Perawatan berhasil disimpan.');
-                // Reset form
-                $('#modal-AddRawat form')[0].reset();
-            },
-            error: function(xhr) {
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessages = [];
-                    for (var field in errors) {
-                        errorMessages.push(errors[field].join(', '));
-                    }
-                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
-                } else {
-                    toastr.error('Terjadi kesalahan saat menyimpan data.');
-                }
             }
         });
     });

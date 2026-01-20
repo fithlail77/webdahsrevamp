@@ -114,8 +114,12 @@ Route::post('/produksicpo/simpan', [ProduksicpoController::class, 'simpan'])->na
 Route::resource('/produksicpo', ProduksicpoController::class);
 Route::post('/produksicpo', [ProduksicpoController::class, 'import'])->name('produksicpo.import');
 Route::get('/contractcpo/data', [ContractcpoController::class, 'data'])->name('contractcpo.data');
+Route::get('/contractcpo/export/excel', [ContractcpoController::class, 'exportExcel'])->name('contractcpo.export.excel');
+Route::get('/contractcpo/export/pdf', [ContractcpoController::class, 'exportPdf'])->name('contractcpo.export.pdf');
+Route::post('/contractcpo/simpan', [ContractcpoController::class, 'simpan'])->name('contractcpo.simpan');
 Route::resource('/contractcpo', ContractcpoController::class);
 Route::post('/contractcpo', [ContractcpoController::class, 'import'])->name('contractcpo.import');
+Route::get('/contractpk/data', [ContractpkController::class, 'data'])->name('contractpk.data');
 Route::resource('/contractpk', ContractpkController::class);
 Route::post('/contractpk', [ContractpkController::class, 'import'])->name('contractpk.import');
 Route::resource('/pupuk', PupukrawatinputController::class);

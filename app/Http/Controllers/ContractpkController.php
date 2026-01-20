@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ContractpkImport;
+use Carbon\Carbon;
 use App\Models\Contractpk;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ContractpkImport;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class ContractpkController extends Controller
 {
@@ -16,35 +17,74 @@ class ContractpkController extends Controller
      */
     public function index()
     {
-        $cpk = Contractpk::orderBy('id', 'desc')->get();
+        
 
-        $chart1 = DB::table('contract_kernel')
-                    ->select('date_pricing', 'real_price')
-                    ->whereBetween('date_pricing', [
-                            DB::raw("DATE_TRUNC('month', CURRENT_DATE - INTERVAL '6 month')"),
-                            DB::raw("DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 day'")
-                        ])
-                    ->orderBy('date_pricing')
-                    ->get();
-        
-        $labels1 = $chart1->pluck('date_pricing')->map(fn($date) => Carbon::parse($date)->format('d M Y'))->toArray(); // contoh: "01"
-        $values1 = $chart1->pluck('real_price')->toArray();
-        
-        $chart2 = DB::table('contract_kernel')
-                    ->select('date_pricing', 'real_qty_kg')
-                    ->whereBetween('date_pricing', [
-                            DB::raw("DATE_TRUNC('month', CURRENT_DATE - INTERVAL '6 month')"),
-                            DB::raw("DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 day'")
-                        ])
-                    ->orderBy('date_pricing')
-                    ->get();
-        
-        $labels2 = $chart2->pluck('date_pricing')->map(fn($date) => Carbon::parse($date)->format('d M Y'))->toArray(); // contoh: "01"
-        $values2 = $chart2->pluck('real_qty_kg')->toArray();
-
-        return view('cpk.index', compact('cpk','labels1','values1','labels2','values2'));
+        return view('cpk.index');
     }
 
+    public function data(Request $request)
+    {
+        $query = Contractpk::select([
+            'id',
+            'ltc',
+            'nomor_sc',
+            'bln_name',
+            'date_pricing',
+            'price',
+            'dicount_ggu',
+            'real_price',
+            'dp_date',
+            'rencana_awal_kirim',
+            'rencana_closed_kirim',
+            'actual_awal_kirim',
+            'actual_closed_kirim',
+            'qty_kontrak_kg',
+            'buyer',
+            'status',
+            'real_qty_kg',
+            'buyer_received_qty_kg',
+            'rp',
+            'keterangan',
+            'bulan',
+        ])
+        ->orderBy('nomor_sc','desc');
+
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('date_pricing', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('date_pricing', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('date_pricing', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('date_pricing', '>=', Carbon::now()->subDays(30));
+            }
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tanggal_formatted1', function ($row) {
+                return \Carbon\Carbon::parse($row['date_pricing'])->format('d-m-Y');
+            })
+            ->addColumn('tanggal_formatted2', function ($row) {
+                return \Carbon\Carbon::parse($row['actual_awal_kirim'])->format('d-m-Y');
+            })
+            ->addColumn('tanggal_formatted3', function ($row) {
+                return \Carbon\Carbon::parse($row['actual_closed_kirim'])->format('d-m-Y');
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditCpk"><i class="fa fa-edit"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      */
