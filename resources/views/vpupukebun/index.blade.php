@@ -150,7 +150,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Jumlah Tenaga</label>
-                        <input class="form-control" name="jml_tenaga" type="number"/>
+                        <input class="form-control" name="jml_tenaga" type="number" step="0.01"/>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Keterangan</label>

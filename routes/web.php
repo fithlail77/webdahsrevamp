@@ -120,6 +120,7 @@ Route::post('/contractcpo/simpan', [ContractcpoController::class, 'simpan'])->na
 Route::resource('/contractcpo', ContractcpoController::class);
 Route::post('/contractcpo', [ContractcpoController::class, 'import'])->name('contractcpo.import');
 Route::get('/contractpk/data', [ContractpkController::class, 'data'])->name('contractpk.data');
+Route::post('/contractpk/simpan', [ContractpkController::class, 'simpan'])->name('contractpk.simpan');
 Route::resource('/contractpk', ContractpkController::class);
 Route::post('/contractpk', [ContractpkController::class, 'import'])->name('contractpk.import');
 Route::resource('/pupuk', PupukrawatinputController::class);

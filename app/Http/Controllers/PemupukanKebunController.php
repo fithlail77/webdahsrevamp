@@ -120,7 +120,7 @@ class PemupukanKebunController extends Controller
             'hasil' => 'required|numeric',
             'pokok' => 'required|integer',
             'dosis' => 'required|numeric',
-            'jml_tenaga' => 'required|integer',
+            'jml_tenaga' => 'required|numeric',
             'keterangan' => 'required|string|max:255'
         ]);
 
@@ -181,7 +181,7 @@ class PemupukanKebunController extends Controller
                 'hasil' => 'required|numeric',
                 'pokok' => 'required|integer',
                 'dosis' => 'required|numeric',
-                'jml_tenaga' => 'required|integer',
+                'jml_tenaga' => 'required|numeric',
                 'keterangan' => 'required|string|max:255',
             ]);
 

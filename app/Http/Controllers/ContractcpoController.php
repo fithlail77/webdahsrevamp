@@ -169,7 +169,7 @@ class ContractcpoController extends Controller
             'plan_bln_name' => $bulan,
         ]);
 
-        return redirect()->route('contractcpo.index')->with('success', 'Data SPTBS berhasil disimpan.');
+        return redirect()->route('contractcpo.index')->with('success', 'Data berhasil disimpan.');
        
     }
 
