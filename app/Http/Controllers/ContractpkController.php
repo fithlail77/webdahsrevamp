@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Contractpk;
 use Illuminate\Http\Request;
+use App\Exports\ContractPkExport;
 use App\Imports\ContractpkImport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Exports\ContractPkPdfExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -104,6 +107,8 @@ class ContractpkController extends Controller
             'dicount_ggu' => 'required|numeric',
             'real_price' => 'required|numeric',
             'dp_date' => 'nullable|date',
+            'rencana_awal_kirim' => 'nullable|date',
+            'rencana_closed_kirim' => 'nullable|date',
             'actual_awal_kirim' => 'required|date',
             'actual_closed_kirim' => 'required|date',
             'qty_kontrak_kg' => 'required|numeric',
@@ -119,7 +124,7 @@ class ContractpkController extends Controller
         // Nama bulan otomatis (Januari, Februari, dst)
         // =========================
         Carbon::setLocale('id');
-        $bulan = Carbon::now()->translatedFormat('M');
+        $bulan = Carbon::now()->translatedFormat('F');
 
         // =========================
         // Set periode bulan otomatis
@@ -136,6 +141,8 @@ class ContractpkController extends Controller
             'dicount_ggu' => $request->dicount_ggu,
             'real_price' => $request->real_price,
             'dp_date' => $request->dp_date,
+            'rencana_awal_kirim' => $request->rencana_awal_kirim,
+            'rencana_closed_kirim' => $request->rencana_closed_kirim,
             'actual_awal_kirim' => $request->actual_awal_kirim,
             'actual_closed_kirim' => $request->actual_closed_kirim,
             'qty_kontrak_kg' => $request->qty_kontrak_kg,
@@ -164,7 +171,13 @@ class ContractpkController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $contractpk = Contractpk::findOrFail($id);
+            return response()->json($contractpk);
+        } catch (\Exception $e) {
+            Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Data tidak ditemukan: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -172,7 +185,36 @@ class ContractpkController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $request->validate([
+                'ltc' => 'nullable|numeric',
+                'nomor_sc' => 'required|numeric',
+                'date_pricing' => 'required|date',
+                'price' => 'required|numeric',
+                'dicount_ggu' => 'required|numeric',
+                'real_price' => 'required|numeric',
+                'dp_date' => 'nullable|date',
+                'rencana_awal_kirim' => 'nullable|date',
+                'rencana_closed_kirim' => 'nullable|date',
+                'actual_awal_kirim' => 'required|date',
+                'actual_closed_kirim' => 'required|date',
+                'qty_kontrak_kg' => 'required|numeric',
+                'buyer' => 'required|string',
+                'status' => 'required|string',
+                'real_qty_kg' => 'required|numeric',
+                'buyer_received_qty_kg' => 'required|numeric',
+                'rp' => 'required|numeric',
+                'keterangan' => 'nullable|string'
+            ]);
+
+            $contractpk = Contractpk::findOrFail($id);
+            $contractpk->update($request->all());
+
+            return response()->json(['success' => 'Data berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            Log::error('Error in update Method: ' . $e->getMessage() . ' ID: ' . $id);
+            return response()->json(['error' => 'Gagal memperbarui data: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -192,5 +234,24 @@ class ContractpkController extends Controller
         Excel::import(new ContractpkImport, $request->file('file'));
 
         return redirect()->route('contractpk.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        return Excel::download(new ContractPkExport($minDate, $maxDate, $search), 'Contract_PK_Data.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        $pdfExport = new ContractPkPdfExport($minDate, $maxDate, $search);
+        return $pdfExport->generatePdf();
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Contractcpo;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\TryCatch;
 use App\Exports\ContrackCpoExport;
 use App\Imports\ContractcpoImport;
 use Illuminate\Support\Facades\DB;
@@ -224,7 +223,7 @@ class ContractcpoController extends Controller
 
             return response()->json(['success' => 'Data berhasil diperbarui.']);
         } catch (\Exception $e) {
-            Log::error('Error updating FFB Internal Data ' . $e->getMessage());
+            Log::error('Error updating contrack cpo Data ' . $e->getMessage());
             return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
     }
