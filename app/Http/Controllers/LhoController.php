@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\LhobbmImport;
+use Carbon\Carbon;
 use App\Models\LhoBbm;
 use Illuminate\Http\Request;
+use App\Imports\LhobbmImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class LhoController extends Controller
 {
@@ -14,14 +16,60 @@ class LhoController extends Controller
      */
     public function index()
     {
-        $lhobbm = LhoBbm::whereRaw("i_date >= date_trunc('month', CURRENT_DATE - INTERVAL '1 month')")
-                    ->whereRaw("i_date < date_trunc('month', CURRENT_DATE)")
-                    ->orderBy('i_date', 'desc')
-                    ->get();
-
-        return view('lho.index', compact('lhobbm'));
+        return view('lho.index');
     }
 
+    public function data(Request $request)
+    {
+        $query = LhoBbm::select([
+            'id',
+            'i_no',
+            'material_code',
+            'name',
+            'unit',
+            'i_qty',
+            'i_date',
+            'post_date',
+            'stor_loct',
+            'desc',
+            'bulan',
+            'no_unit',
+            'nama_unit',
+            'kelompok_unit',
+            'biaya_bbm'
+        ])
+        ->orderBy('i_date','desc');
+
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('i_date', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('i_date', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('i_date', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('i_date', '>=', Carbon::now()->subDays(30));
+            }
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('tanggal_formatted', function ($row) {
+                return \Carbon\Carbon::parse($row['i_date'])->format('d-m-Y');
+            })
+            ->addColumn('aksi', function ($row) {
+                return '
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditBbm"><i class="fa fa-edit"></i></a>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      */

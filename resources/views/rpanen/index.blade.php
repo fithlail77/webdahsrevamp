@@ -139,7 +139,7 @@
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Jumlah TK</label>
-                        <input class="form-control" name="tk" type="number"/>
+                        <input class="form-control" name="tk" type="number" step="0.01"/>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Ha Panen</label>
@@ -228,7 +228,7 @@
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editTk">Jumlah TK</label>
-                    <input type="number" class="form-control" id="editTk" name="tk" required>
+                    <input type="number" class="form-control" id="editTk" name="tk" step="0.01" required>
                 </div>
                 <div class="col-md-3">
                     <label for="editHaPanen">Ha Panen</label>

@@ -39,15 +39,24 @@ class AwsInputController extends Controller
             'sunshine',
             'index_uv'
         ])
-        ->whereDate('date', '>=', now()->subDays(15)->format('Y-m-d'))
-        ->orderBy('date','desc');
+        ->orderBy('date','desc')
+        ->orderBy('time','desc');
 
-        if($request->minDate && $request->maxDate) {
-            $query->whereBetween('date', [$request->minDate, $request->maxDate]);
-        } elseif ($request->minDate) {
-            $query->whereDate('date', '>=', $request->minDate);
-        } elseif ($request->maxDate) {
-            $query->whereDate('date', '<=', $request->maxDate);
+        // Jika ada pencarian global, ambil semua data tanpa filter tanggal
+        if (!empty($request->input('search.value'))) {
+            // Tidak ada filter tanggal, ambil semua
+        } else {
+            // Jika ada filter tanggal, gunakan itu
+            if($request->minDate && $request->maxDate) {
+                $query->whereBetween('date', [$request->minDate, $request->maxDate]);
+            } elseif ($request->minDate) {
+                $query->whereDate('date', '>=', $request->minDate);
+            } elseif ($request->maxDate) {
+                $query->whereDate('date', '<=', $request->maxDate);
+            } else {
+                // Default: 30 hari ke belakang
+                $query->where('date', '>=', Carbon::now()->subDays(30));
+            }
         }
 
         return DataTables::of($query)
@@ -57,7 +66,7 @@ class AwsInputController extends Controller
             })
             ->addColumn('aksi', function ($row) {
                 return '
-                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-Edit"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-success btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-EditAws"><i class="fa fa-edit"></i></a>
                 ';
             })
             ->rawColumns(['aksi'])

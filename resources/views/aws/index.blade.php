@@ -7,9 +7,8 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddRestan" disabled>
-                <i class="fa fa-plus"></i> Tambah
-            </button>-->
+            <!--<button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAws" >
+                <i class="-->
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadAws">
                 <i class="fa fa-upload"></i> Upload
             </button>
@@ -26,49 +25,146 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
-        <div>
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <label for="minDate">Dari Tanggal</label>
-                    <input type="date" id="minDate" class="form-control">
-                </div>
-                <div class="col-md-3">
-                    <label for="maxDate">Sampai Tanggal</label>
-                    <input type="date" id="maxDate" class="form-control">
-                </div>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="minDate">Dari Tanggal</label>
+                <input type="date" id="minDate" class="form-control">
             </div>
-            <table id="awsTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Time</th>
-                        <th>Tanggal</th>
-                        <th>Suhu</th>
-                        <th>Humidity</th>
-                        <th>Solar Radiation</th>
-                        <th>Rainfall</th>
-                        <th>Air Pressure</th>
-                        <th>Wind Speed</th>
-                        <th>Wind Direction</th>
-                        <th>ET</th>
-                        <th>Sunshine</th>
-                        <th>Index UV</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div class="col-md-3">
+                <label for="maxDate">Sampai Tanggal</label>
+                <input type="date" id="maxDate" class="form-control">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button id="searchBtn" class="btn btn-primary">Cari</button>
+            </div>
         </div>
     </div>
 </div>
-
-<!-- Modal Edit Realisasi Panen -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <table id="awsTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Time</th>
+                    <th>Tanggal</th>
+                    <th>Suhu</th>
+                    <th>Humidity</th>
+                    <th>Solar Radiation</th>
+                    <th>Rainfall</th>
+                    <th>Air Pressure</th>
+                    <th>Wind Speed</th>
+                    <th>Wind Direction</th>
+                    <th>ET</th>
+                    <th>Sunshine</th>
+                    <th>Index UV</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div id="noDataMessage" class="alert alert-warning mt-3" style="display:none;">
+            Tidak ada data yang sesuai dengan filter tanggal.
+        </div>
+    </div>
+</div>
+<!-- Modal Tambah Data AWS -->
+<div class="modal fade" id="modal-AddAws" tabindex="-1" role="dialog" aria-labelledby="modal-AddAwsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-AddAwsLabel">Tambah Data AWS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('aws.store') }}" method="POST">
+            @csrf
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Time</label>
+                        <input class="form-control" name="time" type="time" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Date</label>
+                        <input class="form-control" name="date" type="date" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Temperatur (°C)</label>
+                        <input class="form-control"  name="temp" type="number" step="0.01" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Humidity (%)</label>
+                        <input class="form-control" name="humid" type="number" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Solar Radiation (W/m²)</label>
+                        <input class="form-control" name="sol_rad" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Rainfall (mm)</label>
+                        <input class="form-control" name="rainfall" type="number" step="0.01" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Air Pressure (mb)</label>
+                        <input class="form-control"  name="air_pres" type="number" step="0.01" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Wind Speed (m/s)</label>
+                        <input class="form-control" name="wind_speed" type="number" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Wind Direction (°)</label>
+                        <input class="form-control" name="wind_dir" type="number" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">ET (mm)</label>
+                        <input class="form-control" name="et" type="number" step="0.01" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Sunshine (h/d)</label>
+                        <input class="form-control" name="sunshine" type="number" step="0.01" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Index UV (index)</label>
+                        <input class="form-control" name="index_uv" type="number" required/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Waktu Hujan</label>
+                        <select name="waktu_hujan" id="waktu_hujan" class="form-control">
+                            <option value="">Pilih Waktu Hujan</option>
+                            <option value="Malam [Jam 00 - 06 WIB]">Malam [Jam 00 - 06 WIB]</option>
+                            <option value="Pagi [Jam 06 - 10 WIB]">Pagi [Jam 06 - 10 WIB]</option>
+                            <option value="Siang [Jam 10 - 15 WIB]">Siang [Jam 10 - 15 WIB]</option>
+                            <option value="Sore [Jam 15 - 18 WIB]">Sore [Jam 15 - 18 WIB]</option>
+                            <option value="Malam [Jam 18 - 21 WIB]">Malam [Jam 18 - 21 WIB]</option>
+                            <option value="Malam [Jam 21 - 00 WIB]">Malam [Jam 21 - 00 WIB]</option>
+                        </select>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Edit AWS -->
 <div class="modal fade" id="modal-EditAws" tabindex="-1" role="dialog" aria-labelledby="modal-EditAwsLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-EditAwsLabel">Edit Data Realisasi Panen</h5>
+        <h5 class="modal-title" id="modal-EditAwsLabel">Edit Data AWS</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -157,8 +253,14 @@
                 d.maxDate = $('#maxDate').val();
             }
         },
-        drawCallback: function() {
-            console.log('Table drawn');
+        drawCallback: function(settings) {
+            var api = this.api();
+            var dataCount = api.data().count();
+            if (dataCount === 0) {
+                $('#noDataMessage').show();
+            } else {
+                $('#noDataMessage').hide();
+            }
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
@@ -178,7 +280,7 @@
         ]
     });
 
-    $('#minDate, #maxDate').on('change', function() {
+    $('#searchBtn').on('click', function() {
         table.ajax.reload();
     });
 

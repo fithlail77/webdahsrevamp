@@ -133,6 +133,7 @@ Route::resource('/payroll', PayrollController::class);
 Route::post('/payroll', [PayrollController::class, 'import'])->name('payroll.import');
 Route::resource('/lho', LhoController::class);
 Route::post('/lho', [LhoController::class, 'import'])->name('lhobbm.import');
+Route::get('/lho/data', [LhoController::class, 'data'])->name('lho.data');
 Route::resource('/depre', LhodepreController::class);
 Route::post('/depre', [LhodepreController::class, 'import'])->name('lhodepre.import');
 Route::resource('/spartlho', LhospartController::class);

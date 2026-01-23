@@ -109,7 +109,7 @@ class RealisasiPanenController extends Controller
             'estate' => 'required|string|max:30',
             'hasil' => 'required|integer',
             'satuan' => 'required|string|max:15',
-            'tk' => 'required|integer',
+            'tk' => 'required|numeric',
             'ha_panen' => 'required|numeric',
         ]);
 
@@ -165,7 +165,7 @@ class RealisasiPanenController extends Controller
             'estate' => 'required|string|max:255',
             'hasil' => 'required|numeric',
             'satuan' => 'required|string|max:255',
-            'tk' => 'required|integer',
+            'tk' => 'required|numeric',
             'ha_panen' => 'required|numeric',
         ]);
 

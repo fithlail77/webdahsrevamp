@@ -7,7 +7,7 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <div>
-            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right" disabled>
+            <button class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#modal-AddAirSungai" align="right">
                 <i class="fa fa-plus"></i> Tambah
             </button>
             <button class="btn btn-secondary btn-sm btn-flat" data-toggle="modal" data-target="#modal-UploadAirSungai" align="right">
@@ -41,15 +41,6 @@
         </div>
     </div>
 </div>
-<!-- Area chart example-->
-<!--<div class="card mb-2">
-    <div class="card-header">Grafik Air Sungai Kapuas</div>
-        <div class="card-body">
-            <div class="chart-area"><canvas id="AirSungaiChart1" width="100%" height="20"></canvas></div>
-        </div>
-        <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
-    </div>
-</div>-->
 <div class="card shadow mb-4">
     <div class="card-body">
         <table id="airsungaiTable" class="table table-bordered table-striped">
