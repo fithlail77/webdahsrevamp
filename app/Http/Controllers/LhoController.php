@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LhoBbmExport;
+use App\Exports\LhoBbmPdfExport;
 use Carbon\Carbon;
 use App\Models\LhoBbm;
 use Illuminate\Http\Request;
@@ -61,6 +63,9 @@ class LhoController extends Controller
             ->addIndexColumn()
             ->addColumn('tanggal_formatted', function ($row) {
                 return \Carbon\Carbon::parse($row['i_date'])->format('d-m-Y');
+            })
+            ->addColumn('biaya_bbm_formatted', function ($row) {
+                return 'Rp ' . number_format($row->biaya_bbm, 2, ',', '.');
             })
             ->addColumn('aksi', function ($row) {
                 return '
@@ -128,5 +133,24 @@ class LhoController extends Controller
 
         return redirect()->route('lho.index')->with('success', 'Data berhasil diupload.');
 
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        return Excel::download(new LhoBbmExport($minDate, $maxDate, $search), 'LHO_BBM_Data.xlsx');
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $minDate = $request->input('minDate');
+        $maxDate = $request->input('maxDate');
+        $search = $request->input('search');
+
+        $pdfExport = new LhoBbmPdfExport($minDate, $maxDate, $search);
+        return $pdfExport->generatePdf();
     }
 }

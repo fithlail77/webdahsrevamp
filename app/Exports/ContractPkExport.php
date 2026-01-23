@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 class ContractPkExport implements FromCollection, WithHeadings
 {
 
-protected $minDate;
+    protected $minDate;
     protected $maxDate;
     protected $search;
 

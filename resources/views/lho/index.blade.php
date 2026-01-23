@@ -17,10 +17,10 @@
         <div>
           <button class="btn btn-success btn-sm btn-flat" id="exportExcel">
                 <i class="fa fa-file-excel"></i> Export Excel
-          </button>
-          <button class="btn btn-danger btn-sm btn-flat" id="exportPdf">
-              <i class="fa fa-file-pdf"></i> Export PDF
-          </button>
+            </button>
+            <button class="btn btn-danger btn-sm btn-flat" id="exportPdf">
+                <i class="fa fa-file-pdf"></i> Export PDF
+            </button>
         </div>
     </div>
 </div>
@@ -43,13 +43,13 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-body">
-        <table id="bbmTable" class="table table-bordered">
+        <table id='bbmTable' class="table table-bordered table-striped">
           <thead>
               <tr>
                 <th>No</th>
                 <th>Tanggal</th>
                 <th>No Unit</th>
-                <th>Kelompok Unit</th>
+                <th>Nama Unit</th>
                 <th>Quantity</th>
                 <th>Liter</th>
                 <th>Biaya</th>
@@ -91,7 +91,6 @@
     </div>
   </div>
 </div>
-
 <style>
     .dt-nowrap {
         white-space: nowrap;
@@ -99,7 +98,7 @@
 </style>
 @endsection
 
-@section('script')
+@push('scripts')
 <script>
     $(document).ready(function() {
     var table = $('#bbmTable').DataTable({
@@ -109,7 +108,7 @@
         responsive: false,
         autoWidth: false,
         ajax: {
-            url: "{{ route('lho.data') }}",
+            url: "{{ route('lhobbm.data') }}",
             data: function(d) {
                 d.minDate = $('#minDate').val();
                 d.maxDate = $('#maxDate').val();
@@ -127,20 +126,11 @@
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'tanggal_formatted', name: 'tanggal_formatted' },
-            { data: 'i_no', name: 'i_no' },
-            { data: 'transportir', name: 'transportir' },
-            { data: 'supir', name: 'supir' },
-            { data: 'nopol', name: 'nopol' },
-            { data: 'material', name: 'material' },
-            { data: 'satuan', name: 'satuan' },
-            { data: 'blok', name: 'blok' },
-            { data: 'tt', name: 'tt' },
-            { data: 'estate', name: 'estate' },
-            { data: 'divisi', name: 'divisi' },
-            { data: 'lahan', name: 'lahan' },
-            { data: 'bruto', name: 'bruto' },
-            { data: 'tara', name: 'tara' },
-            { data: 'netto', name: 'netto' },
+            { data: 'no_unit', name: 'no_unit' },
+            { data: 'nama_unit', name: 'nama_unit' },
+            { data: 'i_qty', name: 'i_qty' },
+            { data: 'unit', name: 'unit' },
+            { data: 'biaya_bbm_formatted', name: 'biaya_bbm_formatted' },
             { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
         ]
     });
@@ -149,12 +139,12 @@
         table.ajax.reload();
     });
 
-     // Handle export buttons
+    // Handle export buttons
     $('#exportExcel').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
         var search = table.search();
-        var url = "{{ route('tsa.export.excel') }}";
+        var url = "{{ route('lhobbm.export.excel') }}";
         var params = [];
         if (minDate) params.push('minDate=' + minDate);
         if (maxDate) params.push('maxDate=' + maxDate);
@@ -169,7 +159,7 @@
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
         var search = table.search();
-        var url = "{{ route('tsa.export.pdf') }}";
+        var url = "{{ route('lhobbm.export.pdf') }}";
         var params = [];
         if (minDate) params.push('minDate=' + minDate);
         if (maxDate) params.push('maxDate=' + maxDate);
@@ -179,86 +169,6 @@
         }
         window.location.href = url;
     });
-
-    // Handle edit button click
-    $(document).on('click', '.edit-btn', function() {
-        var id = $(this).data('id');
-        console.log('ID:', id);
-        console.log('data-id attr:', $(this).attr('data-id'));
-        if (id == null || id === "") {
-            console.error('ID is empty');
-            return;
-        }
-        $.get('/tsa/' + id + '/edit', function(data) {
-            console.log('Edit data received:', data);
-            $('#editId').val(data.id);
-            $('#editTanggal').val(data.tanggal ? data.tanggal.split(' ')[0] : '');
-            $('#editNoTicket').val(data.no_ticket);
-            $('#editTransportir').val(data.transportir);
-            $('#editSupir').val(data.supir);
-            $('#editNopol').val(data.nopol);
-            $('#editMaterial').val(data.material);
-            $('#editSatuan').val(data.satuan);
-            $('#editBlok').val(data.blok);
-            $('#editTahunTanam').val(data.tt);
-            $('#editEstate').val(data.estate);
-            $('#editDivisi').val(data.divisi);
-            $('#editLahan').val(data.lahan);
-            $('#editBruto').val(data.bruto);
-            $('#editTara').val(data.tara);
-            $('#editNetto').val(data.netto);
-        }).fail(function(xhr, status, error) {
-            console.error('Error fetching edit data:', status, error);
-            toastr.error('Gagal memuat data untuk edit.');
-        });
-    });
-
-    // Handle edit form submission
-    $('#editForm').on('submit', function(e) {
-        e.preventDefault();
-        var id = $('#editId').val();
-        var formData = $(this).serialize();
-        $.ajax({
-            url: '/tsa/' + id,
-            type: 'PUT',
-            data: formData,
-            success: function(response) {
-                $('#modal-EditTSA').modal('hide');
-                table.ajax.reload();
-                toastr.success(response.success);
-            },
-            error: function(xhr) {
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessages = [];
-                    for (var field in errors) {
-                        errorMessages.push(errors[field].join(', '));
-                    }
-                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
-                } else if (xhr.status === 500 && xhr.responseJSON && xhr.responseJSON.error) {
-                    toastr.error('Kesalahan server: ' + xhr.responseJSON.error);
-                } else {
-                    toastr.error('Terjadi kesalahan saat memperbarui data.');
-                }
-            }
-        });
-    });
-
-    // Auto Calculate Netto in add Modal
-    $('input[name="bruto"], input[name="tara"]').on('input', function() {
-        var awal = parseFloat($('input[name="bruto"]').val()) || 0;
-        var akhir = parseFloat($('input[name="tara"]').val()) || 0;
-        var total = awal - akhir;
-        $('input[name="netto"]').val(total);
-    });
-
-    // Auto calculate netto Total in edit modal
-    $('#editBruto, #editTara').on('input', function() {
-        var awal = parseFloat($('#editBruto').val()) || 0;
-        var akhir = parseFloat($('#editTara').val()) || 0;
-        var total = awal - akhir;
-        $('#editNetto').val(total);
-    });
 });
 </script>
-@endsection
+@endpush

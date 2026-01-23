@@ -371,7 +371,7 @@
         table.ajax.reload();
     });
 
-     // Handle export buttons
+    // Handle export buttons
     $('#exportExcel').on('click', function() {
         var minDate = $('#minDate').val();
         var maxDate = $('#maxDate').val();
