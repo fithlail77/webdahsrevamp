@@ -8,7 +8,7 @@ use App\Exports\SptbsExport;
 use Illuminate\Http\Request;
 use App\Exports\SptbsPdfExport;
 use App\Imports\SptbsInputImport;
-use App\Models\Company;
+use App\Models\Aresta;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,16 +21,24 @@ class SptbsInputController extends Controller
      */
     public function index()
     {
-        $estate = Company::select('estate')
+        $userEstate = Auth::user()->estate ?? null;
+
+        $estate = \App\Models\Aresta::select('estate')
             ->distinct()
+            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        $divisi = Company::select('divisi')
+        $divisi = \App\Models\Aresta::select('divisi')
             ->distinct()
             ->orderBy('divisi','asc')
+            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        return view('vsptbs.index', compact('estate','divisi'));
+        return view('vsptbs.index', compact('estate','divisi', 'userEstate'));
     }
 
     public function data(Request $request)
@@ -352,5 +360,62 @@ class SptbsInputController extends Controller
         ]);
 
         return redirect()->route('sptbs.index')->with('success', 'Data SPTBS berhasil disimpan.');
+    }
+
+    public function getDivisi(Request $request)
+    {
+        $estate = $request->estate;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $divisi = Aresta::select('divisi')
+            ->where('estate', $estate)
+            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('divisi')
+            ->get();
+
+        return response()->json($divisi);
+    }
+
+    public function getBlok(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $blok = Aresta::select('blok')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('blok')
+            ->get();
+
+        return response()->json($blok);
+    }
+
+    public function getTahunTanam(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $blok = $request->blok;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $tahunTanam = Aresta::select('tahun_tanam')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->where('blok', $blok)
+            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('tahun_tanam')
+            ->get();
+
+        return response()->json($tahunTanam);
     }
 }

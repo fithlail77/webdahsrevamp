@@ -158,6 +158,9 @@ Route::post('/realisasipanen/import', [RealisasiPanenController::class, 'import'
 Route::get('/realisasipanen/export/excel', [RealisasiPanenController::class, 'exportExcel'])->name('realisasipanen.export.excel');
 Route::get('/realisasipanen/export/pdf', [RealisasiPanenController::class, 'exportPdf'])->name('realisasipanen.export.pdf');
 Route::get('/realisasipanen/hapus/{id}', [RealisasiPanenController::class, 'destroy']);
+Route::get('/realisasipanen/get-divisi', [RealisasiPanenController::class, 'getDivisi'])->name('realisasipanen.getDivisi');
+Route::get('/realisasipanen/get-blok', [RealisasiPanenController::class, 'getBlok'])->name('realisasipanen.getBlok');
+Route::get('/realisasipanen/get-tahun-tanam', [RealisasiPanenController::class, 'getTahunTanam'])->name('realisasipanen.getTahunTanam');
 Route::resource('/realisasipanen', RealisasiPanenController::class);
 Route::get('/laprestan/data', [RestanController::class, 'data'])->name('laprestan.data');
 Route::post('/laprestan/import', [RestanController::class, 'import'])->name('laprestan.import');
@@ -170,6 +173,9 @@ Route::post('/sptbs/import', [SptbsInputController::class, 'import'])->name('spt
 Route::get('/sptbs/export/excel', [SptbsInputController::class, 'exportExcel'])->name('sptbs.export.excel');
 Route::get('/sptbs/export/pdf', [SptbsInputController::class, 'exportPdf'])->name('sptbs.export.pdf');
 Route::post('/sptbs/simpan', [SptbsInputController::class, 'simpan'])->name('sptbs.simpan');
+Route::get('/sptbs/get-divisi', [SptbsInputController::class, 'getDivisi'])->name('sptbs.getDivisi');
+Route::get('/sptbs/get-blok', [SptbsInputController::class, 'getBlok'])->name('sptbs.getBlok');
+Route::get('/sptbs/get-tahun-tanam', [SptbsInputController::class, 'getTahunTanam'])->name('sptbs.getTahunTanam');
 Route::resource('/sptbs', SptbsInputController::class);
 Route::get('/awsinput/data/', [AwsInputController::class, 'data'])->name('awsinput.data');
 Route::post('/awsinput/import', [AwsInputController::class, 'import'])->name('awsinput.import');
