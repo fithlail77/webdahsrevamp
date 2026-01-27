@@ -167,6 +167,9 @@ Route::post('/laprestan/import', [RestanController::class, 'import'])->name('lap
 Route::get('/laprestan/export/excel', [RestanController::class, 'exportExcel'])->name('laprestan.export.excel');
 Route::get('/laprestan/export/pdf', [RestanController::class, 'exportPdf'])->name('laprestan.export.pdf');
 Route::get('/laprestan/hapus/{id}', [RestanController::class, 'destroy']);
+Route::get('/laprestan/get-divisi', [RestanController::class, 'getDivisi'])->name('laprestan.getDivisi');
+Route::get('/laprestan/get-blok', [RestanController::class, 'getBlok'])->name('laprestan.getBlok');
+Route::get('/laprestan/get-tahun-tanam', [RestanController::class, 'getTahunTanam'])->name('laprestan.getTahunTanam');
 Route::resource('/laprestan', RestanController::class);
 Route::get('/sptbs/data', [SptbsInputController::class, 'data'])->name('sptbs.data');
 Route::post('/sptbs/import', [SptbsInputController::class, 'import'])->name('sptbs.import');
@@ -186,6 +189,7 @@ Route::get('/premi/data', [PremiController::class, 'data'])->name('premi.data');
 Route::post('/premi/import', [PremiController::class, 'import'])->name('premi.import');
 Route::get('/premi/export/excel', [PremiController::class, 'exportExcel'])->name('premi.export.excel');
 Route::get('/premi/export/pdf', [PremiController::class, 'exportPdf'])->name('premi.export.pdf');
+Route::get('/premi/get-divisi', [PremiController::class, 'getDivisi'])->name('premi.getDivisi');
 Route::resource('/premi', PremiController::class);
 Route::get('/rental/data', [RentalController::class, 'data'])->name('rental.data');
 Route::post('/rental/import', [RentalController::class, 'import'])->name('rental.import');

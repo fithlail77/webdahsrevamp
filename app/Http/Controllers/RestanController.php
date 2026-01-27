@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Restan;
-use App\Models\Company;
+use App\Models\Aresta;
 use Illuminate\Http\Request;
 use App\Exports\LapRestanExport;
 use App\Exports\LapRestanPdfExport;
@@ -20,16 +20,24 @@ class RestanController extends Controller
      */
     public function index()
     {
-        $estate = Company::select('estate')
+        $userEstate = Auth::user()->estate ?? null;
+
+        $estate = Aresta::select('estate')
             ->distinct()
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        $divisi = Company::select('divisi')
+        $divisi = Aresta::select('divisi')
             ->distinct()
-            ->orderBy('divisi','asc')
+            ->orderBy('divisi', 'asc')
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        return view('laprestan.index', compact('estate','divisi'));
+        return view('laprestan.index', compact('estate', 'divisi', 'userEstate'));
     }
 
     public function data(Request $request)
@@ -42,8 +50,9 @@ class RestanController extends Controller
             'blok',
             'tonase',
             'keterangan',
+            'tt',
         ])
-        ->orderBy('tanggal','desc');
+            ->orderBy('tanggal', 'desc');
 
         // Filter berdasarkan estate user
         $userEstate = Auth::user()->estate ?? null;
@@ -56,7 +65,7 @@ class RestanController extends Controller
             // Tidak ada filter tanggal, ambil semua
         } else {
             // Jika ada filter tanggal, gunakan itu
-            if($request->minDate && $request->maxDate) {
+            if ($request->minDate && $request->maxDate) {
                 $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
             } elseif ($request->minDate) {
                 $query->whereDate('tanggal', '>=', $request->minDate);
@@ -80,7 +89,7 @@ class RestanController extends Controller
             })
             ->rawColumns(['aksi'])
             ->make(true);
-       
+
     }
     /**
      * Show the form for creating a new resource.
@@ -101,7 +110,8 @@ class RestanController extends Controller
             'divisi' => 'required|string|max:5',
             'blok' => 'required|string|max:5',
             'tonase' => 'required|integer',
-            'keterangan' => 'required|string|max:255'
+            'keterangan' => 'required|string|max:255',
+            'tt' => 'required|integer',
         ]);
 
         Restan::create([
@@ -110,7 +120,8 @@ class RestanController extends Controller
             'divisi' => $request->divisi,
             'blok' => $request->blok,
             'tonase' => $request->tonase,
-            'keterangan' => $request->keterangan
+            'keterangan' => $request->keterangan,
+            'tt' => $request->tt,
         ]);
 
         return redirect()->route('laprestan.index')->with('success', 'Data Restan berhasil disimpan.');
@@ -150,6 +161,7 @@ class RestanController extends Controller
             'blok' => 'required|string|max:5',
             'tonase' => 'required|numeric',
             'keterangan' => 'required|string|max:255',
+            'tt' => 'required|integer',
         ]);
 
         $lapRestan = Restan::findOrFail($id);
@@ -194,5 +206,62 @@ class RestanController extends Controller
 
         $pdfExport = new LapRestanPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
+    }
+
+    public function getDivisi(Request $request)
+    {
+        $estate = $request->estate;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $divisi = Aresta::select('divisi')
+            ->where('estate', $estate)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('divisi')
+            ->get();
+
+        return response()->json($divisi);
+    }
+
+    public function getBlok(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $blok = Aresta::select('blok')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('blok')
+            ->get();
+
+        return response()->json($blok);
+    }
+
+    public function getTahunTanam(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $blok = $request->blok;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $tahunTanam = Aresta::select('tahun_tanam')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->where('blok', $blok)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('tahun_tanam')
+            ->get();
+
+        return response()->json($tahunTanam);
     }
 }

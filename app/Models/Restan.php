@@ -20,5 +20,6 @@ class Restan extends Model
         'blok',
         'tonase',
         'keterangan',
+        'tt'
     ];
 }

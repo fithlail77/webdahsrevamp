@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Premi;
-use App\Models\Company;
+use App\Models\Aresta;
 use App\Exports\PremiExport;
 use App\Imports\PremiImport;
 use Illuminate\Http\Request;
@@ -21,16 +21,24 @@ class PremiController extends Controller
      */
     public function index()
     {
-        $estate = Company::select('estate')
+        $userEstate = Auth::user()->estate ?? null;
+
+        $estate = Aresta::select('estate')
             ->distinct()
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        $divisi = Company::select('divisi')
+        $divisi = Aresta::select('divisi')
             ->distinct()
-            ->orderBy('divisi','asc')
+            ->orderBy('divisi', 'asc')
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        return view('vpremi.index', compact('estate','divisi'));
+        return view('vpremi.index', compact('estate','divisi','userEstate'));
     }
 
     public function data(Request $request)
@@ -241,5 +249,22 @@ class PremiController extends Controller
 
         $pdfExport = new PremiPdfExport($minDate, $maxDate);
         return $pdfExport->generatePdf();
+    }
+
+    public function getDivisi(Request $request)
+    {
+        $estate = $request->estate;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $divisi = Aresta::select('divisi')
+            ->where('estate', $estate)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('divisi')
+            ->get();
+
+        return response()->json($divisi);
     }
 }

@@ -23,22 +23,22 @@ class SptbsInputController extends Controller
     {
         $userEstate = Auth::user()->estate ?? null;
 
-        $estate = \App\Models\Aresta::select('estate')
+        $estate = Aresta::select('estate')
             ->distinct()
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->get();
 
-        $divisi = \App\Models\Aresta::select('divisi')
+        $divisi = Aresta::select('divisi')
             ->distinct()
-            ->orderBy('divisi','asc')
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->orderBy('divisi', 'asc')
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->get();
 
-        return view('vsptbs.index', compact('estate','divisi', 'userEstate'));
+        return view('vsptbs.index', compact('estate', 'divisi', 'userEstate'));
     }
 
     public function data(Request $request)
@@ -78,7 +78,7 @@ class SptbsInputController extends Controller
             'tangkai_pjg',
             'kastrasi',
         ])
-        ->orderBy('jam_masuk','asc');
+            ->orderBy('jam_masuk', 'asc');
 
         // Filter berdasarkan estate user
         $userEstate = Auth::user()->estate ?? null;
@@ -91,7 +91,7 @@ class SptbsInputController extends Controller
             // Tidak ada filter tanggal, ambil semua
         } else {
             // Jika ada filter tanggal, gunakan itu
-            if($request->minDate && $request->maxDate) {
+            if ($request->minDate && $request->maxDate) {
                 $query->whereBetween('tanggal_tiket', [$request->minDate, $request->maxDate]);
             } elseif ($request->minDate) {
                 $query->whereDate('tanggal_tiket', '>=', $request->minDate);
@@ -106,13 +106,13 @@ class SptbsInputController extends Controller
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_formatted1', function ($row) {
-                return \Carbon\Carbon::parse($row['tanggal_tiket'])->format('d-m-Y');
+                return Carbon::parse($row['tanggal_tiket'])->format('d-m-Y');
             })
             ->addColumn('tanggal_formatted2', function ($row) {
-                return \Carbon\Carbon::parse($row['tanggal_sptbs'])->format('d-m-Y');
+                return Carbon::parse($row['tanggal_sptbs'])->format('d-m-Y');
             })
             ->addColumn('tanggal_formatted3', function ($row) {
-                return \Carbon\Carbon::parse($row['tanggal_panen'])->format('d-m-Y');
+                return Carbon::parse($row['tanggal_panen'])->format('d-m-Y');
             })
             ->addColumn('aksi', function ($row) {
                 return '
@@ -259,7 +259,7 @@ class SptbsInputController extends Controller
             'file' => 'required|mimes:xls,xlsx,csv',
         ]);
 
-        Excel::import( new SptbsInputImport, $request->file('file'));
+        Excel::import(new SptbsInputImport, $request->file('file'));
 
         return redirect()->route('sptbs.index')->with('success', 'Data berhasil diupload.');
     }
@@ -369,7 +369,7 @@ class SptbsInputController extends Controller
 
         $divisi = Aresta::select('divisi')
             ->where('estate', $estate)
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->distinct()
@@ -388,7 +388,7 @@ class SptbsInputController extends Controller
         $blok = Aresta::select('blok')
             ->where('estate', $estate)
             ->where('divisi', $divisi)
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->distinct()
@@ -409,7 +409,7 @@ class SptbsInputController extends Controller
             ->where('estate', $estate)
             ->where('divisi', $divisi)
             ->where('blok', $blok)
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->distinct()

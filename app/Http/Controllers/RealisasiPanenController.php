@@ -24,22 +24,22 @@ class RealisasiPanenController extends Controller
     {
         $userEstate = Auth::user()->estate ?? null;
 
-        $estate = \App\Models\Aresta::select('estate')
+        $estate = Aresta::select('estate')
             ->distinct()
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->get();
 
-        $divisi = \App\Models\Aresta::select('divisi')
+        $divisi = Aresta::select('divisi')
             ->distinct()
-            ->orderBy('divisi','asc')
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->orderBy('divisi', 'asc')
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->get();
 
-        return view('rpanen.index', compact('estate','divisi','userEstate'));
+        return view('rpanen.index', compact('estate', 'divisi', 'userEstate'));
     }
 
     public function data(Request $request)
@@ -57,7 +57,7 @@ class RealisasiPanenController extends Controller
             'tk',
             'ha_panen',
         ])
-        ->orderBy('tanggal','desc');
+            ->orderBy('tanggal', 'desc');
 
         // Filter berdasarkan estate user
         $userEstate = Auth::user()->estate ?? null;
@@ -70,7 +70,7 @@ class RealisasiPanenController extends Controller
             // Tidak ada filter tanggal, ambil semua
         } else {
             // Jika ada filter tanggal, gunakan itu
-            if($request->minDate && $request->maxDate) {
+            if ($request->minDate && $request->maxDate) {
                 $query->whereBetween('tanggal', [$request->minDate, $request->maxDate]);
             } elseif ($request->minDate) {
                 $query->whereDate('tanggal', '>=', $request->minDate);
@@ -85,7 +85,7 @@ class RealisasiPanenController extends Controller
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_formatted', function ($row) {
-                return \Carbon\Carbon::parse($row['tanggal'])->format('d-m-Y');
+                return Carbon::parse($row['tanggal'])->format('d-m-Y');
             })
             ->addColumn('aksi', function ($row) {
                 return '
@@ -236,7 +236,7 @@ class RealisasiPanenController extends Controller
 
         $divisi = Aresta::select('divisi')
             ->where('estate', $estate)
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->distinct()
@@ -255,7 +255,7 @@ class RealisasiPanenController extends Controller
         $blok = Aresta::select('blok')
             ->where('estate', $estate)
             ->where('divisi', $divisi)
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->distinct()
@@ -276,7 +276,7 @@ class RealisasiPanenController extends Controller
             ->where('estate', $estate)
             ->where('divisi', $divisi)
             ->where('blok', $blok)
-            ->when($userEstate && $userEstate !== 'all', function($query) use ($userEstate) {
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
                 return $query->where('estate', $userEstate);
             })
             ->distinct()

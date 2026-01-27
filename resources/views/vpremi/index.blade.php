@@ -53,11 +53,11 @@
                         <th>No Karyawan</th>
                         <th>Nama</th>
                         <th>Estate</th>
+                        <th>Divisi</th>
+                        <th>Lokasi</th>
                         <th>HM/KM Awal</th>
                         <th>HM/KM Akhir</th>
                         <th>HM/KM Total</th>
-                        <th>Lokasi</th>
-                        <th>Divisi</th>
                         <th>Jenis Pekerjaan</th>
                         <th>Tarif/Satuan</th>
                         <th>Hasil 1</th>
@@ -76,7 +76,7 @@
         </div>
     </div>
 </div>
-<!-- Modal Tambah Data Premi KAB -->
+<!-- Modal Tambah Data Premi -->
 <div class="modal fade" id="modal-AddPremi" tabindex="-1" role="dialog" aria-labelledby="modal-AddPremiLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -90,12 +90,10 @@
             <form action="{{ route('premi.store') }}" method="POST">
             @csrf
                 <div class="row gx-3 mb-3">
-                    <!-- Form Group (first name)-->
                     <div class="col-md-3">
                         <label class="small mb-1">Tanggal</label>
                         <input class="form-control" name="tanggal" type="date"/>
                     </div>
-                    <!-- Form Group (last name)-->
                     <div class="col-md-3">
                         <label class="small mb-1">No Kenderaan</label>
                         <input class="form-control" name="no_kab" type="text"/>
@@ -116,13 +114,28 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
-                        <select class="form-control" name="estate">
+                        <select class="form-control" name="estate" id="estate">
                             <option value="">-- Pilih --</option>
-                            @foreach($estate as $item)
-                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                           @foreach($estate as $item)
+                                            <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                                        @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi" id="divisi">
+                            <option value="">-- Pilih --</option>
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Lokasi</label>
+                        <input class="form-control" name="lokasi" type="text"/>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">HM/KM Awal</label>
                         <input class="form-control" name="hmkm_awal" type="number"/>
@@ -131,24 +144,9 @@
                         <label class="small mb-1">HM/KM Akhir</label></label>
                         <input class="form-control" name="hmkm_akhir" type="number" />
                     </div>
-                </div>
-                <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">HM/KM Total</label>
                         <input class="form-control" name="total_hmkm" type="number" readonly/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Lokasi</label>
-                        <input class="form-control" name="lokasi" type="text"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Divisi</label>
-                        <select class="form-control" name="divisi">
-                            <option value="">-- Pilih --</option>
-                            @foreach($divisi as $item)
-                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
-                            @endforeach
-                        </select>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Jenis Pekerjaan</label>
@@ -206,7 +204,7 @@
     </div>
   </div>
 </div>
-<!-- Modal Edit Realisasi Panen -->
+<!-- Modal Edit Premi -->
 <div class="modal fade" id="modal-EditPremi" tabindex="-1" role="dialog" aria-labelledby="modal-EditPremiLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -246,15 +244,25 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <input type="text" class="form-control" id="editEstate" name="estate" required>
+                    <select class="form-control" name="estate" id="editEstate" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="editHmkmAwal">HM/KM Awal</label>
-                    <input type="text" class="form-control" id="editHmkmAwal" name="hmkm_awal" required>
+                    <label for="editDivisi">Divisi</label>
+                    <select class="form-control" name="divisi" id="editDivisi" required>
+                        <option value="">-- Pilih --</option>
+                        @foreach($divisi as $item)
+                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="editHmkmAkhir">HM/KM Akhir</label>
-                    <input type="text" class="form-control" id="editHmkmAkhir" name="hmkm_akhir" required>
+                    <label for="editLokasi">Lokasi</label>
+                    <input type="test" class="form-control" id="editLokasi" name="lokasi" required>
                 </div>
             </div>
             <div class="row gx-3 mb-3">
@@ -263,12 +271,12 @@
                     <input type="number" class="form-control" id="editTotalHmkm" name="total_hmkm" required readonly>
                 </div>
                 <div class="col-md-3">
-                    <label for="editLokasi">Lokasi</label>
-                    <input type="test" class="form-control" id="editLokasi" name="lokasi" required>
+                    <label for="editHmkmAwal">HM/KM Awal</label>
+                    <input type="text" class="form-control" id="editHmkmAwal" name="hmkm_awal" required>
                 </div>
                 <div class="col-md-3">
-                    <label for="editDivisi">Divisi</label>
-                    <input type="text" class="form-control" id="editDivisi" name="divisi" required>
+                    <label for="editHmkmAkhir">HM/KM Akhir</label>
+                    <input type="text" class="form-control" id="editHmkmAkhir" name="hmkm_akhir" required>
                 </div>
                 <div class="col-md-3">
                     <label for="editJenisPekerjaan">Jenis pekerjaan</label>
@@ -389,11 +397,11 @@
             { data: 'nik', name: 'nik' },
             { data: 'nama_karyawan', name: 'nama_karyawan' },
             { data: 'estate', name: 'estate' },
+            { data: 'divisi', name: 'divisi' },
+            { data: 'lokasi', name: 'lokasi' },
             { data: 'hmkm_awal', name: 'hmkm_awal' },
             { data: 'hmkm_akhir', name: 'hmkm_akhir' },
             { data: 'total_hmkm', name: 'total_hmkm' },
-            { data: 'lokasi', name: 'lokasi' },
-            { data: 'divisi', name: 'divisi' },
             { data: 'jenis_pekerjaan', name: 'jenis_pekerjaan' },
             { data: 'tarif_satuan', name: 'tarif_satuan' },
             { data: 'hasil_1', name: 'hasil_1' },
@@ -458,11 +466,11 @@
             $('#editNik').val(data.nik);
             $('#editNamaKaryawan').val(data.nama_karyawan);
             $('#editEstate').val(data.estate);
+            $('#editDivisi').val(data.divisi);
+            $('#editLokasi').val(data.lokasi);
             $('#editHmkmAwal').val(data.hmkm_awal);
             $('#editHmkmAkhir').val(data.hmkm_akhir);
             $('#editTotalHmkm').val(data.total_hmkm);
-            $('#editLokasi').val(data.lokasi);
-            $('#editDivisi').val(data.divisi);
             $('#editJenisPekerjaan').val(data.jenis_pekerjaan);
             $('#editTarifSatuan').val(data.tarif_satuan);
             $('#editHasil1').val(data.hasil_1);
@@ -470,6 +478,25 @@
             $('#editHasil2').val(data.hasil_2);
             $('#editSatuan2').val(data.satuan_2);
             $('#editTotalPremi').val(data.total_premi);
+
+            // Load cascading dropdowns for edit
+            var estate = data.estate;
+            var divisi = data.divisi;
+
+            // Load divisi options if estate is set
+            if (estate) {
+                $.get('{{ route("premi.getDivisi") }}', { estate: estate }, function(divisiData) {
+                    var divisiSelect = $('#editDivisi');
+                    divisiSelect.empty();
+                    divisiSelect.append('<option value="">-- Pilih --</option>');
+                    $.each(divisiData, function(index, item) {
+                        var selected = (item.divisi === divisi) ? 'selected' : '';
+                        divisiSelect.append('<option value="' + item.divisi + '" ' + selected + '>' + item.divisi + '</option>');
+                    });
+                    // Ensure the value is set
+                    divisiSelect.val(divisi);
+                });
+            }
         }).fail(function(xhr, status, error) {
             console.error('Error fetching edit data:', status, error);
             toastr.error('Gagal memuat data untuk edit.');
@@ -510,6 +537,32 @@
         var akhir = parseFloat($('#editHmkmAkhir').val()) || 0;
         var total = akhir - awal;
         $('#editTotalHmkm').val(total);
+    });
+
+    // Cascading dropdowns for Add modal
+    $('#estate').on('change', function () {
+        var estate = $(this).val();
+        $('#divisi').html('<option value="">-- Pilih --</option>');
+        if (estate) {
+            $.get('{{ route("premi.getDivisi") }}', { estate: estate }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#divisi').append('<option value="' + value.divisi + '">' + value.divisi + '</option>');
+                });
+            });
+        }
+    });
+
+    // Cascading dropdowns for Edit modal
+    $('#editEstate').on('change', function () {
+        var estate = $(this).val();
+        $('#editDivisi').html('<option value="">-- Pilih --</option>');
+        if (estate) {
+            $.get('{{ route("premi.getDivisi") }}', { estate: estate }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#editDivisi').append('<option value="' + value.divisi + '">' + value.divisi + '</option>');
+                });
+            });
+        }
     });
 });
 </script>
