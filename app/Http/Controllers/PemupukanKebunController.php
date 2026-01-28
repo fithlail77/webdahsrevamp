@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\Company;
+use App\Models\Aresta;
 use Illuminate\Http\Request;
 use App\Models\PemupukanKebun;
+use App\Models\JenisPupukRawat;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PemupukanKebunExport;
 use App\Imports\PemupukanKebunImport;
 use App\Exports\PemupukanKebunPdfExport;
-use App\Models\JenisPupukRawat;
 use Yajra\DataTables\Facades\DataTables;
 
 class PemupukanKebunController extends Controller
@@ -22,13 +22,21 @@ class PemupukanKebunController extends Controller
      */
     public function index()
     {
-        $estate = Company::select('estate')
+        $userEstate = Auth::user()->estate ?? null;
+
+        $estate = Aresta::select('estate')
             ->distinct()
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        $divisi = Company::select('divisi')
+        $divisi = Aresta::select('divisi')
             ->distinct()
-            ->orderBy('divisi','asc')
+            ->orderBy('divisi', 'asc')
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
         $pupuk = JenisPupukRawat::select('pupuk')
@@ -37,7 +45,7 @@ class PemupukanKebunController extends Controller
             ->orderBY('pupuk','asc')
             ->get();
 
-        return view('vpupukebun.index', compact('estate','divisi','pupuk'));
+        return view('vpupukebun.index', compact('estate','divisi','pupuk','userEstate'));
     }
 
     public function data(Request $request)
@@ -121,7 +129,7 @@ class PemupukanKebunController extends Controller
             'pokok' => 'required|integer',
             'dosis' => 'required|numeric',
             'jml_tenaga' => 'required|numeric',
-            'keterangan' => 'required|string|max:255'
+            'keterangan' => 'nullable|string|max:255'
         ]);
 
         PemupukanKebun::create([
@@ -182,7 +190,7 @@ class PemupukanKebunController extends Controller
                 'pokok' => 'required|integer',
                 'dosis' => 'required|numeric',
                 'jml_tenaga' => 'required|numeric',
-                'keterangan' => 'required|string|max:255',
+                'keterangan' => 'nullable|string|max:255',
             ]);
 
             $pupukkebun = PemupukanKebun::findOrFail($id);
@@ -231,5 +239,62 @@ class PemupukanKebunController extends Controller
 
         $pdfExport = new PemupukanKebunPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
+    }
+
+    public function getDivisi(Request $request)
+    {
+        $estate = $request->estate;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $divisi = Aresta::select('divisi')
+            ->where('estate', $estate)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('divisi')
+            ->get();
+
+        return response()->json($divisi);
+    }
+
+    public function getBlok(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $blok = Aresta::select('blok')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('blok')
+            ->get();
+
+        return response()->json($blok);
+    }
+
+    public function getTahunTanam(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $blok = $request->blok;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $tahunTanam = Aresta::select('tahun_tanam')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->where('blok', $blok)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('tahun_tanam')
+            ->get();
+
+        return response()->json($tahunTanam);
     }
 }

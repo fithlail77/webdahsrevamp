@@ -200,11 +200,17 @@ Route::get('/pupukkebun/data', [PemupukanKebunController::class, 'data'])->name(
 Route::post('/pupukkebun/import', [PemupukanKebunController::class, 'import'])->name('pupukkebun.import');
 Route::get('/pupukkebun/export/excel', [PemupukanKebunController::class, 'exportExcel'])->name('pupukkebun.export.excel');
 Route::get('/pupukkebun/export/pdf', [PemupukanKebunController::class, 'exportPdf'])->name('pupukkebun.export.pdf');
+Route::get('/pupukkebun/get-divisi', [PemupukanKebunController::class, 'getDivisi'])->name('pupukkebun.getDivisi');
+Route::get('/pupukkebun/get-blok', [PemupukanKebunController::class, 'getBlok'])->name('pupukkebun.getBlok');
+Route::get('/pupukkebun/get-tahun-tanam', [PemupukanKebunController::class, 'getTahunTanam'])->name('pupukkebun.getTahunTanam');
 Route::resource('/pupukkebun', PemupukanKebunController::class);
 Route::get('/rawatkebun/data', [PerawatanKebunController::class, 'data'])->name('rawatkebun.data');
 Route::post('/rawatkebun/import', [PerawatanKebunController::class, 'import'])->name('rawatkebun.import');
 Route::get('/rawatkebun/export/excel', [PerawatanKebunController::class, 'exportExcel'])->name('rawatkebun.export.excel');
 Route::get('/rawatkebun/export/pdf', [PerawatanKebunController::class, 'exportPdf'])->name('rawatkebun.export.pdf');
+Route::get('/rawatkebun/get-divisi', [PerawatanKebunController::class, 'getDivisi'])->name('rawatkebun.getDivisi');
+Route::get('/rawatkebun/get-blok', [PerawatanKebunController::class, 'getBlok'])->name('rawatkebun.getBlok');
+Route::get('/rawatkebun/get-tahun-tanam', [PerawatanKebunController::class, 'getTahunTanam'])->name('rawatkebun.getTahunTanam');
 Route::resource('/rawatkebun', PerawatanKebunController::class);
 Route::get('/aramco/data', [AramcoController::class, 'data'])->name('aramco.data');
 Route::post('/aramco/import', [AramcoController::class, 'import'])->name('aramco.import');

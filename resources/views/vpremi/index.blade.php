@@ -115,10 +115,10 @@
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
                         <select class="form-control" name="estate" id="estate">
-                            <option value="">-- Pilih --</option>
+                        <option value="">-- Pilih --</option>
                            @foreach($estate as $item)
-                                            <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
-                                        @endforeach
+                                <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-3">
