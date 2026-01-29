@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Aresta;
 use App\Models\Rental;
-use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Exports\RentalExport;
 use App\Imports\RentalImport;
@@ -22,16 +22,24 @@ class RentalController extends Controller
      */
     public function index()
     {
-        $estate = Company::select('estate')
+        $userEstate = Auth::user()->estate ?? null;
+
+        $estate = Aresta::select('estate')
             ->distinct()
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        $divisi = Company::select('divisi')
+        $divisi = Aresta::select('divisi')
             ->distinct()
-            ->orderBy('divisi','asc')
+            ->orderBy('divisi', 'asc')
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
 
-        return view('vrental.index', compact('estate','divisi'));
+        return view('vrental.index', compact('estate','divisi','userEstate'));
     }
 
     public function data(Request $request)
@@ -271,5 +279,62 @@ class RentalController extends Controller
 
         $pdfExport = new RentalPdfExport($minDate, $maxDate, $userEstate);
         return $pdfExport->generatePdf();
+    }
+
+    public function getDivisi(Request $request)
+    {
+        $estate = $request->estate;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $divisi = Aresta::select('divisi')
+            ->where('estate', $estate)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('divisi')
+            ->get();
+
+        return response()->json($divisi);
+    }
+
+    public function getBlok(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $blok = Aresta::select('blok')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('blok')
+            ->get();
+
+        return response()->json($blok);
+    }
+
+    public function getTahunTanam(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $blok = $request->blok;
+        $userEstate = Auth::user()->estate ?? null;
+
+        $tahunTanam = Aresta::select('tahun_tanam')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->where('blok', $blok)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('tahun_tanam')
+            ->get();
+
+        return response()->json($tahunTanam);
     }
 }

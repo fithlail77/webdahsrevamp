@@ -113,36 +113,36 @@
                         <input class="form-control" name="satuan" type="text"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Blok</label>
-                        <input class="form-control" name="blok" type="text"/>
-                    </div>
-                    <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
-                        <select class="form-control" name="estate">
+                        <select class="form-control" name="estate" id="estate">
                             <option value="">-- Pilih --</option>
                             @foreach($estate as $item)
                                 <option value="{{ $item->estate }}">{{ $item->estate }}</option>
                             @endforeach
                         </select>
                     </div>
-                </div>
-                <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Divisi</label>
-                        <select class="form-control" name="divisi">
+                        <select class="form-control" name="divisi" id="divisi">
                             <option value="">-- Pilih --</option>
                             @foreach($divisi as $item)
                                 <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div>                    
+                </div>
+                <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">Koordinat</label>
-                        <input class="form-control" name="kordinat" type="text"/>
+                        <label class="small mb-1">Blok</label>
+                        <select class="form-control" name="blok" id="blok">
+                            <option value="">-- Pilih --</option>
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Tahun Tanam</label>
-                        <input class="form-control" name="tahun_tanam" type="number"/>
+                        <select class="form-control" name="tahun_tanam" id="tt">
+                            <option value="">-- Pilih --</option>
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Lahan</label>
@@ -151,6 +151,10 @@
                             <option value="TM">TM</option>
                             <option value="TBM">TBM</option>
                         </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Koordinat</label>
+                        <input class="form-control" name="kordinat" type="text"/>
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
@@ -458,6 +462,47 @@
                 }
             }
         });
+    });
+
+    // Cascading dropdowns for Add modal
+    $('#estate').on('change', function () {
+        var estate = $(this).val();
+        $('#divisi').html('<option value="">-- Pilih --</option>');
+        $('#blok').html('<option value="">-- Pilih --</option>');
+        $('#tt').html('<option value="">-- Pilih --</option>');
+        if (estate) {
+            $.get('{{ route("pupukkebun.getDivisi") }}', { estate: estate }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#divisi').append('<option value="' + value.divisi + '">' + value.divisi + '</option>');
+                });
+            });
+        }
+    })
+    $('#divisi').on('change', function () {
+        var estate = $('#estate').val();
+        var divisi = $(this).val();
+        $('#blok').html('<option value="">-- Pilih --</option>');
+        $('#tt').html('<option value="">-- Pilih --</option>');
+        if (estate && divisi) {
+            $.get('{{ route("pupukkebun.getBlok") }}', { estate: estate, divisi: divisi }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#blok').append('<option value="' + value.blok + '">' + value.blok + '</option>');
+                });
+            });
+        }
+    })
+    $('#blok').on('change', function () {
+        var estate = $('#estate').val();
+        var divisi = $('#divisi').val();
+        var blok = $(this).val();
+        $('#tt').html('<option value="">-- Pilih --</option>');
+        if (estate && divisi && blok) {
+            $.get('{{ route("pupukkebun.getTahunTanam") }}', { estate: estate, divisi: divisi, blok: blok }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#tt').append('<option value="' + value.tahun_tanam + '">' + value.tahun_tanam + '</option>');
+                });
+            });
+        }
     });
 });
 </script>

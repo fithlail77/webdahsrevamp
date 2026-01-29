@@ -48,6 +48,9 @@
                         <th>No</th>
                         <th>Tanggal</th>
                         <th>Estate</th>
+                        <th>Divisi</th>
+                        <th>Blok</th>
+                        <th>Tahun Tanam</th>
                         <th>Jenis Alat</th>
                         <th>Nomor Alat</th>
                         <th>Operator</th>
@@ -56,10 +59,7 @@
                         <th>Total HM</th>
                         <th>Potongan HM</th>
                         <th>Pembayaran HM</th>
-                        <th>Blok</th>
-                        <th>Tahun Tanam</th>
                         <th>Pekerjaan</th>
-                        <th>Divisi</th>
                         <th>Kelompok</th>
                         <th>COA</th>
                         <th>Tarif</th>
@@ -101,11 +101,36 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
-                        <select class="form-control" name="estate">
+                        <select class="form-control" name="estate" id="estate">
                             <option value="">-- Pilih --</option>
                             @foreach($estate as $item)
-                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                                <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
                             @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Divisi</label>
+                        <select class="form-control" name="divisi" id="divisi">
+                            <option value="">-- Pilih --</option>
+                            @if($userEstate)
+                                @foreach($divisi as $item)
+                                    <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="small mb-1">Blok</label>
+                        <select class="form-control" name="blok" id="blok">
+                            <option value="">-- Pilih --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gx-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="small mb-1">Tahun Tanam</label>
+                        <select class="form-control" name="tahun_tanam" id="tt">
+                            <option value="">-- Pilih --</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -116,12 +141,13 @@
                         <label class="small mb-1">No Alat</label>
                         <input class="form-control" name="no_alat" type="text"/>
                     </div>
-                </div>
-                <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Operator</label>
                         <input class="form-control" name="operator" type="text"/>
                     </div>
+                    
+                </div>
+                <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">HM Awal</label>
                         <input class="form-control" name="hm_awal" type="number" step="0.01"/>
@@ -134,39 +160,21 @@
                         <label class="small mb-1">Total HM</label></label>
                         <input class="form-control" name="total_hm" type="number" step="0.01" readonly/>
                     </div>
-                </div>
-                <div class="row gx-3 mb-3">
                     <div class="col-md-3">
                         <label class="small mb-1">Potongan HM</label>
                         <input class="form-control" name="potongan_hm" type="number" step="0.01"/>
-                    </div>
-                    <div class="col-md-3">
+                    </div>                  
+                </div>
+                <div class="row gx-3 mb-3">
+                     <div class="col-md-3">
                         <label class="small mb-1">Pembayaran HM</label>
                         <input class="form-control" name="pembayaran_hm" id="pembayaran_hm" type="number" step="0.01"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Blok</label>
-                        <input class="form-control" name="blok" type="text"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Tahun Tanam</label>
-                        <input class="form-control" name="tahun_tanam" type="number"/>
-                    </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                    <div class="col-md-3">
                         <label class="small mb-1">Pekerjaan</label>
                         <input class="form-control" name="pekerjaan" type="text"/>
                     </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Divisi</label>
-                        <select class="form-control" name="divisi">
-                            <option value="">-- Pilih --</option>
-                            @foreach($divisi as $item)
-                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    
                     <div class="col-md-3">
                         <label class="small mb-1">Kelompok</label>
                         <input class="form-control" name="kelompok" type="text"/>
@@ -254,12 +262,36 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <!--<input type="text" class="form-control" id="editEstate" name="estate" required>-->
                     <select class="form-control" name="estate" id="editEstate" name="estate" required >
                         <option value="">-- Pilih --</option>
                         @foreach($estate as $item)
-                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
                         @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="editDivisi">Divisi</label>
+                    <select class="form-control" name="divisi" id="editDivisi" name="divisi" required >
+                        <option value="">-- Pilih --</option>
+                        @if($userEstate)
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="small mb-1">Blok</label>
+                    <select class="form-control" name="blok" id="editBlok">
+                        <option value="">-- Pilih --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row gx-3 mb-3">
+                <div class="col-md-3">
+                    <label for="editTahunTanam">Tahun Tanam</label>
+                    <select class="form-control" name="tahun_tanam" id="editTt">
+                        <option value="">-- Pilih --</option>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -270,12 +302,12 @@
                     <label for="editNoAlat">Nomor Alat</label>
                     <input type="text" class="form-control" id="editNoAlat" name="no_alat" required>
                 </div>
-            </div>
-            <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editOperator">Operator</label>
                     <input type="text" class="form-control" id="editOperator" name="operator" required>
                 </div>
+            </div>
+            <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editHmAwal">HM Awal</label>
                     <input type="number" class="form-control" id="editHmAwal" name="hm_awal" required>
@@ -288,39 +320,19 @@
                     <label for="editTotalHm">Total HM</label>
                     <input type="number" step="0.01" class="form-control" id="editTotalHm" name="total_hm" readonly>
                 </div>
-            </div>
-            <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editPotonganHm">Potongan HM</label>
                     <input type="number" step="0.01" class="form-control" id="editPotonganHm" name="potongan_hm">
                 </div>
+            </div>
+            <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editPembayaranHm">Pembayaran HM</label>
                     <input type="number" step="0.01" class="form-control" id="editPembayaranHm" name="pembayaran_hm">
                 </div>
                 <div class="col-md-3">
-                    <label for="editBlok">Blok</label>
-                    <input type="text" class="form-control" id="editBlok" name="blok" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="editTahunTanam">Tahun Tanam</label>
-                    <input type="number" class="form-control" id="editTahunTanam" name="tahun_tanam" required>
-                </div>
-            </div>
-            <div class="row gx-3 mb-3">
-                <div class="col-md-3">
                     <label for="editPekerjaan">Pekerjaan</label>
                     <input type="text" class="form-control" id="editPekerjaan" name="pekerjaan" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="editDivisi">Divisi</label>
-                    <!--<input type="text" class="form-control" id="editDivisi" name="divisi" required> -->
-                    <select class="form-control" name="divisi" id="editDivisi" name="divisi" required >
-                        <option value="">-- Pilih --</option>
-                        @foreach($divisi as $item)
-                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
-                        @endforeach
-                    </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editKelompok">Kelompok</label>
@@ -346,7 +358,6 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editSatuan1">Satuan 1</label>
-                    <!--<input type="text" class="form-control" id="editSatuan1" name="satuan_1" required> -->
                     <select class="form-control" name="satuan_1" id="editSatuan1" name="satuan_1" required >
                             <option value="">-- Pilih --</option>
                             <option value="Jjg">Janjang</option>
@@ -446,6 +457,9 @@
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'tanggal_formatted', name: 'tanggal_formatted' },
             { data: 'estate', name: 'estate' },
+            { data: 'divisi', name: 'divisi' },
+            { data: 'blok', name: 'blok' },
+            { data: 'tahun_tanam', name: 'tahun_tanam' },
             { data: 'jenis_alat', name: 'jenis_alat' },
             { data: 'no_alat', name: 'no_alat' },
             { data: 'operator', name: 'operator' },
@@ -454,10 +468,7 @@
             { data: 'total_hm', name: 'total_hm' },
             { data: 'potongan_hm', name: 'potongan_hm' },
             { data: 'pembayaran_hm', name: 'pembayaran_hm' },
-            { data: 'blok', name: 'blok' },
-            { data: 'tahun_tanam', name: 'tahun_tanam' },
             { data: 'pekerjaan', name: 'pekerjaan' },
-            { data: 'divisi', name: 'divisi' },
             { data: 'kelompok', name: 'kelompok' },
             { data: 'coa', name: 'coa' },
             { data: 'tarif', name: 'tarif' },
@@ -528,10 +539,7 @@
             $('#editTotalHm').val(data.total_hm);
             $('#editPotonganHm').val(data.potongan_hm);
             $('#editPembayaranHm').val(data.pembayaran_hm);
-            $('#editBlok').val(data.blok);
-            $('#editTahunTanam').val(data.tahun_tanam);
             $('#editPekerjaan').val(data.pekerjaan);
-            $('#editDivisi').val(data.divisi);
             $('#editKelompok').val(data.kelompok);
             $('#editCoa').val(data.coa);
             $('#editTarif').val(data.tarif);
@@ -541,6 +549,67 @@
             $('#editHasil2').val(data.hasil_2);
             $('#editSatuan2').val(data.satuan_2);
             $('#editTotalBiaya').val(data.total_biaya);
+
+            // Load cascading dropdowns for edit
+            var estate = data.estate;
+            var divisi = data.divisi;
+            var blok = data.blok;
+            var tt = data.tahun_tanam;
+
+            // Load divisi options if estate is set
+            if (estate) {
+                $.ajax({
+                    url: '{{ route("rental.getDivisi") }}',
+                    data: { estate: estate },
+                    async: false,
+                    success: function (divisiData) {
+                        $('#editDivisi').html('<option value="">-- Pilih --</option>');
+                        $.each(divisiData, function (key, value) {
+                            var selected = (value.divisi == divisi) ? 'selected' : '';
+                            $('#editDivisi').append('<option value="' + value.divisi + '" ' + selected + '>' + value.divisi + '</option>');
+                        })
+                        // Load blok options if divisi is set
+                        if (divisi) {
+                            $.ajax({
+                                url: '{{ route("rental.getBlok") }}',
+                                data: { estate: estate, divisi: divisi },
+                                async: false,
+                                success: function (blokData) {
+                                    $('#editBlok').html('<option value="">-- Pilih --</option>');
+                                    $.each(blokData, function (key, value) {
+                                        var selected = (value.blok == blok) ? 'selected' : '';
+                                        $('#editBlok').append('<option value="' + value.blok + '" ' + selected + '>' + value.blok + '</option>');
+                                    })
+                                    // Load tahun tanam options if blok is set
+                                    if (blok) {
+                                        $.ajax({
+                                            url: '{{ route("rental.getTahunTanam") }}',
+                                            data: { estate: estate, divisi: divisi, blok: blok },
+                                            async: false,
+                                            success: function (tahunData) {
+                                                $('#editTt').html('<option value="">-- Pilih --</option>');
+                                                $.each(tahunData, function (key, value) {
+                                                    var selected = (value.tahun_tanam == tt) ? 'selected' : '';
+                                                    $('#editTt').append('<option value="' + value.tahun_tanam + '" ' + selected + '>' + value.tahun_tanam + '</option>');
+                                                });
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('Error loading tahun tanam:', status, error);
+                                            }
+                                        });
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Error loading blok:', status, error);
+                                }
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error loading divisi:', status, error);
+                    }
+                });
+            }
         }).fail(function(xhr, status, error) {
             console.error('Error fetching edit data:', status, error);
             toastr.error('Gagal memuat data untuk edit.');
@@ -631,6 +700,88 @@
         var akhir = parseFloat($('#editHmAkhir').val()) || 0;
         var total = akhir - awal;
         $('#editTotalHm').val(total);
+    });
+
+    // Cascading dropdowns for Add modal
+    $('#estate').on('change', function () {
+        var estate = $(this).val();
+        $('#divisi').html('<option value="">-- Pilih --</option>');
+        $('#blok').html('<option value="">-- Pilih --</option>');
+        $('#tt').html('<option value="">-- Pilih --</option>');
+        if (estate) {
+            $.get('{{ route("pupukkebun.getDivisi") }}', { estate: estate }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#divisi').append('<option value="' + value.divisi + '">' + value.divisi + '</option>');
+                });
+            });
+        }
+    })
+    $('#divisi').on('change', function () {
+        var estate = $('#estate').val();
+        var divisi = $(this).val();
+        $('#blok').html('<option value="">-- Pilih --</option>');
+        $('#tt').html('<option value="">-- Pilih --</option>');
+        if (estate && divisi) {
+            $.get('{{ route("pupukkebun.getBlok") }}', { estate: estate, divisi: divisi }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#blok').append('<option value="' + value.blok + '">' + value.blok + '</option>');
+                });
+            });
+        }
+    })
+    $('#blok').on('change', function () {
+        var estate = $('#estate').val();
+        var divisi = $('#divisi').val();
+        var blok = $(this).val();
+        $('#tt').html('<option value="">-- Pilih --</option>');
+        if (estate && divisi && blok) {
+            $.get('{{ route("pupukkebun.getTahunTanam") }}', { estate: estate, divisi: divisi, blok: blok }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#tt').append('<option value="' + value.tahun_tanam + '">' + value.tahun_tanam + '</option>');
+                });
+            });
+        }
+    });
+
+    // Cascading dropdowns for Edit modal
+    $('#editEstate').on('change', function () {
+        var estate = $(this).val();
+        $('#editDivisi').html('<option value="">-- Pilih --</option>');
+        $('#editBlok').html('<option value="">-- Pilih --</option>');
+        $('#editTt').html('<option value="">-- Pilih --</option>');
+        if (estate) {
+            $.get('{{ route("realisasipanen.getDivisi") }}', { estate: estate }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#editDivisi').append('<option value="' + value.divisi + '">' + value.divisi + '</option>');
+                });
+            });
+        }
+    })
+    $('#editDivisi').on('change', function () {
+        var estate = $('#editEstate').val();
+        var divisi = $(this).val();
+        $('#editBlok').html('<option value="">-- Pilih --</option>');
+        $('#editTt').html('<option value="">-- Pilih --</option>');
+        if (estate && divisi) {
+            $.get('{{ route("realisasipanen.getBlok") }}', { estate: estate, divisi: divisi }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#editBlok').append('<option value="' + value.blok + '">' + value.blok + '</option>');
+                });
+            });
+        }
+    })
+    $('#editBlok').on('change', function () {
+        var estate = $('#editEstate').val();
+        var divisi = $('#editDivisi').val();
+        var blok = $(this).val();
+        $('#editTt').html('<option value="">-- Pilih --</option>');
+        if (estate && divisi && blok) {
+            $.get('{{ route("realisasipanen.getTahunTanam") }}', { estate: estate, divisi: divisi, blok: blok }, function (data) {
+                $.each(data, function (key, value) {
+                    $('#editTt').append('<option value="' + value.tahun_tanam + '">' + value.tahun_tanam + '</option>');
+                });
+            });
+        }
     });
 });
 </script>

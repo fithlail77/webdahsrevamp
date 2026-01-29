@@ -44,6 +44,7 @@ use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RestanController;
 use App\Http\Controllers\SptbsInputController;
 use App\Http\Controllers\TSAController;
+use App\Models\Rental;
 
 /*
 |--------------------------------------------------------------------------
@@ -195,6 +196,9 @@ Route::get('/rental/data', [RentalController::class, 'data'])->name('rental.data
 Route::post('/rental/import', [RentalController::class, 'import'])->name('rental.import');
 Route::get('/rental/export/excel', [RentalController::class, 'exportExcel'])->name('rental.export.excel');
 Route::get('/rental/export/pdf', [RentalController::class, 'exportPdf'])->name('rental.export.pdf');
+Route::get('/rental/get-divisi', [RentalController::class, 'getDivisi'])->name('rental.getDivisi');
+Route::get('/rental/get-blok', [RentalController::class, 'getBlok'])->name('rental.getBlok');
+Route::get('/rental/get-tahun-tanam', [RentalController::class, 'getTahunTanam'])->name('rental.getTahunTanam');
 Route::resource('/rental', RentalController::class);
 Route::get('/pupukkebun/data', [PemupukanKebunController::class, 'data'])->name('pupukkebun.data');
 Route::post('/pupukkebun/import', [PemupukanKebunController::class, 'import'])->name('pupukkebun.import');
