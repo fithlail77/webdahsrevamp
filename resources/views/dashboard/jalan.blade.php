@@ -7,7 +7,7 @@
     <div class="card-body">
         <div class="embed-responsive embed-responsive-16by9" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
             <iframe class="embed-responsive-item"
-                src="https://app.powerbi.com/view?r=eyJrIjoiMzQ3MmE0NTUtOGE4My00MTQ5LWFlMGYtYzNlYjViY2E5YzU2IiwidCI6IjkzMzQ3NTJlLWIwM2EtNDUzNy04ZmY2LTU0ZDU3MGMzNWQyOCIsImMiOjEwfQ%3D%3D"
+                src="https://app.powerbi.com/view?r=eyJrIjoiMGQwYjIzYmMtZTcyZC00NzdmLWI4ZDEtM2FkM2FmNTgyM2Y1IiwidCI6IjkzMzQ3NTJlLWIwM2EtNDUzNy04ZmY2LTU0ZDU3MGMzNWQyOCIsImMiOjEwfQ%3D%3D"
                 allowfullscreen
                 style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border: none;">
             </iframe>
