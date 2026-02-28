@@ -41,16 +41,6 @@
         </div>
     </div>
 </div>
-<!--<div class="card shadow mb-4">
-
-    <div class="card mb-2">
-      <div class="card-header">Grafik TBS Internal GUM -  Bulan {{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</div>
-        <div class="card-body">
-            <div class="chart-area"><canvas id="FfbIntChart" width="100%" height="50"></canvas></div>
-        </div>
-        <div class="card-footer small text-muted">Updated {{ now()->format('d-m-Y H:i:s') }}</div>
-    </div>
-</div>-->
 <div class="card shadow mb-4">
     <div class="card-body">
         <table id="ffbintTable" class="table table-bordered table-striped">

@@ -44,7 +44,6 @@ use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RestanController;
 use App\Http\Controllers\SptbsInputController;
 use App\Http\Controllers\TSAController;
-use App\Models\Rental;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,10 +125,19 @@ Route::get('/contractpk/export/pdf', [ContractpkController::class, 'exportPdf'])
 Route::post('/contractpk/simpan', [ContractpkController::class, 'simpan'])->name('contractpk.simpan');
 Route::resource('/contractpk', ContractpkController::class);
 Route::post('/contractpk', [ContractpkController::class, 'import'])->name('contractpk.import');
+Route::get('/pupuk/data', [PupukrawatinputController::class, 'data'])->name('pupuk.data');
+Route::get('/pupuk/export/excel', [PupukrawatinputController::class, 'exportExcel'])->name('pupuk.export.excel');
+Route::get('/pupuk/export/pdf', [PupukrawatinputController::class, 'exportPdf'])->name('pupuk.export.pdf');
 Route::resource('/pupuk', PupukrawatinputController::class);
 Route::post('/pupuk', [PupukrawatinputController::class, 'import'])->name('pupuk.import');
+Route::get('/perawatan/data', [PerawatanController::class, 'data'])->name('perawatan.data');
+Route::get('/perawatan/export/excel', [PerawatanController::class, 'exportExcel'])->name('perawatan.export.excel');
+Route::get('/perawatan/export/pdf', [PerawatanController::class, 'exportPdf'])->name('perawatan.export.pdf');
 Route::resource('/perawatan', PerawatanController::class);
 Route::post('/perawatan', [PerawatanController::class, 'import'])->name('perawatan.import');
+Route::get('/payroll/data', [PayrollController::class, 'data'])->name('payroll.data');
+Route::get('/payroll/export/excel', [PayrollController::class, 'exportExcel'])->name('payroll.export.excel');
+Route::get('/payroll/export/pdf', [PayrollController::class, 'exportPdf'])->name('payroll.export.pdf');
 Route::resource('/payroll', PayrollController::class);
 Route::post('/payroll', [PayrollController::class, 'import'])->name('payroll.import');
 Route::get('/lho/data', [LhoController::class, 'data'])->name('lhobbm.data');
