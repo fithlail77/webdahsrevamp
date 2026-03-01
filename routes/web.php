@@ -240,4 +240,6 @@ Route::post('/tsa/import', [TSAController::class, 'import'])->name('tsa.import')
 Route::get('/tsa/export/excel', [TSAController::class, 'exportExcel'])->name('tsa.export.excel');
 Route::get('/tsa/export/pdf', [TSAController::class, 'exportPdf'])->name('tsa.export.pdf');
 Route::resource('/tsa', TSAController::class);
+Route::get('/kml/data', [KmlController::class, 'data'])->name('kml.data');
+Route::get('/kml/track/{id}', [KmlController::class, 'getTrack'])->name('kml.track');
 Route::resource('/kml', KmlController::class);

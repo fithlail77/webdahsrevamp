@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Kml;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class KmlController extends Controller
@@ -55,19 +56,18 @@ class KmlController extends Controller
                 $query->whereDate('tanggal', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal', '>=', Carbon::now()->subDays(7));
+                $query->where('tanggal', '>=', Carbon::now()->subDays(30));
             }
         }
 
         return DataTables::of($query)
             ->addIndexColumn()
+            ->setRowId('id')
             ->addColumn('tanggal_formatted', function ($row) {
                 return \Carbon\Carbon::parse($row['tanggal'])->format('d-m-Y');
             })
             ->addColumn('track', function ($row) {
-                return '
-                    <a href="#" class="btn btn-secondary btn-sm edit-btn" data-id="' . $row['id'] . '" data-toggle="modal" data-target="#modal-ViewTrack"><i class="fa fa-edit"></i></a>
-                ';
+                return '<a href="' . route('kml.show', $row['id']) . '" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat Track</a>';
             })
             ->addColumn('aksi', function ($row) {
                 return '
@@ -90,7 +90,32 @@ class KmlController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'nama_asisten' => 'required|string|max:255',
+            'estate' => 'required|string|max:30',
+            'divisi' => 'required|string|max:10',
+            'kml_file' => 'required|file|mimes:kml,xml|max:10240', // max 10MB
+        ]);
+
+        try {
+            $file = $request->file('kml_file');
+            $path = $file->store('kml', 'public');
+
+            Kml::create([
+                'tanggal' => $request->tanggal,
+                'nama_asisten' => $request->nama_asisten,
+                'estate' => $request->estate,
+                'divisi' => $request->divisi,
+                'name' => $file->getClientOriginalName(),
+                'path' => $path,
+                'uploaded_at' => now(),
+            ]);
+
+            return redirect()->route('kml.index')->with('success', 'Data KML berhasil di upload.');
+        } catch (\Exception $e) {
+            return redirect()->route('kml.index')->with('error', 'Gagal upload KML: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -98,7 +123,30 @@ class KmlController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $kmlFile = Kml::findOrFail($id);
+        $startTime = null;
+        $endTime = null;
+        // Parse KML and get coordinates
+        $coordinates = $this->parseKml($kmlFile->path);
+        if (!empty($coordinates)) {
+            $startTimeRaw = $coordinates[0]['time'] ?? null;
+            $endTimeRaw = end($coordinates)['time'] ?? null;
+
+            $startTime = $startTimeRaw
+                ? Carbon::parse($startTimeRaw)->format('d-m-Y H:i:s')
+                : null;
+
+            $endTime = $endTimeRaw
+                ? Carbon::parse($endTimeRaw)->format('d-m-Y H:i:s')
+                : null;
+        }
+
+        return view('kml.show', compact(
+            'kmlFile',
+            'coordinates',
+            'startTime',
+            'endTime'
+        ));
     }
 
     /**
@@ -123,5 +171,60 @@ class KmlController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function parseKml($path)
+    {
+        $content = Storage::disk('public')->get($path);
+        $xml = simplexml_load_string($content);
+        $coordinates = [];
+
+        // Register gx namespace
+        $xml->registerXPathNamespace('gx', 'http://www.google.com/kml/ext/2.2');
+
+        // Parse gx:Track elements
+        $tracks = $xml->xpath('//gx:Track');
+        foreach ($tracks as $track) {
+
+            // Ambil semua when tanpa peduli namespace
+            $whens = $track->xpath('*[local-name()="when"]');
+            $coords = $track->xpath('gx:coord');
+
+            for ($i = 0; $i < count($coords); $i++) {
+
+                $parts = explode(' ', trim((string)$coords[$i]));
+
+                if (count($parts) >= 2) {
+
+                    $coordinates[] = [
+                        'lat' => (float)$parts[1],
+                        'lng' => (float)$parts[0],
+                        'time' => isset($whens[$i]) ? (string)$whens[$i] : null
+                    ];
+                }
+            }
+        }
+
+        // Fallback to traditional LineString or Point if no tracks found
+        if (empty($coordinates)) {
+            foreach ($xml->Document->Placemark as $placemark) {
+                if (isset($placemark->LineString)) {
+                    $coords = explode(' ', trim($placemark->LineString->coordinates));
+                    foreach ($coords as $coord) {
+                        $parts = explode(',', $coord);
+                        if (count($parts) >= 2) {
+                            $coordinates[] = ['lat' => (float)$parts[1], 'lng' => (float)$parts[0]];
+                        }
+                    }
+                } elseif (isset($placemark->Point)) {
+                    $parts = explode(',', trim($placemark->Point->coordinates));
+                    if (count($parts) >= 2) {
+                        $coordinates[] = ['lat' => (float)$parts[1], 'lng' => (float)$parts[0]];
+                    }
+                }
+            }
+        }
+
+        return $coordinates;
     }
 }

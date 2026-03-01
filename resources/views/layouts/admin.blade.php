@@ -26,6 +26,9 @@
 
     <link href="{{ asset('adminpage/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
+    <!-- Leaflet styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
     <!-- Power BI CSS -->
     <style>
         #powerbi-container {
@@ -137,6 +140,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <!-- Leaflet Js -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     @stack('scripts')
 

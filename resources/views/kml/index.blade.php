@@ -53,7 +53,7 @@
         </div>
     </div>
 </div>
-<!-- Modal Tambah Data Premi -->
+<!-- Modal Upload KML -->
 <div class="modal fade" id="modal-UploadKml" tabindex="-1" role="dialog" aria-labelledby="modal-UploadKmlLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -92,7 +92,7 @@
                 <div class="row gx-3 mb-3">
                     <div class="col-md-12">
                             <label class="small mb-1">Pilih file KML</label>
-                            <input class="form-control" name="file_kml" type="file"/>
+                            <input class="form-control" name="kml_file" type="file"/>
                     </div>
                 </div>
             <div class="modal-footer">
@@ -104,6 +104,7 @@
     </div>
   </div>
 </div>
+
 @endsection
 
 @push('scripts')
@@ -134,11 +135,11 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'tanggal_formatted', name: 'tanggal_formatted' },
+                { data: 'nama_asisten', name: 'nama_asisten' },
                 { data: 'estate', name: 'estate' },
-                { data: 'nama', name: 'nama' },
-                { data: 'jenis_pupuk', name: 'jenis_pupuk' },
-                { data: 'hasil', name: 'hasil' },
-                { data: 'nama_mandor', name: 'nama_mandor' },
+                { data: 'divisi', name: 'divisi' },
+                { data: 'track', name: 'track', orderable: false, searchable: false },
+                { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
             ]
         });
 
