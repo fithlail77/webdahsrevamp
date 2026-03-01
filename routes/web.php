@@ -1,49 +1,50 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\LsuController;
-use App\Http\Controllers\BlokController;
-use App\Http\Controllers\UnitController;
-use App\Http\Controllers\JalanController;
-use App\Http\Controllers\LegalController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\ArestaController;
-use App\Http\Controllers\ChInputController;
-use App\Http\Controllers\NurseryController;
-use App\Http\Controllers\PayrollController;
-use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\AirSungaiController;
 use App\Http\Controllers\AnalisaProdController;
 use App\Http\Controllers\AramcoController;
-use App\Http\Controllers\PerawatanController;
-use App\Http\Controllers\ContractpkController;
-use App\Http\Controllers\CurahHujanController;
-use App\Http\Controllers\PupukRawatController;
+use App\Http\Controllers\ArestaController;
 use App\Http\Controllers\ArestaInputController;
 use App\Http\Controllers\AwsController;
 use App\Http\Controllers\AwsInputController;
+use App\Http\Controllers\BlokController;
 use App\Http\Controllers\BlokKordinatController;
+use App\Http\Controllers\ChInputController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContractcpoController;
-use App\Http\Controllers\FfbInternalController;
-use App\Http\Controllers\ProduksicpoController;
-use App\Http\Controllers\TbsInternalController;
+use App\Http\Controllers\ContractpkController;
+use App\Http\Controllers\CurahHujanController;
 use App\Http\Controllers\FfbEksternalController;
+use App\Http\Controllers\FfbInternalController;
+use App\Http\Controllers\JalanController;
+use App\Http\Controllers\KmlController;
+use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LhoController;
-use App\Http\Controllers\PupukrawatinputController;
-use App\Http\Controllers\PanenController;
 use App\Http\Controllers\LhodepreController;
 use App\Http\Controllers\LhoinputController;
 use App\Http\Controllers\LhospartController;
+use App\Http\Controllers\LsuController;
+use App\Http\Controllers\NurseryController;
+use App\Http\Controllers\PanenController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PemupukanKebunController;
+use App\Http\Controllers\PerawatanController;
 use App\Http\Controllers\PerawatanKebunController;
 use App\Http\Controllers\PremiController;
+use App\Http\Controllers\ProduksiController;
+use App\Http\Controllers\ProduksicpoController;
+use App\Http\Controllers\PupukRawatController;
+use App\Http\Controllers\PupukrawatinputController;
 use App\Http\Controllers\RealisasiPanenController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RestanController;
 use App\Http\Controllers\SptbsInputController;
+use App\Http\Controllers\TbsInternalController;
 use App\Http\Controllers\TSAController;
+use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -239,3 +240,4 @@ Route::post('/tsa/import', [TSAController::class, 'import'])->name('tsa.import')
 Route::get('/tsa/export/excel', [TSAController::class, 'exportExcel'])->name('tsa.export.excel');
 Route::get('/tsa/export/pdf', [TSAController::class, 'exportPdf'])->name('tsa.export.pdf');
 Route::resource('/tsa', TSAController::class);
+Route::resource('/kml', KmlController::class);
