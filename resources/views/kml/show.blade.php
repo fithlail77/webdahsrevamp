@@ -8,7 +8,7 @@
 <h1 class="h5 mb-2 text-gray-800">Tanggal : {{ $kmlFile->tanggal }} </h1>
 <hr>
 <div class="card shadow mb-4">
-    <div id="map" style="height: 500px;"></div>
+    <div id="map" style="height: 700px;"></div>
 </div>
 <div class="card shadow mb-4">
     <a href="{{ route('kml.index') }}" class="btn btn-secondary">Kembali ke Daftar</a>
