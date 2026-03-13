@@ -91,7 +91,7 @@ class PupukrawatinputController extends Controller
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_formatted', function ($row) {
-                return \Carbon\Carbon::parse($row['issued_date'])->format('d-m-Y');
+                return \Carbon\Carbon::parse($row['issue_date'])->format('d-m-Y');
             })
             ->make(true);
     }
