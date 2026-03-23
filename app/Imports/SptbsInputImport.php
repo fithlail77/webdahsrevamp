@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class SptbsInputImport implements ToModel, WithHeadingRow
 {
@@ -71,8 +72,8 @@ class SptbsInputImport implements ToModel, WithHeadingRow
             'tanggal_panen' => $tanggal_panen,
             'nama_supir' => $row['nama_supir'],
             'no_polisi' => $row['no_polisi'],
-            'jam_masuk' => $row['jam_masuk'],
-            'jam_keluar' => $row['jam_keluar'],
+            'jam_masuk' => $this->parseTime($row['jam_masuk']),
+            'jam_keluar' => $this->parseTime($row['jam_keluar']),
             'estate' => $row['estate'],
             'divisi' => $row['divisi'],
             'blok' => $row['blok'],
@@ -96,5 +97,20 @@ class SptbsInputImport implements ToModel, WithHeadingRow
             'tangkai_pjg' => $row['tangkai_pjg'] ?? null,
             'kastrasi' => $row['kastrasi'] ?? null,
         ]);
+    }
+
+    private function parseTime($value)
+    {
+        if (is_numeric($value)) {
+            // Format dari Excel sebagai angka (serial time)
+            return Carbon::instance(Date::excelToDateTimeObject($value))->format('H:i:s');
+        }
+
+        try {
+            // Format string, misalnya "07:30" atau "15:45:00"
+            return Carbon::parse($value)->format('H:i:s');
+        } catch (\Exception $e) {
+            return null; // atau '00:00:00' jika kamu ingin default
+        }
     }
 }

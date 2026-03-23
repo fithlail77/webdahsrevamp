@@ -199,7 +199,7 @@ class SptbsInputController extends Controller
     {
         try {
             $request->validate([
-                'angkutan' => 'required|string|max:5',
+                'angkutan' => 'required|string|max:30',
                 'no_tiket' => 'required|integer',
                 'tanggal_tiket' => 'required|date',
                 'no_sptbs' => 'required|integer',
