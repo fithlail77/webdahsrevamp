@@ -90,16 +90,27 @@ class KmlController extends Controller
      */
     public function store(Request $request)
     {
+        // 1. Validasi dasar (tanpa mimes)
         $request->validate([
             'tanggal' => 'required|date',
             'nama_asisten' => 'required|string|max:255',
             'estate' => 'required|string|max:30',
             'divisi' => 'required|string|max:10',
-            'kml_file' => 'required|file|mimes:kml,xml|max:10240', // max 10MB
+            'kml_file' => 'required|file|max:10240', // max 10MB
         ]);
 
+        // 2. Pengecekan Ekstensi File secara Manual (Sangat ampuh untuk file GIS)
+        $file = $request->file('kml_file');
+        $extension = $file->getClientOriginalExtension();
+        
+        if (!in_array(strtolower($extension), ['kml', 'xml'])) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Gagal: File yang diupload harus berekstensi .kml atau .xml');
+        }
+
         try {
-            $file = $request->file('kml_file');
+            // 3. Proses penyimpanan file
             $path = $file->store('kml', 'public');
 
             Kml::create([
