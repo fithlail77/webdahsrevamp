@@ -173,53 +173,130 @@ class KmlController extends Controller
         //
     }
 
+    //private function parseKml($path)
+    //{
+    //    $content = Storage::disk('public')->get($path);
+    //    $xml = simplexml_load_string($content);
+    //    $coordinates = [];
+//
+    //    // Register gx namespace
+    //    $xml->registerXPathNamespace('gx', 'http://www.google.com/kml/ext/2.2');
+//
+    //    // Parse gx:Track elements
+    //    $tracks = $xml->xpath('//gx:Track');
+    //    foreach ($tracks as $track) {
+//
+    //        // Ambil semua when tanpa peduli namespace
+    //        $whens = $track->xpath('*[local-name()="when"]');
+    //        $coords = $track->xpath('gx:coord');
+//
+    //        for ($i = 0; $i < count($coords); $i++) {
+//
+    //            $parts = explode(' ', trim((string)$coords[$i]));
+//
+    //            if (count($parts) >= 2) {
+//
+    //                $coordinates[] = [
+    //                    'lat' => (float)$parts[1],
+    //                    'lng' => (float)$parts[0],
+    //                    'time' => isset($whens[$i]) ? (string)$whens[$i] : null
+    //                ];
+    //            }
+    //        }
+    //    }
+//
+    //    // Fallback to traditional LineString or Point if no tracks found
+    //    if (empty($coordinates)) {
+    //        foreach ($xml->Document->Placemark as $placemark) {
+    //            if (isset($placemark->LineString)) {
+    //                $coords = explode(' ', trim($placemark->LineString->coordinates));
+    //                foreach ($coords as $coord) {
+    //                    $parts = explode(',', $coord);
+    //                    if (count($parts) >= 2) {
+    //                        $coordinates[] = ['lat' => (float)$parts[1], 'lng' => (float)$parts[0]];
+    //                    }
+    //                }
+    //            } elseif (isset($placemark->Point)) {
+    //                $parts = explode(',', trim($placemark->Point->coordinates));
+    //                if (count($parts) >= 2) {
+    //                    $coordinates[] = ['lat' => (float)$parts[1], 'lng' => (float)$parts[0]];
+    //                }
+    //            }
+    //        }
+    //    }
+//
+    //    return $coordinates;
+    //}
+
     private function parseKml($path)
     {
         $content = Storage::disk('public')->get($path);
         $xml = simplexml_load_string($content);
         $coordinates = [];
 
-        // Register gx namespace
+        if ($xml === false) {
+            return $coordinates; // Kembalikan kosong jika file XML/KML corrupt
+        }
+
+        // Register gx namespace untuk tracking Google Earth
         $xml->registerXPathNamespace('gx', 'http://www.google.com/kml/ext/2.2');
 
-        // Parse gx:Track elements
+        // 1. Coba parse elemen gx:Track (Format record track real-time)
         $tracks = $xml->xpath('//gx:Track');
-        foreach ($tracks as $track) {
+        if (!empty($tracks)) {
+            foreach ($tracks as $track) {
+                $whens = $track->xpath('*[local-name()="when"]');
+                $coords = $track->xpath('gx:coord');
 
-            // Ambil semua when tanpa peduli namespace
-            $whens = $track->xpath('*[local-name()="when"]');
-            $coords = $track->xpath('gx:coord');
-
-            for ($i = 0; $i < count($coords); $i++) {
-
-                $parts = explode(' ', trim((string)$coords[$i]));
-
-                if (count($parts) >= 2) {
-
-                    $coordinates[] = [
-                        'lat' => (float)$parts[1],
-                        'lng' => (float)$parts[0],
-                        'time' => isset($whens[$i]) ? (string)$whens[$i] : null
-                    ];
+                for ($i = 0; $i < count($coords); $i++) {
+                    $parts = explode(' ', trim((string)$coords[$i]));
+                    if (count($parts) >= 2) {
+                        $coordinates[] = [
+                            'lat' => (float)$parts[1],
+                            'lng' => (float)$parts[0],
+                            'time' => isset($whens[$i]) ? (string)$whens[$i] : null
+                        ];
+                    }
                 }
             }
         }
 
-        // Fallback to traditional LineString or Point if no tracks found
+        // 2. Fallback ke LineString (Format Avenza Export / Manual Draw)
+        // Menggunakan local-name() agar bisa menembus segala Folder dan Namespace
         if (empty($coordinates)) {
-            foreach ($xml->Document->Placemark as $placemark) {
-                if (isset($placemark->LineString)) {
-                    $coords = explode(' ', trim($placemark->LineString->coordinates));
-                    foreach ($coords as $coord) {
+            $lineStrings = $xml->xpath('//*[local-name()="LineString"]/*[local-name()="coordinates"]');
+            
+            if (!empty($lineStrings)) {
+                foreach ($lineStrings as $ls) {
+                    // Bersihkan enter, tab, dan spasi ganda menjadi 1 spasi tunggal
+                    $coordString = preg_replace('/\s+/', ' ', trim((string)$ls));
+                    $coordsArray = explode(' ', $coordString);
+
+                    foreach ($coordsArray as $coord) {
                         $parts = explode(',', $coord);
                         if (count($parts) >= 2) {
-                            $coordinates[] = ['lat' => (float)$parts[1], 'lng' => (float)$parts[0]];
+                            $coordinates[] = [
+                                'lat' => (float)$parts[1],
+                                'lng' => (float)$parts[0]
+                            ];
                         }
                     }
-                } elseif (isset($placemark->Point)) {
-                    $parts = explode(',', trim($placemark->Point->coordinates));
+                }
+            }
+        }
+
+        // 3. Fallback ke Point (Jika isinya ternyata cuma titik)
+        if (empty($coordinates)) {
+            $points = $xml->xpath('//*[local-name()="Point"]/*[local-name()="coordinates"]');
+            if (!empty($points)) {
+                foreach ($points as $pt) {
+                    $coordString = preg_replace('/\s+/', ' ', trim((string)$pt));
+                    $parts = explode(',', $coordString);
                     if (count($parts) >= 2) {
-                        $coordinates[] = ['lat' => (float)$parts[1], 'lng' => (float)$parts[0]];
+                        $coordinates[] = [
+                            'lat' => (float)$parts[1],
+                            'lng' => (float)$parts[0]
+                        ];
                     }
                 }
             }
