@@ -139,18 +139,24 @@ class KmlController extends Controller
         $endTime = null;
         // Parse KML and get coordinates
         $coordinates = $this->parseKml($kmlFile->path);
-        if (!empty($coordinates)) {
-            $startTimeRaw = $coordinates[0]['time'] ?? null;
-            $endTimeRaw = end($coordinates)['time'] ?? null;
-
-            $startTime = $startTimeRaw
-                ? Carbon::parse($startTimeRaw)->format('d-m-Y H:i:s')
-                : null;
-
-            $endTime = $endTimeRaw
-                ? Carbon::parse($endTimeRaw)->format('d-m-Y H:i:s')
-                : null;
+        
+        // TAMBAHKAN KODE INI: Cek apakah koordinat kosong
+        if (empty($coordinates)) {
+            return redirect()->route('kml.index')
+                ->with('error', 'Peta gagal dimuat: File KML tidak memiliki titik koordinat (File Kosong).');
         }
+
+        // Jika tidak kosong, lanjutkan proses waktu
+        $startTimeRaw = $coordinates[0]['time'] ?? null;
+        $endTimeRaw = end($coordinates)['time'] ?? null;
+
+        $startTime = $startTimeRaw
+            ? Carbon::parse($startTimeRaw)->format('d-m-Y H:i:s')
+            : null;
+
+        $endTime = $endTimeRaw
+            ? Carbon::parse($endTimeRaw)->format('d-m-Y H:i:s')
+            : null;
 
         return view('kml.show', compact(
             'kmlFile',
