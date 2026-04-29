@@ -299,51 +299,51 @@
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editAngkutan">Angkutan</label>
-                    <input type="text" class="form-control" id="editAngkutan" name="angkutan" required>
+                    <input type="text" class="form-control" id="editAngkutan" name="angkutan">
                 </div>
                 <div class="col-md-3">
                     <label for="editNoTiket">No Tiket</label>
-                    <input type="text" class="form-control" id="editNoTiket" name="no_tiket" required>
+                    <input type="text" class="form-control" id="editNoTiket" name="no_tiket">
                 </div>
                 <div class="col-md-3">
                     <label for="editTanggalTiket">Tanggal Tiket</label>
-                    <input type="date" class="form-control" id="editTanggalTiket" name="tanggal_tiket" required>
+                    <input type="date" class="form-control" id="editTanggalTiket" name="tanggal_tiket">
                 </div>
                 <div class="col-md-3">
                     <label for="editNoSptbs">No SPTBS</label>
-                    <input type="text" class="form-control" id="editNoSptbs" name="no_sptbs" required>
+                    <input type="text" class="form-control" id="editNoSptbs" name="no_sptbs">
                 </div>
             </div>
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editTanggalSptbs">Tanggal SPTBS</label>
-                    <input type="date" class="form-control" id="editTanggalSptbs" name="tanggal_sptbs" required>
+                    <input type="date" class="form-control" id="editTanggalSptbs" name="tanggal_sptbs">
                 </div>
                 <div class="col-md-3">
                     <label for="editTanggalPanen">Tanggal Panen</label>
-                    <input type="date" class="form-control" id="editTanggalPanen" name="tanggal_panen" required>
+                    <input type="date" class="form-control" id="editTanggalPanen" name="tanggal_panen">
                 </div>
                 <div class="col-md-3">
                     <label for="editNamaSupir">Nama Supir</label>
-                    <input type="text" class="form-control" id="editNamaSupir" name="nama_supir" required>
+                    <input type="text" class="form-control" id="editNamaSupir" name="nama_supir">
                 </div>
                 <div class="col-md-3">
                     <label for="editNoPolisi">No Polisi</label>
-                    <input type="text" class="form-control" id="editNoPolisi" name="no_polisi" required>
+                    <input type="text" class="form-control" id="editNoPolisi" name="no_polisi">
                 </div>
             </div>
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editJamMasuk">Jam Masuk (HH:MM:SS)</label>
-                    <input type="time" step="1" class="form-control" id="editJamMasuk" name="jam_masuk" required>
+                    <input type="time" step="1" class="form-control" id="editJamMasuk" name="jam_masuk">
                 </div>
                 <div class="col-md-3">
                     <label for="editJamKeluar">Jam Keluar (HH:MM:SS)</label>
-                    <input type="time" step="1" class="form-control" id="editJamKeluar" name="jam_keluar" required>
+                    <input type="time" step="1" class="form-control" id="editJamKeluar" name="jam_keluar">
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <select class="form-control" name="estate" id="editEstate" required>
+                    <select class="form-control" name="estate" id="editEstate">
                         <option value="">-- Pilih --</option>
                         @foreach($estate as $item)
                             <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
@@ -352,7 +352,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editDivisi">Divisi</label>
-                    <select class="form-control" name="divisi" id="editDivisi" required>
+                    <select class="form-control" name="divisi" id="editDivisi">
                         <option value="">-- Pilih --</option>
                         @if($userEstate)
                             @foreach($divisi as $item)
@@ -365,19 +365,19 @@
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editBlok">Blok</label>
-                    <select class="form-control" id="editBlok" name="blok" required>
+                    <select class="form-control" id="editBlok" name="blok">
                         <option value="">-- Pilih --</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editTahunTanam">Tahun Tanam</label>
-                    <select class="form-control" id="editTahunTanam" name="tahun_tanam" required>
+                    <select class="form-control" id="editTahunTanam" name="tahun_tanam">
                         <option value="">-- Pilih --</option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editLahan">Inti/Plasma</label>
-                    <select class="form-control" name="lahan" id="editLahan" required>
+                    <select class="form-control" name="lahan" id="editLahan">
                             <option value="">-- Pilih --</option>
                             <option value="Inti">Inti</option>
                             <option value="Plasma">Plasma</option>
@@ -385,39 +385,39 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editJumlahTandan">Jumlah Tandan</label>
-                    <input type="text" class="form-control" id="editJumlahTandan" name="jumlah_tandan" required>
+                    <input type="text" class="form-control" id="editJumlahTandan" name="jumlah_tandan">
                 </div>
             </div>
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editBerondolan">Berondolan</label>
-                    <input type="number" step="0.01" class="form-control" id="editBerondolan" name="berondolan" required>
+                    <input type="number" step="0.01" class="form-control" id="editBerondolan" name="berondolan">
                 </div>
                 <div class="col-md-3">
                     <label for="editBeratBruto">Berat Bruto</label>
-                    <input type="number" class="form-control" id="editBeratBruto" name="berat_bruto" required>
+                    <input type="number" class="form-control" id="editBeratBruto" name="berat_bruto">
                 </div>
                 <div class="col-md-3">
                     <label for="editBeratTarra">Berat Tarra</label>
-                    <input type="number" class="form-control" id="editBeratTarra" name="berat_tarra" required>
+                    <input type="number" class="form-control" id="editBeratTarra" name="berat_tarra">
                 </div>
                 <div class="col-md-3">
                     <label for="editBeratNetto">Berat Netto</label>
-                    <input type="number" class="form-control" id="editBeratNetto" name="berat_netto" readonly required>
+                    <input type="number" class="form-control" id="editBeratNetto" name="berat_netto" readonly>
                 </div>
             </div>
             <div class="row gx-3 mb-3">
                 <div class="col-md-3">
                     <label for="editJumlahGrading">Jumlah Grading</label>
-                    <input type="number" class="form-control" id="editJumlahGrading" name="jumlah_grading" required>
+                    <input type="number" class="form-control" id="editJumlahGrading" name="jumlah_grading">
                 </div>
                 <div class="col-md-3">
                     <label for="editBeratBersih">Berat Bersih</label>
-                    <input type="number" class="form-control" id="editBeratBersih" name="berat_bersih" readonly required>
+                    <input type="number" class="form-control" id="editBeratBersih" name="berat_bersih" readonly>
                 </div>
                 <div class="col-md-3">
                     <label for="editBjr">BJR</label>
-                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" readonly required>
+                    <input type="number" step="0.01" class="form-control" id="editBjr" name="bjr" readonly>
                 </div>
                 <div class="col-md-3">
                     <label class="small mb-1">F-O0</label>
