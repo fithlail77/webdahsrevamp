@@ -64,9 +64,8 @@
             @if(auth()->user()->hasAnyRole(['manager','admin']))
                         <a class="collapse-item {{ request()->routeIs('areal.index') ? 'active' : '' }}" href="{{ route('areal.index') }}">{{ __('Areal Statement') }}</a>
             @endif
-            @if(auth()->user()->hasAnyRole(['manager','admin','user']))
+            @if(auth()->user()->hasAnyRole(['manager','admin']))
                         <a class="collapse-item {{ request()->routeIs('curah.index') ? 'active' : '' }}" href="{{ route('curah.index') }}">{{ __('Curah Hujan') }}</a>
-                        <a class="collapse-item {{ request()->routeIs('airsungai.index') ? 'active' : '' }}" href="{{ route('airsungai.index') }}">{{ __('Air Sungai') }}</a>
                         <a class="collapse-item {{ request()->routeIs('airsungai.index') ? 'active' : '' }}" href="{{ route('airsungai.index') }}">{{ __('Air Sungai') }}</a>
                         <a class="collapse-item {{ request()->routeIs('ffbinternal.index') ? 'active' : '' }}" href="{{ route('ffbinternal.index') }}">{{ __('FFB Internal') }}</a>
                         <a class="collapse-item {{ request()->routeIs('ffbeksternal.index') ? 'active' : '' }}" href="{{ route('ffbeksternal.index') }}">{{ __('FFB Eksternal') }}</a>
@@ -212,7 +211,7 @@
                 </div>
             </li>
 
-            @if(auth()->user()->hasAnyRole(['manager','admin']))
+            @if(auth()->user()->hasAnyRole(['manager','admin','user','operasional']))
             <!-- Divider -->
             <hr class="sidebar-divider">
 

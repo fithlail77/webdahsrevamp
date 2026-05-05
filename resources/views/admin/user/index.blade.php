@@ -102,6 +102,7 @@
                                 <option value="dc">Data Center</option>
                                 <option value="kcpo">Admin Mill</option>
                                 <option value="user">User</option>
+                                <option value="operasional">Operasional</option>
                             </select>
                         </div>
                     </div>
