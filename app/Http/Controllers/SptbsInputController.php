@@ -286,7 +286,7 @@ class SptbsInputController extends Controller
     public function simpan(Request $request)
     {
         $request->validate([
-            'angkutan' => 'required|string|max:5',
+            'angkutan' => 'required|string|max:255',
             'notiket' => 'required|integer',
             'tgltiket' => 'required|date',
             'nosptbs' => 'required|integer',
