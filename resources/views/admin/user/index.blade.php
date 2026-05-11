@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <label class="col-lg-20 control-label">Estate</label>
                         <div class="col-lg-10">
-                            <select name="estate" class="form-control" required>
+                            <select name="estate" class="form-control">
                                 <option value="">--Pilih Akses--</option>
                                 <option value="All">All</option>
                                 <option value="Melamor">Melamor</option>

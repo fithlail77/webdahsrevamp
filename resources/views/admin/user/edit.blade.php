@@ -68,7 +68,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Ubah Estate</label>
-                            <select id="estate" name="estate" class="form-control" required>
+                            <select id="estate" name="estate" class="form-control">
                                 <option value="">--Pilih Akses--</option>
                                 <option value="all">All</option>
                                 <option value="melamor">Melamor</option>
