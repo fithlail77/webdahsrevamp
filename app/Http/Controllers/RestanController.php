@@ -109,7 +109,7 @@ class RestanController extends Controller
             'estate' => 'required|string|max:30',
             'divisi' => 'required|string|max:5',
             'blok' => 'required|string|max:5',
-            'tonase' => 'required|integer',
+            'tonase' => 'required|numeric|between:0,999.99',
             'keterangan' => 'required|string|max:255',
             'tt' => 'required|integer',
         ]);
@@ -159,7 +159,7 @@ class RestanController extends Controller
             'estate' => 'required|string|max:255',
             'divisi' => 'required|string|max:5',
             'blok' => 'required|string|max:5',
-            'tonase' => 'required|numeric',
+            'tonase' => 'required|numeric|between:0,999.99',
             'keterangan' => 'required|string|max:255',
             'tt' => 'required|integer',
         ]);

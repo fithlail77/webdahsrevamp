@@ -234,6 +234,11 @@ class RealisasiPanenController extends Controller
         $estate = $request->estate;
         $userEstate = Auth::user()->estate ?? null;
 
+        // Validasi: user hanya bisa akses estate yang dimilikinya (kecuali admin 'all')
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
+
         $divisi = Aresta::select('divisi')
             ->where('estate', $estate)
             ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
@@ -251,6 +256,11 @@ class RealisasiPanenController extends Controller
         $estate = $request->estate;
         $divisi = $request->divisi;
         $userEstate = Auth::user()->estate ?? null;
+
+        // Validasi: user hanya bisa akses estate yang dimilikinya (kecuali admin 'all')
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
 
         $blok = Aresta::select('blok')
             ->where('estate', $estate)
@@ -271,6 +281,11 @@ class RealisasiPanenController extends Controller
         $divisi = $request->divisi;
         $blok = $request->blok;
         $userEstate = Auth::user()->estate ?? null;
+
+        // Validasi: user hanya bisa akses estate yang dimilikinya (kecuali admin 'all')
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
 
         $tahunTanam = Aresta::select('tahun_tanam')
             ->where('estate', $estate)

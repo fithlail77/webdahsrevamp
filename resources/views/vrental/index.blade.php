@@ -54,10 +54,10 @@
                         <th>Jenis Alat</th>
                         <th>Nomor Alat</th>
                         <th>Operator</th>
-                        <th>HM Awal</th>
-                        <th>HM Akhir</th>
-                        <th>Total HM</th>
-                        <th>Potongan HM</th>
+                        <th>KM/HM Awal</th>
+                        <th>KM/HM Akhir</th>
+                        <th>Total KM/HM</th>
+                        <th>Potongan KM/HM</th>
                         <th>Pembayaran HM</th>
                         <th>Pekerjaan</th>
                         <th>Kelompok</th>
@@ -149,25 +149,25 @@
                 </div>
                 <div class="row gx-3 mb-3">
                     <div class="col-md-3">
-                        <label class="small mb-1">HM Awal</label>
+                        <label class="small mb-1">KM/HM Awal</label>
                         <input class="form-control" name="hm_awal" type="number" step="0.01"/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">HM Akhir</label></label>
+                        <label class="small mb-1">KM/HM Akhir</label></label>
                         <input class="form-control" name="hm_akhir" type="number" step="0.01"/>
                     </div>
                      <div class="col-md-3">
-                        <label class="small mb-1">Total HM</label></label>
+                        <label class="small mb-1">Total KM/HM</label></label>
                         <input class="form-control" name="total_hm" type="number" step="0.01" readonly/>
                     </div>
                     <div class="col-md-3">
-                        <label class="small mb-1">Potongan HM</label>
+                        <label class="small mb-1">Potongan KM/HM</label>
                         <input class="form-control" name="potongan_hm" type="number" step="0.01"/>
                     </div>                  
                 </div>
                 <div class="row gx-3 mb-3">
                      <div class="col-md-3">
-                        <label class="small mb-1">Pembayaran HM</label>
+                        <label class="small mb-1">Pembayaran KM/HM</label>
                         <input class="form-control" name="pembayaran_hm" id="pembayaran_hm" type="number" step="0.01"/>
                     </div>
                     <div class="col-md-3">

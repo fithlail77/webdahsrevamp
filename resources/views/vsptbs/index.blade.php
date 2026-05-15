@@ -150,12 +150,15 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
-                        <select class="form-control" name="estate" id="estate">
+                        <select class="form-control" name="estate" id="estate" @if($userEstate && $userEstate !== 'all') disabled @endif>
                             <option value="">-- Pilih --</option>
                             @foreach($estate as $item)
-                                <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                                <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                             @endforeach
                         </select>
+                        @if($userEstate && $userEstate !== 'all')
+                            <input type="hidden" name="estate" value="{{ $userEstate }}">
+                        @endif
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Divisi</label>
@@ -343,12 +346,15 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <select class="form-control" name="estate" id="editEstate">
+                    <select class="form-control" name="estate" id="editEstate" @if($userEstate && $userEstate !== 'all') disabled @endif>
                         <option value="">-- Pilih --</option>
                         @foreach($estate as $item)
-                            <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                            <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                         @endforeach
                     </select>
+                    @if($userEstate && $userEstate !== 'all')
+                        <input type="hidden" name="estate" id="editEstateHidden" value="{{ $userEstate }}">
+                    @endif
                 </div>
                 <div class="col-md-3">
                     <label for="editDivisi">Divisi</label>
@@ -869,48 +875,49 @@
         }
     });
 
-    // Cascading dropdowns for Edit modal
-    $('#editEstate').on('change', function() {
-        var estate = $(this).val();
-        $('#editDivisi').html('<option value="">-- Pilih --</option>');
-        $('#editBlok').html('<option value="">-- Pilih --</option>');
-        $('#editTahunTanam').html('<option value="">-- Pilih --</option>');
-        if (estate) {
-            $.get('{{ route("sptbs.getDivisi") }}', { estate: estate }, function(data) {
-                $.each(data, function(key, value) {
-                    $('#editDivisi').append('<option value="' + value.divisi + '">' + value.divisi + '</option>');
-                });
-            });
-        }
-    });
+// Cascading dropdowns for Edit modal
+     $('#editEstate').on('change', function() {
+         // Jika estate disabled, ambil nilai dari hidden input
+         var estate = $(this).val() || $('#editEstateHidden').val();
+         $('#editDivisi').html('<option value="">-- Pilih --</option>');
+         $('#editBlok').html('<option value="">-- Pilih --</option>');
+         $('#editTahunTanam').html('<option value="">-- Pilih --</option>');
+         if (estate) {
+             $.get('{{ route("sptbs.getDivisi") }}', { estate: estate }, function(data) {
+                 $.each(data, function(key, value) {
+                     $('#editDivisi').append('<option value="' + value.divisi + '">' + value.divisi + '</option>');
+                 });
+             });
+         }
+     });
 
-    $('#editDivisi').on('change', function() {
-        var estate = $('#editEstate').val();
-        var divisi = $(this).val();
-        $('#editBlok').html('<option value="">-- Pilih --</option>');
-        $('#editTahunTanam').html('<option value="">-- Pilih --</option>');
-        if (estate && divisi) {
-            $.get('{{ route("sptbs.getBlok") }}', { estate: estate, divisi: divisi }, function(data) {
-                $.each(data, function(key, value) {
-                    $('#editBlok').append('<option value="' + value.blok + '">' + value.blok + '</option>');
-                });
-            });
-        }
-    });
+     $('#editDivisi').on('change', function() {
+         var estate = $('#editEstate').val() || $('#editEstateHidden').val();
+         var divisi = $(this).val();
+         $('#editBlok').html('<option value="">-- Pilih --</option>');
+         $('#editTahunTanam').html('<option value="">-- Pilih --</option>');
+         if (estate && divisi) {
+             $.get('{{ route("sptbs.getBlok") }}', { estate: estate, divisi: divisi }, function(data) {
+                 $.each(data, function(key, value) {
+                     $('#editBlok').append('<option value="' + value.blok + '">' + value.blok + '</option>');
+                 });
+             });
+         }
+     });
 
-    $('#editBlok').on('change', function() {
-        var estate = $('#editEstate').val();
-        var divisi = $('#editDivisi').val();
-        var blok = $(this).val();
-        $('#editTahunTanam').html('<option value="">-- Pilih --</option>');
-        if (estate && divisi && blok) {
-            $.get('{{ route("sptbs.getTahunTanam") }}', { estate: estate, divisi: divisi, blok: blok }, function(data) {
-                $.each(data, function(key, value) {
-                    $('#editTahunTanam').append('<option value="' + value.tahun_tanam + '">' + value.tahun_tanam + '</option>');
-                });
-            });
-        }
-    });
+     $('#editBlok').on('change', function() {
+         var estate = $('#editEstate').val() || $('#editEstateHidden').val();
+         var divisi = $('#editDivisi').val();
+         var blok = $(this).val();
+         $('#editTahunTanam').html('<option value="">-- Pilih --</option>');
+         if (estate && divisi && blok) {
+             $.get('{{ route("sptbs.getTahunTanam") }}', { estate: estate, divisi: divisi, blok: blok }, function(data) {
+                 $.each(data, function(key, value) {
+                     $('#editTahunTanam').append('<option value="' + value.tahun_tanam + '">' + value.tahun_tanam + '</option>');
+                 });
+             });
+         }
+     });
 });
 </script>
 @endpush

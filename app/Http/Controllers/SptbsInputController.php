@@ -362,16 +362,18 @@ class SptbsInputController extends Controller
         return redirect()->route('sptbs.index')->with('success', 'Data SPTBS berhasil disimpan.');
     }
 
-    public function getDivisi(Request $request)
+public function getDivisi(Request $request)
     {
         $estate = $request->estate;
         $userEstate = Auth::user()->estate ?? null;
 
+        // Validasi: user hanya bisa akses estate yang dimilikinya (kecuali admin 'all')
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
+
         $divisi = Aresta::select('divisi')
             ->where('estate', $estate)
-            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
-                return $query->where('estate', $userEstate);
-            })
             ->distinct()
             ->orderBy('divisi')
             ->get();
@@ -385,12 +387,14 @@ class SptbsInputController extends Controller
         $divisi = $request->divisi;
         $userEstate = Auth::user()->estate ?? null;
 
+        // Validasi: user hanya bisa akses estate yang dimilikinya (kecuali admin 'all')
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
+
         $blok = Aresta::select('blok')
             ->where('estate', $estate)
             ->where('divisi', $divisi)
-            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
-                return $query->where('estate', $userEstate);
-            })
             ->distinct()
             ->orderBy('blok')
             ->get();
@@ -405,13 +409,15 @@ class SptbsInputController extends Controller
         $blok = $request->blok;
         $userEstate = Auth::user()->estate ?? null;
 
+        // Validasi: user hanya bisa akses estate yang dimilikinya (kecuali admin 'all')
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
+
         $tahunTanam = Aresta::select('tahun_tanam')
             ->where('estate', $estate)
             ->where('divisi', $divisi)
             ->where('blok', $blok)
-            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
-                return $query->where('estate', $userEstate);
-            })
             ->distinct()
             ->orderBy('tahun_tanam')
             ->get();

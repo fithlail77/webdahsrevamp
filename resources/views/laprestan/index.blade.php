@@ -120,11 +120,11 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Tonase</label>
-                        <input class="form-control" name="tonase" type="number"/>
+                        <input class="form-control" name="tonase" type="number" step="0.01" max="999.99"/>
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Keterangan</label>
-                        <input class="form-control" name="keterangan" type="textarea"/>
+                        <textarea class="form-control" name="keterangan" rows="1"></textarea>
                     </div>
                 </div>
             </div>
@@ -191,11 +191,11 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editTonase">Tonase (Ton)</label>
-                    <input type="numeric" class="form-control" id="editTonase" name="tonase" required>
+                    <input type="number" class="form-control" id="editTonase" name="tonase" step="0.01" max="999.99" required>
                 </div>
                 <div class="col-md-3">
                     <label for="editKeterangan">Keterangan</label>
-                    <input type="text" class="form-control" id="editKeterangan" name="keterangan" required>
+                    <textarea class="form-control" id="editKeterangan" name="keterangan" rows="1" required></textarea>
                 </div>
             </div>
             <div class="modal-footer">
