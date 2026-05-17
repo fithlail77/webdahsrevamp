@@ -90,11 +90,12 @@
                                     <input class="form-control" name="tanggal" type="date" />
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="small mb-1">Jenis Pekerjaan</label></label>
-                                    <select class="form-control" name="jenis_kerja">
+                                    <label class="small mb-1">Jenis Pekerjaan</label>
+                                    <select class="form-control" name="jenis_kerja" id="jenis_kerja">
                                         <option value="">-- Pilih --</option>
-                                        <option value="Panen">Panen</option>
-                                        <option value="Kutip Brondolan">Kutip Brondolan</option>
+                                        @foreach($jenisPekerjaanList as $item)
+                                            <option value="{{ $item->jenis_pekerjaan }}">{{ $item->jenis_pekerjaan }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-3">
@@ -105,6 +106,9 @@
                                             <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                                         @endforeach
                                     </select>
+                                    @if($userEstate && $userEstate !== 'all')
+                                        <input type="hidden" name="estate" value="{{ $userEstate }}">
+                                    @endif
                                 </div>
                                 <div class="col-md-3">
                                     <label class="small mb-1">Divisi</label>
@@ -136,12 +140,8 @@
                                     <input class="form-control" name="hasil" type="number" />
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="small mb-1">Satuan</label></label>
-                                    <select class="form-control" name="satuan">
-                                        <option value="">-- Pilih --</option>
-                                        <option value="Jjg">Janjang</option>
-                                        <option value="Kg">Kilogram</option>
-                                    </select>
+                                    <label class="small mb-1">Satuan</label>
+                                    <input class="form-control" name="satuan" id="satuan" readonly placeholder="Pilih Jenis Pekerjaan dulu" />
                                 </div>
                             </div>
                             <div class="row gx-3 mb-3">
@@ -189,8 +189,9 @@
                                 <label for="editJenisKerja">Jenis Pekerjaan</label>
                                 <select class="form-control" name="jenis_kerja" id="editJenisKerja" required>
                                     <option value="">-- Pilih --</option>
-                                    <option value="Panen">Panen</option>
-                                    <option value="Kutip Brondolan">Kutip Brondolan</option>
+                                    @foreach($jenisPekerjaanList as $item)
+                                        <option value="{{ $item->jenis_pekerjaan }}">{{ $item->jenis_pekerjaan }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -234,11 +235,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="editSatuan">Satuan</label>
-                                <select class="form-control" name="satuan" id="editSatuan" required>
-                                    <option value="">-- Pilih --</option>
-                                    <option value="Jjg">Janjang</option>
-                                    <option value="Kg">Kilogram</option>
-                                </select>
+                                <input type="text" class="form-control" id="editSatuan" name="satuan" readonly placeholder="Pilih Jenis Pekerjaan dulu">
                             </div>
                         </div>
                         <div class="row gx-3 mb-3">
@@ -483,6 +480,27 @@
                 if (value.includes(',')) {
                     $(this).val(value.replace(/,/g, '.'));
                 }
+            });
+
+            // Saat Jenis Pekerjaan dipilih di Modal Tambah, ambil satuan otomatis
+            function loadSatuanByJenisPekerjaan(jenisPekerjaan, satuanInputId) {
+                if (jenisPekerjaan) {
+                    $.get('{{ route("realisasipanen.getSatuan") }}', { jenis_pekerjaan: jenisPekerjaan }, function (response) {
+                        $('#' + satuanInputId).val(response.satuan);
+                    }).fail(function () {
+                        $('#' + satuanInputId).val('');
+                    });
+                } else {
+                    $('#' + satuanInputId).val('');
+                }
+            }
+            $('#jenis_kerja').on('change', function () {
+                loadSatuanByJenisPekerjaan($(this).val(), 'satuan');
+            });
+
+            // Saat Jenis Pekerjaan diubah di Modal Edit, ambil satuan otomatis
+            $('#editJenisKerja').on('change', function () {
+                loadSatuanByJenisPekerjaan($(this).val(), 'editSatuan');
             });
 
             // Handle form submission for Add Realisasi Panen modal

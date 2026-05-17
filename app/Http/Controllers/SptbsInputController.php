@@ -78,7 +78,7 @@ class SptbsInputController extends Controller
             'tangkai_pjg',
             'kastrasi',
         ])
-            ->orderBy('jam_masuk', 'asc');
+            ->orderBy('no_tiket', 'desc');
 
         // Filter berdasarkan estate user
         $userEstate = Auth::user()->estate ?? null;
@@ -99,7 +99,7 @@ class SptbsInputController extends Controller
                 $query->whereDate('tanggal_tiket', '<=', $request->maxDate);
             } else {
                 // Default: 30 hari ke belakang
-                $query->where('tanggal_tiket', '>=', Carbon::now()->subDays(7));
+                $query->where('tanggal_tiket', '>=', Carbon::now()->subDays(5));
             }
         }
 

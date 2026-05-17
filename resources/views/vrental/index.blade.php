@@ -101,12 +101,15 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
-                        <select class="form-control" name="estate" id="estate">
+                        <select class="form-control" name="estate" id="estate" @if($userEstate && $userEstate !== 'all') disabled @endif>
                             <option value="">-- Pilih --</option>
                             @foreach($estate as $item)
-                                <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                                <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                             @endforeach
                         </select>
+                        @if($userEstate && $userEstate !== 'all')
+                            <input type="hidden" name="estate" value="{{ $userEstate }}">
+                        @endif
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Divisi</label>
@@ -206,6 +209,7 @@
                             <option value="Rit">Rit</option>
                             <option value="KM">KM</option>
                             <option value="HM">HM</option>
+                            <option value="Titik">Titik</option>
                         </select>
                     </div>
                 </div>
@@ -223,6 +227,7 @@
                             <option value="Rit">Rit</option>
                             <option value="KM">KM</option>
                             <option value="HM">HM</option>
+                            <option value="Titik">Titik</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -262,12 +267,15 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <select class="form-control" name="estate" id="editEstate" name="estate" required >
+                    <select class="form-control" name="estate" id="editEstate" name="estate" @if($userEstate && $userEstate !== 'all') disabled @endif>
                         <option value="">-- Pilih --</option>
                         @foreach($estate as $item)
-                            <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                            <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                         @endforeach
                     </select>
+                    @if($userEstate && $userEstate !== 'all')
+                        <input type="hidden" name="estate" id="editEstateHidden" value="{{ $userEstate }}">
+                    @endif
                 </div>
                 <div class="col-md-3">
                     <label for="editDivisi">Divisi</label>
@@ -365,6 +373,7 @@
                             <option value="Rit">Rit</option>
                             <option value="KM">KM</option>
                             <option value="HM">HM</option>
+                            <option value="Titik">Titik</option>
                     </select>
                 </div>
             </div>
@@ -382,6 +391,7 @@
                             <option value="Rit">Rit</option>
                             <option value="KM">KM</option>
                             <option value="HM">HM</option>
+                            <option value="Titik">Titik</option>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -745,7 +755,7 @@
 
     // Cascading dropdowns for Edit modal
     $('#editEstate').on('change', function () {
-        var estate = $(this).val();
+        var estate = $(this).val() || $('#editEstateHidden').val();
         $('#editDivisi').html('<option value="">-- Pilih --</option>');
         $('#editBlok').html('<option value="">-- Pilih --</option>');
         $('#editTt').html('<option value="">-- Pilih --</option>');
@@ -758,7 +768,7 @@
         }
     })
     $('#editDivisi').on('change', function () {
-        var estate = $('#editEstate').val();
+        var estate = $(this).val() || $('#editEstateHidden').val();
         var divisi = $(this).val();
         $('#editBlok').html('<option value="">-- Pilih --</option>');
         $('#editTt').html('<option value="">-- Pilih --</option>');
@@ -771,7 +781,7 @@
         }
     })
     $('#editBlok').on('change', function () {
-        var estate = $('#editEstate').val();
+        var estate = $(this).val() || $('#editEstateHidden').val();
         var divisi = $('#editDivisi').val();
         var blok = $(this).val();
         $('#editTt').html('<option value="">-- Pilih --</option>');

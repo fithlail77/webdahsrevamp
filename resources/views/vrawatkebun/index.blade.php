@@ -99,10 +99,10 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
-                        <select class="form-control" name="estate" id="estate">
+                        <select class="form-control" name="estate" id="estate" @if($userEstate && $userEstate !== 'all') readonly @endif>
                             <option value="">-- Pilih --</option>
                             @foreach($estate as $item)
-                                <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                                <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -253,10 +253,10 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <select class="form-control" name="estate" id="editEstate" required>
+                    <select class="form-control" name="estate" id="editEstate" @if($userEstate && $userEstate !== 'all') readonly @endif>
                         <option value="">-- Pilih --</option>
                         @foreach($estate as $item)
-                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -264,9 +264,11 @@
                     <label for="editDivisi">Divisi</label>
                     <select class="form-control" name="divisi" id="editDivisi" required>
                         <option value="">-- Pilih --</option>
-                        @foreach($divisi as $item)
-                            <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
-                        @endforeach
+                        @if($userEstate)
+                            @foreach($divisi as $item)
+                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
                 <div class="col-md-3">

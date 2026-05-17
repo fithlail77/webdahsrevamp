@@ -132,8 +132,6 @@
                                     <td><select name="ChInput[0][pt]" class="form-control">
                                             <option value="">--Pilih--</option>
                                             <option value="GUM">GUM</option>
-                                            <option value="PAM">PAM</option>
-                                            <option value="TBSM">TBSM</option>
                                         </select>
                                     </td>
                                     <td><input type="date" name="ChInput[0][dates]" class="form-control"></td>

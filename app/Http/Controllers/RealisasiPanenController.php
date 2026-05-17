@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\RealisasiPanen;
+use App\Models\JenisPekerjaan;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RealisasiPanenExport;
@@ -39,7 +40,9 @@ class RealisasiPanenController extends Controller
             })
             ->get();
 
-        return view('rpanen.index', compact('estate', 'divisi', 'userEstate'));
+        $jenisPekerjaanList = JenisPekerjaan::all();
+
+        return view('rpanen.index', compact('estate', 'divisi', 'userEstate', 'jenisPekerjaanList'));
     }
 
     public function data(Request $request)
@@ -273,6 +276,21 @@ class RealisasiPanenController extends Controller
             ->get();
 
         return response()->json($blok);
+    }
+
+    public function getJenisPekerjaan(Request $request)
+    {
+        $jenisPekerjaan = JenisPekerjaan::all();
+        return response()->json($jenisPekerjaan);
+    }
+
+    public function getSatuanByJenisPekerjaan(Request $request)
+    {
+        $jenisPekerjaan = JenisPekerjaan::where('jenis_pekerjaan', $request->jenis_pekerjaan)->first();
+        if ($jenisPekerjaan) {
+            return response()->json(['satuan' => $jenisPekerjaan->satuan]);
+        }
+        return response()->json(['satuan' => '']);
     }
 
     public function getTahunTanam(Request $request)

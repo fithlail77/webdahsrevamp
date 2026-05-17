@@ -6,6 +6,7 @@ use App\Exports\TsaExport;
 use App\Exports\TsaExportPdf;
 use App\Models\TSA;
 use App\Models\Company;
+use App\Models\Aresta;
 use App\Imports\TsaImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -21,16 +22,25 @@ class TSAController extends Controller
      */
     public function index()
     {
-        $estate = Company::select('estate')
+        $userEstate = Auth::user()->estate ?? null;
+
+        $estate = Aresta::select('estate')
             ->distinct()
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->orderBy('estate', 'asc')
             ->get();
 
-        $divisi = Company::select('divisi')
+        $divisi = Aresta::select('divisi')
             ->distinct()
-            ->orderBy('divisi','asc')
+            ->orderBy('divisi', 'asc')
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
             ->get();
-            
-        return view('vtsa.index', compact('estate','divisi'));
+
+        return view('vtsa.index', compact('estate', 'divisi', 'userEstate'));
     }
 
     /**
@@ -197,6 +207,75 @@ class TSAController extends Controller
         Excel::import( new TsaImport, $request->file('file'));
 
         return redirect()->route('tsa.index')->with('success', 'Data berhasil diupload.');
+    }
+
+    public function getDivisi(Request $request)
+    {
+        $estate = $request->estate;
+        $userEstate = Auth::user()->estate ?? null;
+
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
+
+        $divisi = Aresta::select('divisi')
+            ->where('estate', $estate)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('divisi')
+            ->get();
+
+        return response()->json($divisi);
+    }
+
+    public function getBlok(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $userEstate = Auth::user()->estate ?? null;
+
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
+
+        $blok = Aresta::select('blok')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('blok')
+            ->get();
+
+        return response()->json($blok);
+    }
+
+    public function getTahunTanam(Request $request)
+    {
+        $estate = $request->estate;
+        $divisi = $request->divisi;
+        $blok = $request->blok;
+        $userEstate = Auth::user()->estate ?? null;
+
+        if ($userEstate && $userEstate !== 'all' && $estate !== $userEstate) {
+            return response()->json([]);
+        }
+
+        $tahunTanam = Aresta::select('tahun_tanam')
+            ->where('estate', $estate)
+            ->where('divisi', $divisi)
+            ->where('blok', $blok)
+            ->when($userEstate && $userEstate !== 'all', function ($query) use ($userEstate) {
+                return $query->where('estate', $userEstate);
+            })
+            ->distinct()
+            ->orderBy('tahun_tanam')
+            ->get();
+
+        return response()->json($tahunTanam);
     }
 
     public function exportExcel(Request $request)

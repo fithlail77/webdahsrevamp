@@ -158,7 +158,7 @@ class PremiController extends Controller
             'total_premi' => $request->total_premi
         ]);
 
-        return redirect()->route('premi.index')->with('success', 'Data Premi berhasil disimpan.');
+        return response()->json(['success' => 'Data Premi berhasil disimpan.']);
     }
 
     /**

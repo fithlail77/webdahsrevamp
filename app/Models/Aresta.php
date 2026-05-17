@@ -9,21 +9,20 @@ class Aresta extends Model
 {
     use HasFactory;
 
-    protected $table = 'aresta';
+    protected $table = 'tblaresta';
 
     protected $fillable = [
-        'bulan',
         'estate',
         'divisi',
         'blok',
+        'lahan',
         'tahun_tanam',
-        'status_tanaman',
-        'status_lahan',
-        'jenis_bibit',
+        'bibit',
         'topografi',
         'jenis_tanah',
-        'pokok',
+        'status',
+        'jml_pokok',
         'luas',
-        'jenis_input',
+        'sph',
     ];
 }

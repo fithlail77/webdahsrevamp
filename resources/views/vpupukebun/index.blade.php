@@ -91,12 +91,15 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
-                        <select class="form-control" name="estate" id="estate">
+                        <select class="form-control" name="estate" id="estate" @if($userEstate && $userEstate !== 'all') disabled @endif>
                             <option value="">-- Pilih --</option>
                             @foreach($estate as $item)
-                                <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                                <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                             @endforeach
                         </select>
+                        @if($userEstate && $userEstate !== 'all')
+                            <input type="hidden" name="estate" value="{{ $userEstate }}">
+                        @endif
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Divisi</label>
@@ -146,14 +149,14 @@
                     </div>
                 </div>
                 <div class="row gx-3 mb-3">
-                    <div class="col-md-3">
-                        <label class="small mb-1">Pokok</label>
-                        <input class="form-control" name="pokok" type="number"/>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="small mb-1">Dosis</label>
-                        <input class="form-control" name="dosis" id="dosis" type="number" step="0.01"/>
-                    </div>
+                            <div class="col-md-3">
+                                <label class="small mb-1">Pokok</label>
+                                <input class="form-control" name="pokok" id="pokok" type="number"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small mb-1">Dosis</label>
+                                <input class="form-control" name="dosis" id="dosis" type="number" step="0.01" readonly/>
+                            </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Jumlah Tenaga</label>
                         <input class="form-control" name="jml_tenaga" type="number" step="0.01"/>
@@ -195,21 +198,26 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <select class="form-control" name="estate" id="editEstate" required>
-                            <option value="">-- Pilih --</option>
-                            @foreach($estate as $item)
-                                <option value="{{ $item->estate }}">{{ $item->estate }}</option>
-                            @endforeach
-                        </select>
+                    <select class="form-control" name="estate" id="editEstate" @if($userEstate && $userEstate !== 'all') disabled @endif>
+                        <option value="">-- Pilih --</option>
+                        @foreach($estate as $item)
+                            <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
+                        @endforeach
+                    </select>
+                    @if($userEstate && $userEstate !== 'all')
+                        <input type="hidden" name="estate" id="editEstateHidden" value="{{ $userEstate }}">
+                    @endif
                 </div>
                 <div class="col-md-3">
                     <label for="editDivisi">Divisi</label>
                     <select class="form-control" name="divisi" id="editDivisi" required>
-                            <option value="">-- Pilih --</option>
+                        <option value="">-- Pilih --</option>
+                        @if($userEstate)
                             @foreach($divisi as $item)
                                 <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
                             @endforeach
-                        </select>
+                        @endif
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label for="editBlok">Blok</label>
@@ -254,7 +262,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editDosis">Dosis</label>
-                    <input type="number" step="0.01" class="form-control" id="editDosis" name="dosis" required>
+                    <input type="number" step="0.01" class="form-control" id="editDosis" name="dosis" readonly>
                 </div>
                 <div class="col-md-3">
                     <label for="editJumlahTenaga">Jumlah Tenaga</label>
@@ -572,9 +580,35 @@
         }
     });
 
+    // Hitung Dosis otomatis: hasil / pokok (Modal Tambah)
+    function hitungDosisTambah() {
+        var hasil = parseFloat($('input[name="hasil"]').val()) || 0;
+        var pokok = parseFloat($('input[name="pokok"]').val()) || 0;
+        if (pokok > 0) {
+            $('#dosis').val((hasil / pokok).toFixed(2));
+        } else {
+            $('#dosis').val('');
+        }
+    }
+    $('input[name="hasil"]').on('input', hitungDosisTambah);
+    $('input[name="pokok"]').on('input', hitungDosisTambah);
+
+    // Hitung Dosis otomatis: hasil / pokok (Modal Edit)
+    function hitungDosisEdit() {
+        var hasil = parseFloat($('#editHasil').val()) || 0;
+        var pokok = parseFloat($('#editPokok').val()) || 0;
+        if (pokok > 0) {
+            $('#editDosis').val((hasil / pokok).toFixed(2));
+        } else {
+            $('#editDosis').val('');
+        }
+    }
+    $('#editHasil').on('input', hitungDosisEdit);
+    $('#editPokok').on('input', hitungDosisEdit);
+
     // Cascading dropdowns for Edit modal
     $('#editEstate').on('change', function () {
-        var estate = $(this).val();
+        var estate = $(this).val() || $('#editEstateHidden').val();
         $('#editDivisi').html('<option value="">-- Pilih --</option>');
         $('#editBlok').html('<option value="">-- Pilih --</option>');
         $('#editTt').html('<option value="">-- Pilih --</option>');
@@ -587,7 +621,7 @@
         }
     })
     $('#editDivisi').on('change', function () {
-        var estate = $('#editEstate').val();
+        var estate = $('#editEstate').val() || $('#editEstateHidden').val();
         var divisi = $(this).val();
         $('#editBlok').html('<option value="">-- Pilih --</option>');
         $('#editTt').html('<option value="">-- Pilih --</option>');
@@ -600,7 +634,7 @@
         }
     })
     $('#editBlok').on('change', function () {
-        var estate = $('#editEstate').val();
+        var estate = $('#editEstate').val() || $('#editEstateHidden').val();
         var divisi = $('#editDivisi').val();
         var blok = $(this).val();
         $('#editTt').html('<option value="">-- Pilih --</option>');

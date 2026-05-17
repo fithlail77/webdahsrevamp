@@ -114,20 +114,25 @@
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Estate</label>
-                        <select class="form-control" name="estate" id="estate">
-                        <option value="">-- Pilih --</option>
+                        <select class="form-control" name="estate" id="estate" @if($userEstate && $userEstate !== 'all') disabled @endif>
+                            <option value="">-- Pilih --</option>
                            @foreach($estate as $item)
-                                <option value="{{ $item->estate }}" {{ $userEstate && $userEstate == $item->estate ? 'selected' : '' }}>{{ $item->estate }}</option>
+                                <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                             @endforeach
                         </select>
+                        @if($userEstate && $userEstate !== 'all')
+                            <input type="hidden" name="estate" value="{{ $userEstate }}">
+                        @endif
                     </div>
                     <div class="col-md-3">
                         <label class="small mb-1">Divisi</label>
                         <select class="form-control" name="divisi" id="divisi">
                             <option value="">-- Pilih --</option>
-                            @foreach($divisi as $item)
-                                <option value="{{ $item->divisi }}">{{ $item->divisi }}</option>
-                            @endforeach
+                            @if($userEstate)
+                                @foreach($divisi as $item)
+                                    <option value="{{ $item->divisi }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @endif>{{ $item->divisi }}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -171,6 +176,7 @@
                             <option value="Rit">Rit</option>
                             <option value="KM">KM</option>
                             <option value="HM">HM</option>
+                            <option value="Titik">Titik</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -188,6 +194,7 @@
                             <option value="Rit">Rit</option>
                             <option value="KM">KM</option>
                             <option value="HM">HM</option>
+                            <option value="Titik">Titik</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -244,12 +251,15 @@
                 </div>
                 <div class="col-md-3">
                     <label for="editEstate">Estate</label>
-                    <select class="form-control" name="estate" id="editEstate" required>
+                    <select class="form-control" name="estate" id="editEstate" @if($userEstate && $userEstate !== 'all') disabled @endif>
                         <option value="">-- Pilih --</option>
                         @foreach($estate as $item)
-                            <option value="{{ $item->estate }}">{{ $item->estate }}</option>
+                            <option value="{{ $item->estate }}" @if($userEstate && $userEstate !== 'all' && $userEstate == $item->estate) selected @elseif($userEstate == null && $item->estate == old('estate', '')) selected @endif>{{ $item->estate }}</option>
                         @endforeach
                     </select>
+                    @if($userEstate && $userEstate !== 'all')
+                        <input type="hidden" name="estate" id="editEstateHidden" value="{{ $userEstate }}">
+                    @endif
                 </div>
                 <div class="col-md-3">
                     <label for="editDivisi">Divisi</label>
@@ -301,6 +311,7 @@
                             <option value="Rit">Rit</option>
                             <option value="KM">KM</option>
                             <option value="HM">HM</option>
+                            <option value="Titik">Titik</option>
                         </select>
                 </div>
                 <div class="col-md-3">
@@ -318,6 +329,7 @@
                             <option value="Rit">Rit</option>
                             <option value="KM">KM</option>
                             <option value="HM">HM</option>
+                            <option value="Titik">Titik</option>
                         </select>
                 </div>
                 <div class="col-md-3">
@@ -519,6 +531,39 @@
             },
             error: function(xhr) {
                 toastr.error('Terjadi kesalahan saat memperbarui data.');
+            }
+        });
+    });
+
+    // Handle form submission for Add Premi modal
+    $('#modal-AddPremi form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: '{{ route("premi.store") }}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#modal-AddPremi').modal('hide');
+                table.ajax.reload();
+                toastr.success(response.success);
+                // Reset form
+                $('#modal-AddPremi form')[0].reset();
+            },
+            error: function(xhr) {
+                if (xhr.status === 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessages = [];
+                    for (var field in errors) {
+                        errorMessages.push(errors[field].join(', '));
+                    }
+                    toastr.error('Validasi gagal: ' + errorMessages.join('; '));
+                } else {
+                    toastr.error('Terjadi kesalahan saat menyimpan data.');
+                }
             }
         });
     });
