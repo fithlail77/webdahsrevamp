@@ -231,8 +231,6 @@
             '<td><select name="ChInput[' + index + '][pt]" class="form-control" required>' +
                     '<option value="">--Pilih--</option>' +
                     '<option value="GUM">GUM</option>' +
-                    '<option value="PAM">PAM</option>' +
-                    '<option value="TBSM">TBSM</option>' +
                  '</select>' +
             '</td>' +
             '<td><input type="date" name="ChInput[' + index + '][dates]" class="form-control" required></td>' +
