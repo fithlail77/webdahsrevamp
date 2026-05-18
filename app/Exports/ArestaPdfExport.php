@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Aresta;
+use App\Models\ArestaOld;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ArestaPdfExport
@@ -24,7 +24,7 @@ class ArestaPdfExport
      */
     public function generatePdf()
     {
-        $query = Aresta::select([
+        $query = ArestaOld::select([
             'bulan',
             'estate',
             'divisi',

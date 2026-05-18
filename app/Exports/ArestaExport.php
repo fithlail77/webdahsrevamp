@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Aresta;
+use App\Models\ArestaOld;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -25,7 +25,7 @@ class ArestaExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        $query = Aresta::select([
+        $query = ArestaOld::select([
             'bulan',
             'estate',
             'divisi',

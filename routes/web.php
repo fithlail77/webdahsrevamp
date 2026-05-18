@@ -45,6 +45,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArestaFinalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -248,3 +249,7 @@ Route::resource('/tsa', TSAController::class);
 Route::get('/kml/data', [KmlController::class, 'data'])->name('kml.data');
 Route::get('/kml/track/{id}', [KmlController::class, 'getTrack'])->name('kml.track');
 Route::resource('/kml', KmlController::class);
+Route::get('/arestaV1/data', [ArestaFinalController::class, 'data'])->name('arestaV1.data');
+Route::get('/arestaV1/export/excel', [ArestaFinalController::class, 'exportExcel'])->name('arestaV1.export.excel');
+Route::get('/arestaV1/export/pdf', [ArestaFinalController::class, 'exportPdf'])->name('arestaV1.export.pdf');
+Route::resource('/arestaV1', ArestaFinalController::class);

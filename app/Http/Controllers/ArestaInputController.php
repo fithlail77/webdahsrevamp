@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\Aresta;
+use App\Models\ArestaOld;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Termwind\Components\Raw;
@@ -59,7 +59,7 @@ class ArestaInputController extends Controller
 
     public function data(Request $request)
     {
-        $query = Aresta::select([
+        $query = ArestaOld::select([
             'id',
             'bulan',
             'estate',
@@ -142,7 +142,7 @@ class ArestaInputController extends Controller
             'jenis_input' => 'required|string',
         ]);
 
-        Aresta::create($request->all());
+        ArestaOld::create($request->all());
         return redirect()->route('areal.index')->with('success', 'Areal berhasil ditambahkan.');
     }
 
@@ -160,7 +160,7 @@ class ArestaInputController extends Controller
     public function edit(string $id)
     {
         try {
-            $aresta = Aresta::findOrFail($id);
+            $aresta = ArestaOld::findOrFail($id);
             return response()->json($aresta);
         } catch (\Exception $e) {
             Log::error('Error in edit Method: ' . $e->getMessage() . ' ID: ' . $id);
@@ -189,7 +189,7 @@ class ArestaInputController extends Controller
                 'luas' => 'required|numeric'
             ]);
 
-            $aresta = Aresta::findOrFail($id);
+            $aresta = ArestaOld::findOrFail($id);
             $aresta->update($request->all());
 
             return response()->json(['success' => 'Data berhasil diperbarui.']);
@@ -204,7 +204,7 @@ class ArestaInputController extends Controller
      */
     public function destroy(string $id)
     {
-        $aresta = Aresta::findOrFail($id);
+        $aresta = ArestaOld::findOrFail($id);
         $aresta->delete();
         return redirect()->route('areal.index')->with('success', 'Data berhasil dihapus.');
     }
