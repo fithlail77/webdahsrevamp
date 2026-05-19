@@ -46,6 +46,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArestaFinalController;
+use App\Http\Controllers\LoginLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -253,3 +254,6 @@ Route::get('/arestaV1/data', [ArestaFinalController::class, 'data'])->name('ares
 Route::get('/arestaV1/export/excel', [ArestaFinalController::class, 'exportExcel'])->name('arestaV1.export.excel');
 Route::get('/arestaV1/export/pdf', [ArestaFinalController::class, 'exportPdf'])->name('arestaV1.export.pdf');
 Route::resource('/arestaV1', ArestaFinalController::class);
+Route::get('/loginlogs/data', [LoginLogController::class, 'data'])->name('loginlogs.data');
+Route::resource('/loginlogs', LoginLogController::class);
+

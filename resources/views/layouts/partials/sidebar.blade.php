@@ -28,7 +28,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             @php
-                $isPengaturanActive = request()->routeIs('user.index') || request()->routeIs('comp.index') || request()->routeIs('blokkoordinat.index') || request()->routeIs('arestav1.index');
+                $isPengaturanActive = request()->routeIs('user.index') || request()->routeIs('comp.index') || request()->routeIs('blokkoordinat.index') || request()->routeIs('arestav1.index') || request()->routeIs('loginlogs.index');
             @endphp
              @role('admin')
             <li class="nav-item">
@@ -43,6 +43,7 @@
                         <a class="collapse-item {{ request()->routeIs('comp.index') ? 'active' : '' }}" href="{{ route('comp.index') }}">{{ __('Perusahaan') }}</a>
                         <a class="collapse-item {{ request()->routeIs('blokkoordinat.index') ? 'active' : '' }}" href="{{ route('blokkoordinat.index') }}">{{ __('Koordinat Blok') }}</a>
                         <a class="collapse-item {{ request()->routeIs('arestav1.index') ? 'active' : '' }}" href="{{ route('arestaV1.index') }}">{{ __('Aresta V1') }}</a>
+                        <a class="collapse-item {{ request()->routeIs('loginlogs.index') ? 'active' : '' }}" href="{{ route('loginlogs.index') }}">{{ __('Log Login') }}</a>
                     </div>
                 </div>
             </li>
