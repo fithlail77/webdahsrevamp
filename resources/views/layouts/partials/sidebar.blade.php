@@ -126,7 +126,7 @@
 
             <li class="nav-item">
                 <a class="nav-link {{ $isTransaksiActive ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseTransaksi" aria-expanded="{{ $isTransaksiActive ? 'true' : 'false' }}" aria-controls="collapseTransaksi">
-                    <i class="fas fa-fw fa-wrench"></i>
+                    <i class="fas fa-fw fa-receipt"></i>
                     <span>Transaksi</span>
                 </a>
 
@@ -229,7 +229,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('aws.index') }}">
-                    <i class="fas fa-fw fa-cloud-rain"></i>
+                    <i class="fas fa-fw fa-cloud-meatball"></i>
                     <span>{{ __('AWS') }}</span></a>
             </li>
             <li class="nav-item">
@@ -239,20 +239,27 @@
             </li>
             <li class="nav-item ">
                 <a class="nav-link" href="{{ route('produksi.index') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-fw fa-signal"></i>
                     <span>{{ __('Produksi') }}</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('produksikebun.index') }}">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-fw fa-chart-line"></i>
                     <span>{{ __('Analisa Produksi Kebun') }}</span></a>
             </li>
 
             <li class="nav-item ">
                 <a class="nav-link" href="{{ route('pr.index') }}">
-                    <i class="fas fa-fw fa-layer-group"></i>
+                    <i class="fas fa-fw fa-flask"></i>
                     <span>{{ __('Pemupukan & Perawatan') }}</span>
+                </a>
+            </li>
+
+             <li class="nav-item ">
+                <a class="nav-link" href="{{ route('fleetcartrack.index') }}">
+                    <i class="fas fa-fw fa-route"></i>
+                    <span>{{ __('Fleet Cartrack') }}</span>
                 </a>
             </li>
 

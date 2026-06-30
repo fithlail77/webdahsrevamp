@@ -46,6 +46,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArestaFinalController;
+use App\Http\Controllers\CartrackController;
 use App\Http\Controllers\LoginLogController;
 
 /*
@@ -165,6 +166,7 @@ Route::resource('/blok', BlokController::class);
 Route::resource('/bibit', NurseryController::class);
 Route::resource('/aws', AwsController::class);
 Route::resource('/produksikebun', AnalisaProdController::class);
+Route::resource('/fleetcartrack', CartrackController::class);
 Route::get('/realisasipanen/get-jenis-pekerjaan', [RealisasiPanenController::class, 'getJenisPekerjaan'])->name('realisasipanen.getJenisPekerjaan');
 Route::get('/realisasipanen/get-satuan', [RealisasiPanenController::class, 'getSatuanByJenisPekerjaan'])->name('realisasipanen.getSatuan');
 Route::get('/realisasipanen/data', [RealisasiPanenController::class, 'data'])->name('realisasipanen.data');
