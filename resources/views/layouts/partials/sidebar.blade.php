@@ -115,7 +115,8 @@
                     || request()->routeIs('rawatkebun.index')
                     || request()->routeIs('aramco.index')
                     || request()->routeIs('tsa.index')
-                    || request()->routeIs('kml.index');
+                    || request()->routeIs('kml.index')
+                    || request()->routeIs('lsuinput.index');
 
                 $isCurahActive = request()->routeIs('curah.index') || request()->routeIs('airsungai.index');
                 $isPKSActive = request()->routeIs('ffbinternal.index') || request()->routeIs('ffbeksternal.index') || request()->routeIs('produksicpo.index') || request()->routeIs('contractcpo.index') || request()->routeIs('contractpk.index');
@@ -207,6 +208,7 @@
                             {{-- Menu lain tetap seperti biasa --}}
                             <a class="collapse-item {{ request()->routeIS('awsinput.index') ? 'active' : '' }}" href="{{ route('awsinput.index') }}">{{ __('Weather Station') }}</a>
                             <a class="collapse-item {{ request()->routeIS('airsungai.index') ? 'active' : '' }}" href="{{ route('airsungai.index') }}">{{ __('Air Sungai') }}</a>
+                            <a class="collapse-item {{ request()->routeIS('lsuinput.index') ? 'active' : '' }}" href="{{ route('lsuinput.index') }}">{{ __('Leaf Sampling Unit') }}</a>
                             <a class="collapse-item {{ request()->routeIS('kml.index') ? 'active' : '' }}" href="{{ route('kml.index') }}">{{ __('KML Track') }}</a>
                         @endif
                     </div>

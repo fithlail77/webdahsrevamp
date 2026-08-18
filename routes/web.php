@@ -48,6 +48,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArestaFinalController;
 use App\Http\Controllers\CartrackController;
 use App\Http\Controllers\LoginLogController;
+use App\Http\Controllers\LsuInputController;
 
 /*
 |--------------------------------------------------------------------------
@@ -258,4 +259,7 @@ Route::get('/arestaV1/export/pdf', [ArestaFinalController::class, 'exportPdf'])-
 Route::resource('/arestaV1', ArestaFinalController::class);
 Route::get('/loginlogs/data', [LoginLogController::class, 'data'])->name('loginlogs.data');
 Route::resource('/loginlogs', LoginLogController::class);
+Route::get('/lsuinput/data', [LsuInputController::class, 'data'])->name('lsuinput.data');
+Route::post('/lsuinput/import', [LsuInputController::class, 'import'])->name('lsuinput.import');
+Route::resource('/lsuinput', LsuInputController::class);
 
