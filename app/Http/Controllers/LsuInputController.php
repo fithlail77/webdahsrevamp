@@ -23,7 +23,17 @@ class LsuInputController extends Controller
                         ->orderBy('tahun', 'desc')
                         ->pluck('tahun');
 
-        return view('lsu.index',compact('tahunList'));
+        // LOGIKA PENENTUAN TAHUN DEFAULT
+        $tahunSaatIni = Carbon::now()->year;
+        $tahunKemarin = Carbon::now()->subYear()->year;
+
+        // Cek apakah ada data untuk tahun saat ini di database
+        $adaDataTahunIni = LsuInput::where('tahun', $tahunSaatIni)->exists();
+
+        // Jika ada, gunakan tahun saat ini. Jika tidak, gunakan tahun kemarin.
+        $defaultTahun = $adaDataTahunIni ? $tahunSaatIni : $tahunKemarin;
+
+        return view('lsu.index', compact('tahunList', 'defaultTahun'));
     }
 
     public function data(Request $request)
@@ -47,11 +57,17 @@ class LsuInputController extends Controller
                 if ($request->has('search') && !empty($request->input('search.value'))) {
                     // Global search otomatis dari Yajra
                 } else {
+                    // Cek dropdown tahun
                     if ($request->filled('tahun')) {
                         $query->where('tahun', $request->tahun);
                     } else {
-                        $tahunKemarin = \Carbon\Carbon::now()->subYear()->year;
-                        $query->where('tahun', $tahunKemarin);
+                        // Fallback (jika request tahun kosong)
+                        $tahunSaatIni = Carbon::now()->year;
+                        if (LsuInput::where('tahun', $tahunSaatIni)->exists()) {
+                            $query->where('tahun', $tahunSaatIni);
+                        } else {
+                            $query->where('tahun', Carbon::now()->subYear()->year);
+                        }
                     }
                 }
             })
@@ -59,11 +75,9 @@ class LsuInputController extends Controller
                 $query->orderBy('tahun', 'desc');
             })
             ->addIndexColumn()
-            // Memformat kolom 'luas' menjadi 2 digit di belakang koma
             ->editColumn('luas', function ($row) {
                 return number_format((float)$row->luas, 2, ',', '');
             })
-            // Memformat kolom 'lsu' menjadi 2 digit di belakang koma
             ->editColumn('lsu', function ($row) {
                 return number_format((float)$row->lsu, 2, ',', '');
             })
